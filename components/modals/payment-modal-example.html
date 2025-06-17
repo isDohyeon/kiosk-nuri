@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 모달 컴포넌트 - 사용 예시</title>
+    
+    <!-- 결제 모달 CSS -->
+    <link rel="stylesheet" href="payment-modal.css">
+    
+    <!-- 예시 페이지 스타일 -->
+    <style>
+        body {
+            font-family: "Pretendard", Helvetica, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #2c5b3a;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .demo-subtitle {
+            font-size: 24px;
+            color: #7e7e87;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .demo-section {
+            margin-bottom: 80px;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 600;
+            color: #53575d;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #54d761;
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .demo-button {
+            background: #54d761;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 20px 30px;
+            font-size: 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(84, 215, 97, 0.3);
+        }
+        
+        .demo-button:hover {
+            background: #45c653;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(84, 215, 97, 0.4);
+        }
+        
+        .demo-button.secondary {
+            background: #e4e4e5;
+            color: #53575d;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-button.secondary:hover {
+            background: #d0d0d0;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .code-example {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .code-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .status-display {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 5px solid #54d761;
+        }
+        
+        .status-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        #statusText {
+            color: #6c757d;
+            font-family: monospace;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">결제 모달 컴포넌트</h1>
+        <p class="demo-subtitle">키오스크 환경에 최적화된 재사용 가능한 결제 모달</p>
+        
+        <!-- 기본 사용법 -->
+        <div class="demo-section">
+            <h2 class="section-title">1. 기본 결제 모달</h2>
+            <div class="button-group">
+                <button class="demo-button" onclick="openBasicModal()">
+                    기본 결제 모달 열기
+                </button>
+                <button class="demo-button secondary" onclick="openProcessingModal()">
+                    처리 중 상태로 열기
+                </button>
+            </div>
+            
+            <div class="code-example">
+                <div class="code-title">코드 예시:</div>
+                <pre><code>// 기본 사용법
+const modal = new PaymentModal({
+    onCancel: (modal) => console.log('취소됨'),
+    onRetry: (modal) => console.log('다시 시도'),
+    onSuccess: (modal) => console.log('성공'),
+    onError: (modal) => console.log('실패')
+});
+
+modal.open({
+    title: '카드를 리더기에 꽂아주세요.',
+    message: '결제를 진행하고 있습니다...',
+    status: 'waiting'
+});</code></pre>
+            </div>
+        </div>
+        
+        <!-- 결제 방법별 모달 -->
+        <div class="demo-section">
+            <h2 class="section-title">2. 결제 방법별 모달</h2>
+            <div class="button-group">
+                <button class="demo-button" onclick="openCardModal()">
+                    신용카드 결제
+                </button>
+                <button class="demo-button" onclick="openKakaoModal()">
+                    카카오페이
+                </button>
+                <button class="demo-button" onclick="openSamsungModal()">
+                    삼성페이
+                </button>
+                <button class="demo-button" onclick="openNaverModal()">
+                    네이버페이
+                </button>
+            </div>
+            
+            <div class="code-example">
+                <div class="code-title">아이콘 설정 예시:</div>
+                <pre><code>// 결제 아이콘 설정
+modal.setPaymentIcon('/assets/images/payment-card.png', '신용카드');
+
+// 모달 열기와 동시에 아이콘 설정
+const modal = new PaymentModal({
+    onOpen: (modal) => {
+        modal.setPaymentIcon('/assets/images/payment-kakao.png', '카카오페이');
+    }
+});</code></pre>
+            </div>
+        </div>
+        
+        <!-- 상태 관리 -->
+        <div class="demo-section">
+            <h2 class="section-title">3. 상태 관리</h2>
+            <div class="button-group">
+                <button class="demo-button" onclick="openModalAndSimulate(true)">
+                    결제 성공 시뮬레이션
+                </button>
+                <button class="demo-button" onclick="openModalAndSimulate(false)">
+                    결제 실패 시뮬레이션
+                </button>
+                <button class="demo-button secondary" onclick="changeModalStatus()">
+                    상태 변경 테스트
+                </button>
+            </div>
+            
+            <div class="status-display">
+                <div class="status-title">현재 모달 상태:</div>
+                <div id="statusText">모달이 닫혀있음</div>
+            </div>
+            
+            <div class="code-example">
+                <div class="code-title">상태 관리 예시:</div>
+                <pre><code>// 상태 변경
+modal.setStatus('waiting');    // 대기 중
+modal.setStatus('processing'); // 처리 중
+modal.setStatus('success');    // 성공
+modal.setStatus('error');      // 오류
+
+// 결제 시뮬레이션
+modal.simulatePayment(3000, true);  // 3초 후 성공
+modal.simulatePayment(2000, false); // 2초 후 실패</code></pre>
+            </div>
+        </div>
+        
+        <!-- 설정 옵션 -->
+        <div class="demo-section">
+            <h2 class="section-title">4. 고급 설정</h2>
+            <div class="button-group">
+                <button class="demo-button" onclick="openCustomModal()">
+                    커스텀 설정 모달
+                </button>
+                <button class="demo-button" onclick="openAutoCloseModal()">
+                    자동 닫기 모달
+                </button>
+            </div>
+            
+            <div class="code-example">
+                <div class="code-title">고급 설정 예시:</div>
+                <pre><code>const modal = new PaymentModal({
+    modalId: 'customPaymentModal',  // 커스텀 모달 ID
+    autoClose: true,                // 성공 시 자동 닫기
+    closeOnOverlay: false,          // 오버레이 클릭으로 닫기 비활성화
+    closeOnEscape: false,           // ESC 키로 닫기 비활성화
+    
+    // 이벤트 콜백
+    onOpen: (modal) => console.log('모달 열림'),
+    onClose: (modal) => console.log('모달 닫힘'),
+    onCancel: (modal) => console.log('취소'),
+    onRetry: (modal) => console.log('재시도'),
+    onSuccess: (modal) => console.log('성공'),
+    onError: (modal) => console.log('오류')
+});</code></pre>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 결제 모달 HTML 포함 -->
+    <div id="paymentModalContainer"></div>
+    
+    <!-- 결제 모달 JavaScript -->
+    <script src="payment-modal.js"></script>
+    
+    <!-- 예시 스크립트 -->
+    <script>
+        // 모달 인스턴스들
+        let currentModal = null;
+        const statusDisplay = document.getElementById('statusText');
+        
+        // 상태 업데이트 함수
+        function updateStatus(status) {
+            statusDisplay.textContent = status;
+        }
+        
+        // 모달 HTML을 페이지에 추가
+        function initializeModal() {
+            if (!document.getElementById('paymentModal')) {
+                fetch('payment-modal.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('paymentModalContainer').innerHTML = html;
+                        console.log('모달 HTML 로드 완료');
+                    })
+                    .catch(error => {
+                        console.error('모달 HTML 로드 실패:', error);
+                        // 폴백: 기본 모달 HTML 생성
+                        createFallbackModal();
+                    });
+            }
+        }
+        
+        // 폴백 모달 HTML 생성
+        function createFallbackModal() {
+            const modalHTML = `
+                <div class="payment-modal" id="paymentModal">
+                    <div class="modal-overlay"></div>
+                    <div class="modal-container">
+                        <div class="modal-header">
+                            <h2 class="modal-title">카드를 리더기에 꽂아주세요.</h2>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-reader-section">
+                                <div class="card-reader-illustration">
+                                    <div class="reader-main-box">
+                                        <div class="card-slot"></div>
+                                        <div class="reader-top-line"></div>
+                                    </div>
+                                    <div class="reader-bottom-line"></div>
+                                    <div class="card-arrow-indicator"></div>
+                                </div>
+                                <div class="instruction-icons">
+                                    <div class="payment-icon-placeholder">
+                                        <div class="icon-slot card-icon-slot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payment-status">
+                                <div class="status-message">결제를 진행하고 있습니다...</div>
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="modal-actions">
+                                <button class="modal-button cancel-button" type="button">
+                                    <span class="button-text">취소하기</span>
+                                </button>
+                                <button class="modal-button retry-button" type="button">
+                                    <span class="button-text">다시 시도</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="modal-close-btn" type="button" aria-label="모달 닫기">
+                            <div class="close-icon">×</div>
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('paymentModalContainer').innerHTML = modalHTML;
+        }
+        
+        // 기본 모달 열기
+        function openBasicModal() {
+            currentModal = new PaymentModal({
+                onOpen: () => updateStatus('모달 열림 - 대기 중'),
+                onClose: () => updateStatus('모달 닫힌 상태'),
+                onCancel: () => updateStatus('결제 취소됨'),
+                onRetry: () => {
+                    updateStatus('다시 시도 중...');
+                    currentModal.simulatePayment(2000, Math.random() > 0.3);
+                },
+                onSuccess: () => updateStatus('결제 성공!'),
+                onError: () => updateStatus('결제 실패!')
+            });
+            currentModal.open();
+        }
+        
+        // 처리 중 상태 모달
+        function openProcessingModal() {
+            currentModal = new PaymentModal({
+                onOpen: () => updateStatus('모달 열림 - 처리 중'),
+                onClose: () => updateStatus('모달 닫힌 상태')
+            });
+            currentModal.open({
+                title: '결제 처리 중입니다.',
+                message: '잠시만 기다려주세요...',
+                status: 'processing'
+            });
+        }
+        
+        // 카드 결제 모달
+        function openCardModal() {
+            currentModal = PaymentModalUtils.createCardPaymentModal();
+            currentModal.callbacks.onOpen = () => updateStatus('카드 결제 모달 열림');
+            currentModal.callbacks.onClose = () => updateStatus('모달 닫힌 상태');
+            currentModal.open({
+                title: '카드를 리더기에 꽂아주세요.',
+                message: '카드 결제를 진행합니다.'
+            });
+        }
+        
+        // 카카오페이 모달
+        function openKakaoModal() {
+            currentModal = PaymentModalUtils.createMobilePaymentModal('kakao');
+            currentModal.callbacks.onOpen = () => updateStatus('카카오페이 모달 열림');
+            currentModal.callbacks.onClose = () => updateStatus('모달 닫힌 상태');
+            currentModal.open({
+                title: 'QR코드를 스캔해주세요.',
+                message: '카카오페이로 결제합니다.'
+            });
+        }
+        
+        // 삼성페이 모달
+        function openSamsungModal() {
+            currentModal = PaymentModalUtils.createMobilePaymentModal('samsung');
+            currentModal.callbacks.onOpen = () => updateStatus('삼성페이 모달 열림');
+            currentModal.callbacks.onClose = () => updateStatus('모달 닫힌 상태');
+            currentModal.open({
+                title: '휴대폰을 리더기에 태그하세요.',
+                message: '삼성페이로 결제합니다.'
+            });
+        }
+        
+        // 네이버페이 모달
+        function openNaverModal() {
+            currentModal = PaymentModalUtils.createMobilePaymentModal('naver');
+            currentModal.callbacks.onOpen = () => updateStatus('네이버페이 모달 열림');
+            currentModal.callbacks.onClose = () => updateStatus('모달 닫힌 상태');
+            currentModal.open({
+                title: 'QR코드를 스캔해주세요.',
+                message: '네이버페이로 결제합니다.'
+            });
+        }
+        
+        // 결제 시뮬레이션
+        function openModalAndSimulate(shouldSuccess) {
+            currentModal = new PaymentModal({
+                onOpen: () => updateStatus('결제 시뮬레이션 시작'),
+                onClose: () => updateStatus('모달 닫힌 상태'),
+                onSuccess: () => updateStatus('시뮬레이션 성공!'),
+                onError: () => updateStatus('시뮬레이션 실패!')
+            });
+            
+            currentModal.open();
+            currentModal.simulatePayment(3000, shouldSuccess);
+        }
+        
+        // 상태 변경 테스트
+        function changeModalStatus() {
+            if (!currentModal || !currentModal.isOpen) {
+                alert('먼저 모달을 열어주세요.');
+                return;
+            }
+            
+            const statuses = ['waiting', 'processing', 'success', 'error'];
+            const currentIndex = statuses.indexOf(currentModal.currentStatus);
+            const nextIndex = (currentIndex + 1) % statuses.length;
+            const nextStatus = statuses[nextIndex];
+            
+            currentModal.setStatus(nextStatus);
+            updateStatus(`상태 변경: ${nextStatus}`);
+        }
+        
+        // 커스텀 설정 모달
+        function openCustomModal() {
+            currentModal = new PaymentModal({
+                closeOnOverlay: false,
+                closeOnEscape: false,
+                onOpen: () => updateStatus('커스텀 모달 열림 (오버레이/ESC 비활성화)'),
+                onClose: () => updateStatus('모달 닫힌 상태')
+            });
+            
+            currentModal.open({
+                title: '커스텀 설정 모달',
+                message: '오버레이 클릭이나 ESC 키로 닫을 수 없습니다.'
+            });
+        }
+        
+        // 자동 닫기 모달
+        function openAutoCloseModal() {
+            currentModal = new PaymentModal({
+                autoClose: true,
+                onOpen: () => updateStatus('자동 닫기 모달 열림'),
+                onClose: () => updateStatus('모달 자동 닫힘'),
+                onSuccess: () => updateStatus('성공 후 2초 뒤 자동 닫힘')
+            });
+            
+            currentModal.open({
+                title: '자동 닫기 테스트',
+                message: '3초 후 성공하고 자동으로 닫힙니다.'
+            });
+            
+            currentModal.simulatePayment(3000, true);
+        }
+        
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeModal();
+        });
+    </script>
+</body>
+</html> 

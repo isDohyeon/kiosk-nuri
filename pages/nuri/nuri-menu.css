@@ -1,0 +1,709 @@
+/* Pretendard 폰트 import */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* 페이지 스크롤 설정 */
+body {
+  overflow: hidden !important;
+  align-items: center !important;
+}
+
+.UI {
+  height: 1920px !important;
+  max-height: 1920px !important;
+}
+
+/* 메인 컨테이너 */
+.element {
+  position: relative;
+  width: 1080px;
+  height: 1920px;
+  background-color: #f8f8f8;
+  overflow: hidden;
+}
+
+/* 상단 탭 영역 */
+.overlap {
+  position: absolute;
+  width: 1010px;
+  height: 297px;
+  top: 40px;
+  left: 35px;
+  z-index: 100;
+}
+
+.overlap-group {
+  position: absolute;
+  width: 1010px;
+  height: 297px;
+  top: 0;
+  left: 0;
+}
+
+/* 회전된 카테고리 탭들 */
+.rectangle {
+    position: absolute;
+    width: 104px;
+    height: 223px;
+    top: 51px;
+    left: 234px;
+    background-color: #e4e4e5;
+    border-radius: 30px 30px 0px 0px;
+    transform: rotate(-90deg);
+}
+
+.div {
+    position: absolute;
+    width: 108px;
+    height: 223px;
+    top: 51px;
+    left: 451px;
+    background-color: #e4e4e5;
+    border: 4px solid #ffffff;
+    transform: rotate(-90deg);
+}
+
+.rectangle-2 {
+    position: absolute;
+    width: 108px;
+    height: 223px;
+    top: 51px;
+    left: 670px;
+    background-color: #e4e4e5;
+    border-radius: 0px 0px 30px 30px;
+    border: 4px solid #ffffff;
+    transform: rotate(-90deg);
+}
+
+/* 상단 메인 탭 버튼들 */
+.rectangle-3 {
+    position: absolute;
+    width: 261px;
+    height: 69px;
+    top: 0;
+    left: 543px;
+    background-color: #e4e4e5;
+    border-radius: 40px;
+    border: 5px solid #ffffff;
+    z-index: 2;
+}
+
+.rectangle-4 {
+    position: absolute;
+    width: 261px;
+    height: 69px;
+    top: 0;
+    left: 749px;
+    background-color: #e4e4e5;
+    border-radius: 40px;
+    border: 5px solid #ffffff;
+    z-index: 1;
+}
+
+.rectangle-5 {
+    position: absolute;
+    width: 261px;
+    height: 69px;
+    top: 0;
+    left: 347px;
+    background-color: #e4e4e5;
+    border-radius: 40px;
+    border: 5px solid #ffffff;
+    z-index: 3;
+}
+
+.rectangle-6 {
+    position: absolute;
+    width: 261px;
+    height: 69px;
+    top: 0;
+    left: 150px;
+    background-color: #e4e4e5;
+    border-radius: 40px;
+    border: 5px solid #ffffff;
+    z-index: 4;
+}
+
+.rectangle-7 {
+    position: absolute;
+    width: 225px;
+    height: 69px;
+    top: 0;
+    left: 0;
+    background-color: #54d761;
+    border-radius: 40px;
+    border: 5px solid #ffffff;
+    z-index: 5;
+}
+
+/* 메인 탭 텍스트들 */
+.text-wrapper {
+    position: absolute;
+    top: 19px;
+    left: 0;
+    width: 225px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 26px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    z-index: 6;
+}
+
+.text-wrapper-2 {
+    position: absolute;
+    top: 21px;
+    left: 160px;
+    width: 261px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #7e7e87;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    z-index: 6;
+}
+
+.text-wrapper-3 {
+    position: absolute;
+    top: 21px;
+    left: 357px;
+    width: 261px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #7e7e87;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    z-index: 6;
+}
+
+.text-wrapper-4 {
+    position: absolute;
+    top: 21px;
+    left: 749px;
+    width: 261px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #7e7e87;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    z-index: 6;
+}
+
+.text-wrapper-5 {
+    position: absolute;
+    top: 21px;
+    left: 553px;
+    width: 261px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #7e7e87;
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    z-index: 6;
+}
+
+/* 카테고리 탭 텍스트들 */
+.text-wrapper-6 {
+    position: absolute;
+    top: 140px;
+    left: 234px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 43px;
+    width: 104px;
+}
+
+.text-wrapper-7 {
+    position: absolute;
+    top: 140px;
+    left: 443px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #7e7e87;
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 43px;
+    width: 115px;
+}
+
+.text-wrapper-8 {
+    position: absolute;
+    top: 140px;
+    left: 662px;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #7e7e87;
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 43px;
+    width: 115px;
+}
+
+/* 뒤로/처음으로 버튼들 */
+.overlap-2 {
+    position: absolute;
+    width: 141px;
+    height: 104px;
+    top: 109px;
+    left: 6px;
+}
+
+.overlap-3 {
+    position: absolute;
+    width: 141px;
+    height: 104px;
+    top: 109px;
+    left: 864px;
+}
+
+.rectangle-11 {
+  position: absolute;
+  width: 141px;
+  height: 104px;
+  top: 0;
+  left: 0;
+  background-color: #aff09a;
+  border-radius: 30px;
+}
+
+.text-wrapper-15 {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #53575d;
+    font-size: 35px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    width: 141px;
+}
+
+.text-wrapper-16 {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    font-family: "Pretendard", Helvetica;
+    font-weight: 600;
+    color: #53575d;
+    font-size: 26px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    width: 141px;
+}
+
+/* 동적 메뉴 컨테이너 */
+.menu-container {
+    position: absolute;
+    top: 300px;
+    left: 40px;
+    width: 1000px;
+    height: calc(1920px - 300px - 510px);
+    display: grid;
+    grid-template-columns: repeat(3, 324px);
+    grid-template-rows: repeat(auto, 440px);
+    gap: 14px;
+    justify-content: start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+}
+
+/* 메뉴 아이템 스타일 */
+.menu-item {
+  position: relative;
+  width: 324px;
+  height: 440px;
+  background-color: #ffffff;
+  border-radius: 36px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+}
+
+.menu-item img {
+  position: absolute;
+  width: 189px;
+  height: 229px;
+  top: 31px;
+  left: 67px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.menu-item .menu-name {
+  position: absolute;
+  top: 304px;
+  left: 70px;
+  right: 70px;
+  font-family: "Pretendard", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 35px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 42px;
+}
+
+.menu-item .menu-price {
+  position: absolute;
+  top: 355px;
+  left: 70px;
+  right: 70px;
+  font-family: "Pretendard", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 41px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 49px;
+}
+
+/* 장바구니 영역 */
+.cart-area {
+  position: absolute;
+  top: 1316px;
+  left: 0;
+  width: 1080px;
+  height: 604px;
+  z-index: 50;
+}
+
+.union {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.rectangle-14 {
+  position: absolute;
+  width: 1080px;
+  height: 581px;
+  top: 64px;
+  left: 0;
+  background-color: rgb(204, 204, 212);
+  border-radius: 30px;
+}
+
+.rectangle-15 {
+  position: absolute;
+  width: 198px;
+  height: 261px;
+  top: 0;
+  left: 441px;
+  background-color: rgba(193, 193, 200, 0.5);
+  border-radius: 50px;
+}
+
+/* 하단 버튼들 */
+.rectangle-16 {
+  position: absolute;
+  width: 485px;
+  height: 133px;
+  top: 440px;
+  left: 555px;
+  background-color: #54d862;
+  border-radius: 30px;
+}
+
+.rectangle-17 {
+  position: absolute;
+  width: 487px;
+  height: 133px;
+  top: 440px;
+  left: 39px;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.text-wrapper-34 {
+  position: absolute;
+  top: 484px;
+  left: 710px;
+  font-family: "Pretendard", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 40px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 48px;
+  z-index: 10;
+}
+
+.text-wrapper-35 {
+  position: absolute;
+  top: 484px;
+  left: 157px;
+  font-family: "Pretendard", Helvetica;
+  font-weight: 600;
+  color: #9e9ea4;
+  font-size: 40px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 48px;
+  z-index: 10;
+}
+
+/* 장바구니 아이콘들 */
+.vector {
+  position: absolute;
+  width: 46px;
+  height: 27px;
+  top: 117px;
+  left: 517px;
+  z-index: 10;
+}
+
+.vector-2 {
+  position: absolute;
+  width: 59px;
+  height: 59px;
+  top: 285px;
+  left: 469px;
+  z-index: 10;
+}
+
+.vector-3 {
+  position: absolute;
+  width: 59px;
+  height: 59px;
+  top: 285px;
+  left: 783px;
+  z-index: 10;
+}
+
+/* 장바구니 아이템 컨테이너 */
+.cart-items-container {
+  position: absolute;
+  top: 90px;
+  left: 40px;
+  width: 1000px;
+  height: 320px;
+  display: flex;
+  gap: 50px;
+  padding: 20px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: flex-start;
+}
+
+.cart-item {
+  min-width: 287px;
+  height: 290px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cart-item-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.cart-item img {
+  width: 220px;
+  height: 180px;
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: top;
+  margin-bottom: 30px;
+}
+
+.cart-item .remove-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Pretendard", Helvetica;
+  font-size: 40px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.cart-item .remove-btn:hover {
+  background: #ff3838;
+  transform: scale(1.1);
+}
+
+.cart-item .remove-btn:active {
+  transform: scale(0.9);
+}
+
+.cart-item .quantity-controls {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-item .quantity-btn {
+  width: 60px;
+  height: 50px;
+  border: none;
+  border-radius: 30%;
+  background: #54d761;
+  color: white;
+  font-size: 50px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cart-item .quantity-btn:hover {
+  background: #45c451;
+  transform: scale(1.1);
+}
+
+.cart-item .quantity-btn:active {
+  transform: scale(0.95);
+}
+
+.cart-item .quantity-display {
+  width: 65px;
+  height: 50px;
+  background: white;
+  border: 3px solid #54d761;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Pretendard", Helvetica;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.cart-item.empty {
+  background-color: #ffffff;
+  border: 2px solid #d0d0d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item.empty .empty-slot {
+  width: 220px;
+  height: 240px;
+  border-radius: 20px;
+  background: #f8f9fa;
+  border: 3px dashed #a0a0a0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.cart-item.empty .slot-number {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: #c0c0c0;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Pretendard", Helvetica;
+  font-size: 20px;
+  font-weight: 700;
+  z-index: 5;
+}
+
+/* 활성 상태 스타일 */
+.active-main {
+  background-color: #54d761 !important;
+}
+
+.active-category {
+  background-color: #54d761 !important;
+}
+
+/* 반응형 및 애니메이션 */
+@media (max-width: 1080px) {
+  .element {
+    transform: scale(calc(100vw / 1080));
+    transform-origin: top left;
+  }
+}
+
+/* 스크롤바 스타일링 */
+.menu-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.menu-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+.menu-container::-webkit-scrollbar-thumb {
+  background: #54d761;
+  border-radius: 4px;
+}
+
+.menu-container::-webkit-scrollbar-thumb:hover {
+  background: #4aba57;
+}
+
+.cart-items-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cart-items-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb {
+  background: #54d761;
+  border-radius: 4px;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb:hover {
+  background: #4aba57;
+} 

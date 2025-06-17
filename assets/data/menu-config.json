@@ -1,0 +1,373 @@
+{
+  "categories": [
+    {
+      "id": "new",
+      "name": "신메뉴",
+      "position": { "row": 1, "col": 1 },
+      "isDefault": true
+    },
+    {
+      "id": "coffee",
+      "name": "커피",
+      "position": { "row": 1, "col": 2 }
+    },
+    {
+      "id": "tea",
+      "name": "티/과일티",
+      "position": { "row": 1, "col": 3 }
+    },
+    {
+      "id": "frappe",
+      "name": "프라페",
+      "position": { "row": 1, "col": 4 }
+    },
+    {
+      "id": "smoothie",
+      "name": "스무디",
+      "position": { "row": 2, "col": 1 }
+    },
+    {
+      "id": "juice",
+      "name": "주스/에이드",
+      "position": { "row": 2, "col": 2 }
+    },
+    {
+      "id": "large",
+      "name": "대용량",
+      "position": { "row": 2, "col": 3 }
+    },
+    {
+      "id": "dessert",
+      "name": "디저트",
+      "position": { "row": 2, "col": 4 }
+    }
+  ],
+  "menuItems": {
+    "coffee": [
+      {
+        "id": "americano",
+        "name": "아메리카노",
+        "price": 2500,
+        "image": "coffee1.png",
+        "description": "깔끔하고 진한 맛의 아메리카노",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "chocolate-latte",
+        "name": "초코라떼",
+        "price": 3500,
+        "image": "coffee2.png",
+        "description": "달콤한 초콜릿이 들어간 라떼",
+        "position": { "row": 1, "col": 2 }
+      },
+      {
+        "id": "cold-brew",
+        "name": "콜드브루",
+        "price": 2500,
+        "image": "coffee3.png",
+        "description": "차가운 물로 우려낸 부드러운 커피",
+        "position": { "row": 1, "col": 3 }
+      },
+      {
+        "id": "espresso",
+        "name": "에스프레소",
+        "price": 2000,
+        "image": "coffee4.png",
+        "description": "진한 맛의 에스프레소",
+        "position": { "row": 1, "col": 4 }
+      },
+      {
+        "id": "cafe-latte",
+        "name": "카페라떼",
+        "price": 3000,
+        "image": "coffee5.png",
+        "description": "부드러운 우유가 들어간 라떼",
+        "position": { "row": 2, "col": 1 }
+      },
+      {
+        "id": "toffee-nut-latte",
+        "name": "토피넛라떼",
+        "price": 3500,
+        "image": "coffee6.png",
+        "description": "달콤한 토피와 견과류 향의 라떼",
+        "position": { "row": 2, "col": 2 }
+      },
+      {
+        "id": "cold-brew-latte",
+        "name": "콜드브루라떼",
+        "price": 3000,
+        "image": "coffee7.png",
+        "description": "콜드브루에 우유를 넣은 라떼",
+        "position": { "row": 2, "col": 3 }
+      },
+      {
+        "id": "iced-americano",
+        "name": "아메리카노(아이스)",
+        "price": 2500,
+        "image": "coffee8.png",
+        "description": "시원한 아이스 아메리카노",
+        "position": { "row": 2, "col": 4 }
+      },
+      {
+        "id": "vanilla-latte",
+        "name": "바닐라라떼",
+        "price": 3500,
+        "image": "coffee9.png",
+        "description": "달콤한 바닐라 향의 라떼",
+        "position": { "row": 3, "col": 1 }
+      },
+      {
+        "id": "dolce-latte",
+        "name": "돌체라떼",
+        "price": 4000,
+        "image": "coffee10.png",
+        "description": "진한 돌체 시럽이 들어간 라떼",
+        "position": { "row": 3, "col": 2 }
+      },
+      {
+        "id": "cafe-mocha",
+        "name": "카페모카",
+        "price": 3500,
+        "image": "coffee11.png",
+        "description": "초콜릿과 커피의 조화",
+        "position": { "row": 3, "col": 3 }
+      },
+      {
+        "id": "hazelnut-latte",
+        "name": "헤이즐넛라떼",
+        "price": 3000,
+        "image": "coffee12.png",
+        "description": "고소한 헤이즐넛 향의 라떼",
+        "position": { "row": 3, "col": 4 }
+      }
+    ],
+    "new": [
+      {
+        "id": "caramel-macchiato",
+        "name": "카라멜마끼아또",
+        "price": 3500,
+        "image": "coffee1.png",
+        "description": "달콤한 카라멜 시럽과 에스프레소의 만남",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "cappuccino",
+        "name": "카푸치노",
+        "price": 3500,
+        "image": "coffee2.png",
+        "description": "풍부한 거품이 특징인 이탈리아 커피",
+        "position": { "row": 1, "col": 2 }
+      }
+    ],
+    "tea": [
+      {
+        "id": "green-tea",
+        "name": "녹차",
+        "price": 3000,
+        "image": "coffee3.png",
+        "description": "향긋한 녹차",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "chamomile-tea",
+        "name": "캐모마일차",
+        "price": 3500,
+        "image": "coffee4.png",
+        "description": "편안한 캐모마일 허브차",
+        "position": { "row": 1, "col": 2 }
+      },
+      {
+        "id": "earl-grey",
+        "name": "얼그레이",
+        "price": 3000,
+        "image": "coffee5.png",
+        "description": "베르가못 향이 특징인 홍차",
+        "position": { "row": 1, "col": 3 }
+      },
+      {
+        "id": "fruit-tea",
+        "name": "과일차",
+        "price": 4000,
+        "image": "coffee6.png",
+        "description": "상큼한 과일 향의 차",
+        "position": { "row": 1, "col": 4 }
+      }
+    ],
+    "frappe": [
+      {
+        "id": "coffee-frappe",
+        "name": "커피프라페",
+        "price": 4500,
+        "image": "coffee7.png",
+        "description": "시원한 커피 프라페",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "chocolate-frappe",
+        "name": "초콜릿프라페",
+        "price": 4500,
+        "image": "coffee8.png",
+        "description": "진한 초콜릿 맛의 프라페",
+        "position": { "row": 1, "col": 2 }
+      },
+      {
+        "id": "vanilla-frappe",
+        "name": "바닐라프라페",
+        "price": 4500,
+        "image": "coffee9.png",
+        "description": "부드러운 바닐라 프라페",
+        "position": { "row": 1, "col": 3 }
+      },
+      {
+        "id": "caramel-frappe",
+        "name": "카라멜프라페",
+        "price": 4500,
+        "image": "coffee10.png",
+        "description": "달콤한 카라멜 프라페",
+        "position": { "row": 1, "col": 4 }
+      }
+    ],
+    "smoothie": [
+      {
+        "id": "strawberry-smoothie",
+        "name": "딸기스무디",
+        "price": 4000,
+        "image": "coffee11.png",
+        "description": "신선한 딸기로 만든 스무디",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "mango-smoothie",
+        "name": "망고스무디",
+        "price": 4000,
+        "image": "coffee12.png",
+        "description": "달콤한 망고 스무디",
+        "position": { "row": 1, "col": 2 }
+      },
+      {
+        "id": "banana-smoothie",
+        "name": "바나나스무디",
+        "price": 4000,
+        "image": "coffee1.png",
+        "description": "부드러운 바나나 스무디",
+        "position": { "row": 1, "col": 3 }
+      },
+      {
+        "id": "berry-smoothie",
+        "name": "베리스무디",
+        "price": 4500,
+        "image": "coffee2.png",
+        "description": "상큼한 베리 믹스 스무디",
+        "position": { "row": 1, "col": 4 }
+      }
+    ],
+    "juice": [
+      {
+        "id": "orange-juice",
+        "name": "오렌지주스",
+        "price": 3500,
+        "image": "coffee3.png",
+        "description": "신선한 오렌지 주스",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "apple-juice",
+        "name": "사과주스",
+        "price": 3500,
+        "image": "coffee4.png",
+        "description": "달콤한 사과 주스",
+        "position": { "row": 1, "col": 2 }
+      },
+      {
+        "id": "grape-juice",
+        "name": "포도주스",
+        "price": 3500,
+        "image": "coffee5.png",
+        "description": "상큼한 포도 주스",
+        "position": { "row": 1, "col": 3 }
+      },
+      {
+        "id": "lemon-ade",
+        "name": "레몬에이드",
+        "price": 4000,
+        "image": "coffee6.png",
+        "description": "상큼한 레몬에이드",
+        "position": { "row": 1, "col": 4 }
+      }
+    ],
+    "large": [
+      {
+        "id": "large-americano",
+        "name": "아메리카노(대용량)",
+        "price": 4000,
+        "image": "coffee7.png",
+        "description": "대용량 아메리카노",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "large-latte",
+        "name": "카페라떼(대용량)",
+        "price": 5000,
+        "image": "coffee8.png",
+        "description": "대용량 카페라떼",
+        "position": { "row": 1, "col": 2 }
+      },
+      {
+        "id": "large-cold-brew",
+        "name": "콜드브루(대용량)",
+        "price": 4500,
+        "image": "coffee9.png",
+        "description": "대용량 콜드브루",
+        "position": { "row": 1, "col": 3 }
+      },
+      {
+        "id": "large-frappe",
+        "name": "프라페(대용량)",
+        "price": 6000,
+        "image": "coffee10.png",
+        "description": "대용량 프라페",
+        "position": { "row": 1, "col": 4 }
+      }
+    ],
+    "dessert": [
+      {
+        "id": "chocolate-cake",
+        "name": "초콜릿케이크",
+        "price": 4500,
+        "image": "coffee11.png",
+        "description": "진한 초콜릿 케이크",
+        "position": { "row": 1, "col": 1 }
+      },
+      {
+        "id": "cheese-cake",
+        "name": "치즈케이크",
+        "price": 4000,
+        "image": "coffee12.png",
+        "description": "부드러운 치즈케이크",
+        "position": { "row": 1, "col": 2 }
+      },
+      {
+        "id": "tiramisu",
+        "name": "티라미수",
+        "price": 5000,
+        "image": "coffee1.png",
+        "description": "이탈리아 전통 디저트",
+        "position": { "row": 1, "col": 3 }
+      },
+      {
+        "id": "macaroon",
+        "name": "마카롱",
+        "price": 2500,
+        "image": "coffee2.png",
+        "description": "알록달록한 프랑스 마카롱",
+        "position": { "row": 1, "col": 4 }
+      }
+    ]
+  },
+  "settings": {
+    "imagePath": "../../../assets/images/coffee/",
+    "defaultCategory": "new",
+    "maxItemsPerRow": 4,
+    "maxRows": 3
+  }
+} 

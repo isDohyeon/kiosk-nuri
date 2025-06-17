@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>커피 메뉴 - 일반 모드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/global.css" />
+    <link rel="stylesheet" href="menu.css" />
+    <script src="../../../assets/js/menu-data.js"></script>
+    <script src="../../../assets/js/menu-renderer.js"></script>
+  </head>
+  <body>
+    <div class="UI" id="menu-container">
+      <!-- 헤더 영역 -->
+      <div class="overlap-13">
+        <img class="home-icon" src="../../../assets/images/image-home.png" />
+        <img class="logo-text" src="../../../assets/images/logo-nuri-text.png" />
+        <div class="text-wrapper-17">cafe</div>
+      </div>
+      
+      <!-- 동적으로 렌더링될 카테고리 탭들이 여기에 추가됩니다 -->
+      <!-- 메뉴 그리드 컨테이너는 JavaScript에서 동적으로 생성됩니다 -->
+
+      <!-- 장바구니 영역 -->
+      <div class="cart-container">
+        <!-- 장바구니 슬롯들 (가로 스크롤) -->
+        <div class="cart-slots-scroll">
+          <div class="cart-slots" id="cart-slots-container">
+            <!-- 동적으로 슬롯들이 추가됩니다 -->
+          </div>
+        </div>
+        
+        <!-- 결제 정보 영역 -->
+        <div class="payment-section">
+          <div class="payment-info">
+            <div class="total-label">총 결제 금액</div>
+            <div class="total-amount" id="total-amount">₩ 0</div>
+            <button class="cancel-btn" id="clear-cart-btn">전체 취소</button>
+          </div>
+          <button class="payment-btn" id="proceed-payment-btn">결제하기</button>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // 페이지 로드 시 메뉴 렌더러 초기화
+      document.addEventListener('DOMContentLoaded', function() {
+        // MenuRenderer 인스턴스 생성
+        const menuRenderer = new MenuRenderer('#menu-container');
+        
+        // 전역 변수로 설정하여 다른 곳에서도 사용 가능하도록 함
+        window.menuRenderer = menuRenderer;
+        
+        console.log('메뉴 시스템이 동적으로 초기화되었습니다.');
+        console.log('사용 가능한 카테고리:', MenuData.getCategories().map(cat => cat.name));
+        console.log('전체 메뉴 아이템 수:', MenuData.getAllItems().length);
+      });
+    </script>
+  </body>
+</html> 

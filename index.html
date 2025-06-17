@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>키오스크 누리 - 메인</title>
+    <link rel="stylesheet" href="assets/css/global.css" />
+    <link rel="stylesheet" href="assets/css/styleguide.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div class="UI">
+      <div class="overlap" onclick="selectMode('normal')">
+        <div class="overlap-group">
+          <div class="text-wrapper">가 나<br />다 라</div>
+        </div>
+        <div class="div">일반모드</div>
+        <div class="text-wrapper-2">무인 주문이 익숙해요</div>
+      </div>
+      <div class="overlap-group-2" onclick="selectMode('nuri')">
+        <div class="overlap-group"><div class="text-wrapper-3">가</div></div>
+        <div class="text-wrapper-2">무인 주문이 어려워요</div>
+        <div class="div">누리모드</div>
+      </div>
+      <div class="group-wrapper" onclick="goToSettings()">
+        <img class="group" src="assets/images/image-language.png" />
+      </div>
+      <img class="img" src="assets/images/logo-nuri.png" />
+      <div class="text-wrapper-4">주문을 시작하시겠어요?</div>
+    </div>
+
+    <script>
+      function selectMode(mode) {
+        console.log(`${mode} 모드 선택됨`);
+        
+        // 선택된 모드와 함께 start 페이지로 이동
+        window.location.href = `pages/start/start.html?mode=${mode}`;
+      }
+
+      function goToSettings() {
+        console.log('설정 화면으로 이동');
+        // 설정 화면으로 이동
+        window.location.href = 'pages/settings/settings.html';
+      }
+
+      // 키보드 접근성 지원
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          const activeElement = document.activeElement;
+          if (activeElement.classList.contains('overlap')) {
+            selectMode('normal');
+          } else if (activeElement.classList.contains('overlap-group-2')) {
+            selectMode('nuri');
+          } else if (activeElement.classList.contains('group-wrapper')) {
+            goToSettings();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

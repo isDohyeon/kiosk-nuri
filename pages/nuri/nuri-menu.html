@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>키오스크 누리 - 누리모드 메뉴</title>
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/styleguide.css" />
+    <link rel="stylesheet" href="nuri-menu.css" />
+  </head>
+  <body>
+    <div class="UI">
+      <div class="element">
+        <!-- 상단 메인 탭 영역 -->
+        <div class="overlap">
+          <div class="overlap-group">
+            <!-- 회전된 카테고리 탭들 -->
+            <div class="rectangle active-category"></div>
+            <div class="div"></div>
+            <div class="rectangle-2"></div>
+            
+            <!-- 상단 메인 탭 버튼들 -->
+            <div class="rectangle-7 active-main"></div>
+            <div class="rectangle-6"></div>
+            <div class="rectangle-5"></div>
+            <div class="rectangle-4"></div>
+            <div class="rectangle-3"></div>
+            
+            <!-- 메인 탭 텍스트들 -->
+            <div class="text-wrapper">메뉴</div>
+            <div class="text-wrapper-2">옵션</div>
+            <div class="text-wrapper-3">혜택</div>
+            <div class="text-wrapper-5">적립</div>
+            <div class="text-wrapper-4">계산</div>
+            
+            <!-- 카테고리 탭 텍스트들 -->
+            <div class="text-wrapper-6">커피</div>
+            <div class="text-wrapper-7">음료</div>
+            <div class="text-wrapper-8">디저트</div>
+          </div>
+          
+          <!-- 뒤로 버튼 -->
+          <div class="overlap-2">
+            <div class="rectangle-11"></div>
+            <div class="text-wrapper-15">뒤로</div>
+          </div>
+          
+          <!-- 처음으로 버튼 -->
+          <div class="overlap-3">
+            <div class="rectangle-11"></div>
+            <div class="text-wrapper-16">처음으로</div>
+          </div>
+        </div>
+        
+        <!-- 동적 메뉴 영역 -->
+        <div class="menu-container" id="menuContainer">
+          <!-- 메뉴 아이템들이 동적으로 렌더링됩니다 -->
+        </div>
+        
+        <!-- 장바구니 영역 -->
+        <div class="cart-area" id="cartArea">
+          <div class="union">
+            <!-- 장바구니 배경 -->
+            <div class="rectangle-14"></div>
+            
+            <!-- 장바구니 아이템 영역 -->
+            <div class="cart-items-container" id="cartItemsContainer">
+              <!-- 장바구니 아이템들이 동적으로 렌더링됩니다 -->
+            </div>
+            
+            <!-- 하단 버튼들 -->
+            <div class="rectangle-16"></div>
+            <div class="rectangle-17"></div>
+            <div class="text-wrapper-34">다 골랐어요</div>
+            <div class="text-wrapper-35">도움이 필요해요</div>
+            
+            <!-- 장바구니 아이콘들 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 스크립트 -->
+    <script src="../../assets/js/menu-data.js"></script>
+    <script src="nuri-menu.js"></script>
+  </body>
+</html> 

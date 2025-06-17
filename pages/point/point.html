@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>적립 선택 - 누리카페</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="stylesheet" href="../../assets/css/styleguide.css">
+    <link rel="stylesheet" href="../../components/navigation/tab-navigation.css">
+    <link rel="stylesheet" href="../../components/modals/barcode-modal.css">
+    <link rel="stylesheet" href="../../components/modals/number-modal.css">
+    <link rel="stylesheet" href="../discount/discount.css">
+    <link rel="stylesheet" href="point.css">
+</head>
+<body>
+    <div class="screen">
+        <!-- 재사용 가능한 탭 네비게이션 컴포넌트 -->
+        <div id="navigation-container"></div>
+
+        <!-- 뒤로/처음으로 버튼과 제목 -->
+        <div class="nav-buttons">
+            <button class="back-btn" onclick="goBack()">뒤로</button>
+            <h1 class="page-title">적립 하시겠어요?</h1>
+            <button class="home-btn" onclick="goHome()">처음으로</button>
+        </div>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <!-- 일반 적립 섹션 -->
+            <section class="general-discount">
+                <h2 class="section-title">일반 적립</h2>
+                <div class="discount-methods">
+                    <button class="discount-method" data-method="number">
+                        <div class="method-icon">
+                            <img src="../../assets/images/discount-number.png" alt="번호 조회" />
+                        </div>
+                        <span class="method-text">번호 조회</span>
+                    </button>
+                    
+                    <button class="discount-method" data-method="barcode">
+                        <div class="method-icon">
+                            <img src="../../assets/images/discount-barcode.png" alt="바코드 조회" />
+                        </div>
+                        <span class="method-text">바코드 조회</span>
+                    </button>
+                </div>
+            </section>
+
+
+        </main>
+
+        <!-- 하단 패널은 BottomPanel 컴포넌트로 동적 생성됩니다 -->
+    </div>
+
+    <!-- 바코드 모달 컴포넌트 -->
+    <div id="barcodeModal" class="barcode-modal hidden">
+        <!-- 배경 오버레이 -->
+        <div class="modal-overlay"></div>
+        
+        <!-- 모달 컨텐츠 -->
+        <div class="modal-content">
+            <!-- 바코드 스캔 영역 -->
+            <div class="barcode-scan-area">
+                <div class="barcode-frame">
+                                         <!-- 바코드 이미지가 들어갈 영역 -->
+                     <div class="barcode-image-container">
+                         <div class="barcode-placeholder">
+                             <!-- 실제 바코드 이미지 -->
+                             <img src="../../assets/images/discount-barcode.png" alt="바코드" class="barcode-image">
+                             <!-- 백업용 바코드 아이콘 (이미지 로드 실패 시 사용) -->
+                             <div class="barcode-icon hidden">
+                                 <div class="barcode-lines">
+                                     <div class="line thick"></div>
+                                     <div class="line thin"></div>
+                                     <div class="line medium"></div>
+                                     <div class="line thick"></div>
+                                     <div class="line thin"></div>
+                                     <div class="line medium"></div>
+                                     <div class="line thick"></div>
+                                     <div class="line thin"></div>
+                                     <div class="line medium"></div>
+                                     <div class="line thick"></div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    
+                    <!-- 스캔 프레임 모서리 -->
+                    <div class="scan-corner top-left"></div>
+                    <div class="scan-corner top-right"></div>
+                    <div class="scan-corner bottom-left"></div>
+                    <div class="scan-corner bottom-right"></div>
+                </div>
+            </div>
+            
+            <!-- 안내 텍스트 -->
+            <div class="instruction-text">
+                하단에 바코드를 인식해주세요.
+            </div>
+            
+            <!-- 버튼 영역 -->
+            <div class="button-area">
+                <button class="btn-cancel" onclick="closeBarcodeModal()">취소하기</button>
+                <button class="btn-retry" onclick="retryBarcodeScan()">다시 시도</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 번호 조회 모달 컴포넌트 -->
+    <div id="numberModal" class="number-modal hidden">
+        <!-- 배경 오버레이 -->
+        <div class="modal-overlay"></div>
+        
+        <!-- 모달 컨텐츠 -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">적립 번호 조회</h3>
+            </div>
+            
+            <!-- 번호 입력 영역 -->
+            <div class="number-input-area">
+                <div class="input-container">
+                    <!-- <label for="phoneNumber" class="input-label">휴대폰 번호 입력</label> -->
+                    <input type="tel" id="phoneNumber" class="phone-input" 
+                           placeholder="010-1234-5678" maxlength="13" readonly>
+                    <div class="input-error hidden" id="phoneError">올바른 휴대폰 번호를 입력해주세요.</div>
+                </div>
+                
+                <!-- 숫자 키패드 -->
+                <div class="number-keypad">
+                    <div class="keypad-row">
+                        <button class="keypad-btn" data-number="1">1</button>
+                        <button class="keypad-btn" data-number="2">2</button>
+                        <button class="keypad-btn" data-number="3">3</button>
+                    </div>
+                    <div class="keypad-row">
+                        <button class="keypad-btn" data-number="4">4</button>
+                        <button class="keypad-btn" data-number="5">5</button>
+                        <button class="keypad-btn" data-number="6">6</button>
+                    </div>
+                    <div class="keypad-row">
+                        <button class="keypad-btn" data-number="7">7</button>
+                        <button class="keypad-btn" data-number="8">8</button>
+                        <button class="keypad-btn" data-number="9">9</button>
+                    </div>
+                    <div class="keypad-row">
+                        <button class="keypad-btn keypad-empty"></button>
+                        <button class="keypad-btn" data-number="0">0</button>
+                        <button class="keypad-btn keypad-backspace" data-action="backspace">⌫</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 안내 텍스트
+            <div class="instruction-text">
+                적립받을 휴대폰 번호를 입력해주세요.
+            </div> -->
+            
+            <!-- 버튼 영역 -->
+            <div class="button-area">
+                <button class="btn-cancel" onclick="closeNumberModal()">취소하기</button>
+                <button class="btn-confirm" onclick="confirmPhoneNumber()">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 컴포넌트 로드 -->
+    <script src="../../components/navigation/tab-navigation.js"></script>
+    <script src="../../components/help/help-system.js"></script>
+    <script src="../../components/modals/barcode-modal.js"></script>
+    <script src="../../components/panels/bottom-panel.js"></script>
+    <script src="point.js"></script>
+    
+    <script>
+        // 탭 네비게이션 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabNav = new TabNavigation({
+                container: document.getElementById('navigation-container'),
+                activeTab: 'point', // 적립 탭 활성화
+                onTabChange: handleTabNavigation
+            });
+            
+            function handleTabNavigation(tabKey) {
+                console.log('탭 변경:', tabKey);
+                
+                switch(tabKey) {
+                    case 'menu':
+                        window.location.href = '../nuri/nuri-menu.html';
+                        break;
+                    case 'option':
+                        window.location.href = '../option/option.html';
+                        break;
+                    case 'benefit':
+                        window.location.href = '../discount/discount.html';
+                        break;
+                    case 'point':
+                        // 현재 페이지이므로 아무것도 하지 않음
+                        break;
+                    case 'payment':
+                        window.location.href = '../payment/payment.html';
+                        break;
+                }
+            }
+        });
+
+        function goBack() {
+            window.location.href = '../discount/discount.html';
+        }
+
+        function goHome() {
+            // 모든 데이터 정리
+            localStorage.removeItem('selectedMenuItems');
+            localStorage.removeItem('completedCoffees');
+            localStorage.removeItem('finalOrder');
+            window.location.href = '../../../index.html';
+        }
+
+        function requestHelp() {
+            // PointPage 인스턴스의 requestHelp 메서드 호출
+            if (pointPageInstance) {
+                pointPageInstance.requestHelp();
+            }
+        }
+
+        function proceedToNext() {
+            alert('다음 단계로 이동합니다. (추후 구현 예정)');
+        }
+    </script>
+</body>
+</html> 

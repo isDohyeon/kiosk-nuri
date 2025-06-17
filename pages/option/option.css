@@ -1,0 +1,335 @@
+/* Pretendard 폰트 import */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* 페이지 기본 설정 */
+body {
+  overflow: hidden !important;
+  align-items: center !important;
+}
+
+.screen {
+  position: relative;
+  width: 1080px;
+  height: 1920px;
+  background-color: #f8f8f8;
+}
+
+/* 기존 탭 스타일은 재사용 가능한 컴포넌트로 이동됨 */
+
+/* 뒤로/처음으로 버튼 */
+.nav-buttons {
+  position: absolute;
+  top: 149px;
+  left: 0;
+  width: 1080px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.back-btn {
+  width: 141px;
+  height: 104px;
+  background-color: #aff09a;
+  border: none;
+  border-radius: 30px;
+  font-size: 35px;
+  font-weight: 600;
+  color: #53575d;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.home-btn {
+    width: 141px;
+    height: 104px;
+    background-color: #aff09a;
+    border: none;
+    border-radius: 30px;
+    font-size: 30px;
+    font-weight: 600;
+    color: #53575d;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+/* 메인 컨텐츠 */
+main {
+  position: absolute;
+  top: 300px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 960px;
+  text-align: center;
+}
+
+/* 주문 상태 텍스트 */
+.order-status {
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  font-weight: 700;
+  color: #53575d;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* 주문 중인 커피 이름 하이라이팅 */
+.order-status .coffee-name {
+  color: #54d761;
+  font-weight: 800;
+}
+
+/* 옵션 섹션 */
+.options {
+  text-align: left;
+}
+
+/* 1단계 라벨 */
+.options-title::before {
+  content: '1단계';
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  background-color: #54d761;
+  border-radius: 25px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+/* 옵션 제목 */
+.options-title {
+  margin: 77px 0 40px 0;
+  font-size: 36px;
+  font-weight: 600;
+  color: #7e7e87;
+  display: flex;
+  align-items: center;
+}
+
+/* 옵션 그리드 */
+.options-grid {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 100px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 옵션 카드 */
+.option-card {
+  width: 250px;
+  height: 317px;
+  background-color: #ffffff;
+  border-radius: 36px;
+  border: 4px solid #e4e4e5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.option-card:hover {
+  border-color: #54d761;
+  background-color: #ffffff;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(84, 215, 97, 0.2);
+}
+
+.option-card.selected {
+  border-color: #54d761;
+  background: #f8fff9;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(84, 215, 97, 0.3);
+  opacity: 1;
+}
+
+.option-icon {
+  width: 100px;
+  height: 149px;
+  margin-bottom: 30px;
+}
+
+.option-label {
+  font-size: 36px;
+  font-weight: 600;
+  color: #9e9ea4;
+  transition: color 0.3s ease;
+}
+
+.option-card.selected .option-label {
+  color: #54d761;
+  font-weight: 700;
+}
+
+/* 2단계 서브타이틀 */
+.options-subtitle {
+  margin: 27px 0 40px 0;
+  font-size: 36px;
+  font-weight: 600;
+  color: #7e7e87;
+  display: flex;
+  align-items: center;
+}
+
+/* 2단계 라벨 */
+.options-subtitle::before {
+  content: '2단계';
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  background-color: #54d761;
+  border-radius: 25px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+/* 추가 옵션들의 아이콘 크기 조정 */
+.options-grid:last-child .option-icon {
+  width: 100px;
+  height: 140px;
+}
+
+/* 푸터 */
+footer {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  width: 1000px;
+  display: flex;
+  gap: 30px;
+}
+
+/* 버튼 스타일 */
+.button {
+  flex: 1;
+  height: 133px;
+  border: none;
+  border-radius: 30px;
+  font-size: 40px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button.secondary {
+  background-color: #ffffff;
+  color: #9e9ea4;
+}
+
+.button.primary {
+  background-color: #54d761;
+  color: #ffffff;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 도움말 활성화 상태 - 1단계 */
+.help-step1 .options-title {
+  color: #54d761 !important;
+  position: relative;
+}
+
+.help-step1 .options-title::after {
+  content: '◀';
+  position: relative;
+  margin-left: 20px;
+  font-size: 40px;
+  color: #54d761;
+  font-weight: bold;
+  animation: bounce-horizontal 0.8s ease-in-out infinite;
+  text-shadow: 0 2px 4px rgba(84, 215, 97, 0.3);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 도움말 활성화 상태 - 2단계 */
+.help-step2 .options-subtitle {
+  color: #54d761 !important;
+  position: relative;
+}
+
+.help-step2 .options-subtitle::after {
+  content: '◀';
+  position: relative;
+  margin-left: 20px;
+  font-size: 40px;
+  color: #54d761;
+  font-weight: bold;
+  animation: bounce-horizontal 0.8s ease-in-out infinite;
+  text-shadow: 0 2px 4px rgba(84, 215, 97, 0.3);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 도움말 활성화 상태 - 완료 단계 (다 골랐어요 버튼) */
+.help-complete::after {
+  content: '▼';
+  position: absolute;
+  left: 75%;
+  bottom: 190px;
+  transform: translateX(-50%);
+  font-size: 50px;
+  color: #ffffff;
+  font-weight: bold;
+  animation: bounce-vertical 0.8s ease-in-out infinite;
+  text-shadow: 0 2px 4px rgba(84, 215, 97, 0.3);
+  z-index: 100000;
+}
+
+/* 좌우 통통 튀는 애니메이션 */
+@keyframes bounce-horizontal {
+  0%, 100% {
+    transform: translateX(0) scale(1);
+  }
+  25% {
+    transform: translateX(-15px) scale(1.1);
+  }
+  50% {
+    transform: translateX(0) scale(1.2);
+  }
+  75% {
+    transform: translateX(15px) scale(1.1);
+  }
+}
+
+/* 상하 통통 튀는 애니메이션 */
+@keyframes bounce-vertical {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  25% {
+    transform: translateX(-50%) translateY(-15px) scale(1.1);
+  }
+  50% {
+    transform: translateX(-50%) translateY(0) scale(1.2);
+  }
+  75% {
+    transform: translateX(-50%) translateY(15px) scale(1.1);
+  }
+}
+
+/* 도움말 비활성화 상태 */
+.options-title,
+.options-subtitle {
+  transition: color 0.3s ease;
+} 

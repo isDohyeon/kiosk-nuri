@@ -1,0 +1,274 @@
+/* 번호 조회 모달 스타일 */
+.number-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.number-modal.hidden {
+    display: none;
+}
+
+.number-modal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.number-modal .modal-content {
+    position: relative;
+    background: #ffffff;
+    border-radius: 20px;
+    width: 800px;
+    max-width: 90vw;
+    padding: 50px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modal-slide-up 0.3s ease-out;
+    min-height: auto;
+    height: auto;
+}
+
+@keyframes modal-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.number-modal .modal-header {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.number-modal .modal-title {
+    font-size: 55px;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+.number-modal .number-input-area {
+    margin-bottom: 15px;
+}
+
+.number-modal .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.number-modal .input-label {
+    font-size: 38px;
+    font-weight: 600;
+    color: #555555;
+}
+
+.number-modal .phone-input {
+    width: 100%;
+    height: 110px;
+    padding: 0 35px;
+    border: 3px solid #e0e0e0;
+    border-radius: 15px;
+    font-size: 42px;
+    font-weight: 500;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.number-modal .phone-input:focus {
+    outline: none;
+    border-color: #54d761;
+    box-shadow: 0 0 0 3px rgba(84, 215, 97, 0.1);
+}
+
+.number-modal .phone-input.error {
+    border-color: #ff4757;
+    background-color: #fff5f5;
+}
+
+.number-modal .input-error {
+    color: #ff4757;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.number-modal .input-error.hidden {
+    display: none;
+}
+
+/* 숫자 자판 스타일 */
+.number-modal .number-keypad {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.number-modal .keypad-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.number-modal .keypad-btn {
+    width: 120px;
+    height: 120px;
+    background-color: #ffffff;
+    border: 3px solid #54d761;
+    border-radius: 15px;
+    font-size: 40px;
+    font-weight: 600;
+    color: #333333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.number-modal .keypad-btn:hover {
+    background-color: #54d761;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(84, 215, 97, 0.3);
+}
+
+.number-modal .keypad-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(84, 215, 97, 0.2);
+}
+
+.number-modal .keypad-btn.keypad-empty {
+    background-color: transparent;
+    border: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+.number-modal .keypad-btn.keypad-backspace {
+    background-color: #f8f8f8;
+    border-color: #e0e0e0;
+    color: #666666;
+    font-size: 36px;
+}
+
+.number-modal .keypad-btn.keypad-backspace:hover {
+    background-color: #e8e8e8;
+    border-color: #cccccc;
+    color: #333333;
+}
+
+.number-modal .instruction-text {
+    text-align: center;
+    font-size: 36px;
+    color: #777777;
+    margin-bottom: 50px;
+    margin-top: 30px;
+    line-height: 1.3;
+}
+
+.number-modal .button-area {
+    display: flex;
+    gap: 35px;
+    justify-content: center;
+    margin-top: 30px;
+    padding-top: 20px;
+}
+
+.number-modal .btn-cancel,
+.number-modal .btn-confirm {
+    flex: 1;
+    height: 100px;
+    border: none;
+    border-radius: 15px;
+    font-size: 36px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    max-width: 260px;
+}
+
+.number-modal .btn-cancel {
+    background-color: #f8f8f8;
+    color: #666666;
+}
+
+.number-modal .btn-cancel:hover {
+    background-color: #e8e8e8;
+}
+
+.number-modal .btn-confirm {
+    background-color: #54d761;
+    color: #ffffff;
+}
+
+.number-modal .btn-confirm:hover {
+    background-color: #4ac153;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(84, 215, 97, 0.3);
+}
+
+.number-modal .btn-confirm:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .number-modal .modal-content {
+        width: 90vw;
+        padding: 35px 30px;
+    }
+    
+    .number-modal .modal-title {
+        font-size: 36px;
+    }
+    
+    .number-modal .input-label {
+        font-size: 32px;
+    }
+    
+    .number-modal .phone-input {
+        height: 90px;
+        font-size: 34px;
+    }
+    
+    .number-modal .instruction-text {
+        font-size: 30px;
+    }
+    
+    .number-modal .btn-cancel,
+    .number-modal .btn-confirm {
+        font-size: 30px;
+        height: 80px;
+    }
+    
+    .number-modal .keypad-btn {
+        width: 100px;
+        height: 100px;
+        font-size: 32px;
+    }
+    
+    .number-modal .keypad-btn.keypad-backspace {
+        font-size: 28px;
+    }
+} 

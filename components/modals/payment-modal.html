@@ -1,0 +1,58 @@
+<!-- 결제 모달 컴포넌트 -->
+<div class="payment-modal" id="paymentModal">
+  <div class="modal-overlay"></div>
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 class="modal-title">카드를 리더기에 꽂아주세요.</h2>
+    </div>
+    
+    <div class="modal-body">
+      <!-- 카드 리더기 일러스트레이션 영역 -->
+      <div class="card-reader-section">
+        <div class="card-reader-illustration">
+          <!-- 카드 리더기 메인 박스 -->
+          <div class="reader-main-box">
+            <!-- 카드 삽입 슬롯 -->
+            <div class="card-slot"></div>
+            <!-- 리더기 상단 라인 -->
+            <div class="reader-top-line"></div>
+          </div>
+          <!-- 리더기 하단 라인들 -->
+          <div class="reader-bottom-line"></div>
+          <!-- 카드 삽입 방향 화살표 -->
+          <div class="card-arrow-indicator"></div>
+        </div>
+        
+        <!-- 추가 안내 이미지 영역 (아이콘용) -->
+        <div class="instruction-icons">
+          <div class="payment-icon-placeholder">
+            <!-- 결제 방법 아이콘이 들어갈 자리 -->
+            <div class="icon-slot card-icon-slot"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 진행 상태 표시 -->
+      <div class="payment-status">
+        <div class="status-message">결제를 진행하고 있습니다...</div>
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <div class="modal-actions">
+        <button class="modal-button cancel-button" type="button">
+          <span class="button-text">취소하기</span>
+        </button>
+        <button class="modal-button retry-button" type="button">
+          <span class="button-text">다시 시도</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- 닫기 버튼 (상단 우측) -->
+    <button class="modal-close-btn" type="button" aria-label="모달 닫기">
+      <div class="close-icon">×</div>
+    </button>
+  </div>
+</div> 

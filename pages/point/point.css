@@ -1,0 +1,15 @@
+/* 적립 화면 전용 스타일 */
+
+/* 적립 화면 제목 스타일 개선 */
+.page-title {
+    color: #2c5b3a;
+    font-weight: 700;
+}
+
+/* 적립 섹션 제목 스타일 */
+.general-discount .section-title {
+    color: #1a472a;
+    font-weight: 600;
+}
+
+ 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Navigation 예시</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            font-family: "Pretendard", Helvetica;
+        }
+        
+        .container {
+            position: relative;
+            width: 1080px;
+            height: 1920px;
+            margin: 0 auto;
+        }
+        
+        .content {
+            position: absolute;
+            top: 150px;
+            left: 40px;
+            right: 40px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .demo-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .demo-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #54d761;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .demo-btn:hover {
+            background: #45c653;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 탭 네비게이션이 여기에 로드됩니다 -->
+        <div id="navigation-container"></div>
+        
+        <div class="content">
+            <h1>Tab Navigation 컴포넌트 예시</h1>
+            <p>상단의 탭을 클릭해보세요! (현재는 알림창으로 표시됩니다)</p>
+            
+            <div class="demo-buttons">
+                <button class="demo-btn" onclick="tabNav.setActiveTab('menu')">메뉴 탭 활성화</button>
+                <button class="demo-btn" onclick="tabNav.setActiveTab('benefit')">혜택 탭 활성화</button>
+                <button class="demo-btn" onclick="tabNav.disableTab('payment')">계산 탭 비활성화</button>
+                <button class="demo-btn" onclick="tabNav.enableTab('payment')">계산 탭 활성화</button>
+            </div>
+            
+            <p><strong>현재 활성 탭:</strong> <span id="current-tab">option</span></p>
+            
+            <h3>사용된 코드:</h3>
+            <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; font-size: 12px;">
+const tabNav = new TabNavigation({
+    container: document.getElementById('navigation-container'),
+    activeTab: 'option',
+    onTabChange: (tabKey) => {
+        console.log('탭 변경:', tabKey);
+        document.getElementById('current-tab').textContent = tabKey;
+        alert(`${tabKey} 탭으로 이동합니다!`);
+    }
+});
+            </pre>
+        </div>
+    </div>
+
+    <!-- TabNavigation 컴포넌트 로드 -->
+    <script src="tab-navigation.js"></script>
+    <script>
+        let tabNav;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 탭 네비게이션 초기화
+            tabNav = new TabNavigation({
+                container: document.getElementById('navigation-container'),
+                activeTab: 'option',
+                onTabChange: (tabKey) => {
+                    console.log('탭 변경:', tabKey);
+                    document.getElementById('current-tab').textContent = tabKey;
+                    
+                    // 실제 프로젝트에서는 페이지 이동 로직
+                    switch(tabKey) {
+                        case 'menu':
+                            alert('메뉴 페이지로 이동합니다!');
+                            break;
+                        case 'option':
+                            alert('옵션 페이지로 이동합니다!');
+                            break;
+                        case 'benefit':
+                            alert('혜택 페이지로 이동합니다!');
+                            break;
+                        case 'payment':
+                            alert('계산 페이지로 이동합니다!');
+                            break;
+                        case 'point':
+                            alert('적립 페이지로 이동합니다!');
+                            break;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

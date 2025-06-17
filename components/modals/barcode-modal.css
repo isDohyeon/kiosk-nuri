@@ -1,0 +1,302 @@
+/* 바코드 모달 스타일 */
+.barcode-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.barcode-modal.hidden {
+    display: none;
+}
+
+/* 배경 오버레이 */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0000004c;
+}
+
+/* 모달 컨텐츠 */
+.modal-content {
+    position: relative;
+    width: 831px;
+    height: 1087px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 0;
+    box-sizing: border-box;
+}
+
+/* 바코드 스캔 영역 */
+.barcode-scan-area {
+    position: relative;
+    width: 343px;
+    height: 212px;
+    margin-top: 174px;
+    margin-bottom: 148px;
+}
+
+/* 바코드 프레임 */
+.barcode-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* 바코드 이미지 컨테이너 */
+.barcode-image-container {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    width: 263px;
+    height: 133px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 바코드 플레이스홀더 */
+.barcode-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    position: relative;
+}
+
+/* 실제 바코드 이미지 */
+.barcode-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: contrast(1.1);
+}
+
+/* 바코드 아이콘 */
+.barcode-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.barcode-icon.hidden {
+    display: none;
+}
+
+/* 바코드 라인들 */
+.barcode-lines {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 60px;
+}
+
+.barcode-lines .line {
+    background-color: #9e9fa4;
+    border-radius: 1.68px;
+}
+
+.barcode-lines .line.thick {
+    width: 6px;
+    height: 60px;
+}
+
+.barcode-lines .line.medium {
+    width: 4px;
+    height: 45px;
+}
+
+.barcode-lines .line.thin {
+    width: 2px;
+    height: 35px;
+}
+
+/* 스캔 프레임 모서리 */
+.scan-corner {
+    position: absolute;
+    width: 43px;
+    height: 43px;
+    border: 3px solid #9e9fa4;
+}
+
+.scan-corner.top-left {
+    top: -3px;
+    left: -3px;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 10px 0 0 0;
+}
+
+.scan-corner.top-right {
+    top: -3px;
+    right: -3px;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 10px 0 0;
+}
+
+.scan-corner.bottom-left {
+    bottom: -3px;
+    left: -3px;
+    border-right: none;
+    border-top: none;
+    border-radius: 0 0 0 10px;
+}
+
+.scan-corner.bottom-right {
+    bottom: -3px;
+    right: -3px;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 10px 0;
+}
+
+/* 안내 텍스트 */
+.instruction-text {
+    font-family: "Pretendard-SemiBold", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    color: #121212;
+    font-size: 50px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+    margin-bottom: 174px;
+}
+
+/* 버튼 영역 */
+.button-area {
+    display: flex;
+    gap: 29px;
+    margin-top: auto;
+}
+
+/* 취소 버튼 */
+.btn-cancel {
+    width: 314px;
+    height: 86px;
+    background-color: #e4e4e5;
+    border: none;
+    border-radius: 10px;
+    font-family: "Pretendard-SemiBold", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    color: #17171c;
+    font-size: 37.2px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #d4d4d5;
+}
+
+.btn-cancel:active {
+    background-color: #c4c4c5;
+}
+
+/* 다시 시도 버튼 */
+.btn-retry {
+    width: 314px;
+    height: 86px;
+    background-color: #54d761;
+    border: none;
+    border-radius: 10px;
+    font-family: "Pretendard-SemiBold", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 37.2px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-retry:hover {
+    background-color: #4ac757;
+}
+
+.btn-retry:active {
+    background-color: #40b74d;
+}
+
+/* 반응형 조정 */
+@media (max-width: 1080px) {
+    .modal-content {
+        width: 90%;
+        max-width: 831px;
+        height: auto;
+        min-height: 600px;
+        padding: 40px 20px;
+    }
+    
+    .instruction-text {
+        font-size: 36px;
+        margin-bottom: 80px;
+    }
+    
+    .button-area {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        max-width: 314px;
+    }
+    
+    .btn-cancel,
+    .btn-retry {
+        width: 100%;
+        font-size: 28px;
+        height: 60px;
+    }
+    
+    .barcode-scan-area {
+        margin-top: 80px;
+        margin-bottom: 80px;
+    }
+}
+
+/* 애니메이션 효과 */
+.barcode-modal {
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+} 

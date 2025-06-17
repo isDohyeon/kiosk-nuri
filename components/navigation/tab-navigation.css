@@ -1,0 +1,138 @@
+/* 탭 네비게이션 컴포넌트 */
+.tab-navigation {
+  position: absolute;
+  width: 1010px;
+  height: 69px;
+  top: 40px;
+  left: 35px;
+  z-index: 100;
+}
+
+.tab-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 탭 배경 공통 스타일 */
+.tab-background {
+  position: absolute;
+  height: 69px;
+  background-color: #e4e4e5;
+  border-radius: 40px;
+  border: 5px solid #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+/* 각 탭 배경 위치 */
+.tab-menu {
+  width: 225px;
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+
+.tab-option {
+  width: 261px;
+  top: 0;
+  left: 150px;
+  z-index: 4;
+}
+
+.tab-benefit {
+  width: 261px;
+  top: 0;
+  left: 347px;
+  z-index: 3;
+}
+
+.tab-point {
+  width: 261px;
+  top: 0;
+  left: 543px;
+  z-index: 2;
+}
+
+.tab-payment {
+  width: 261px;
+  top: 0;
+  left: 749px;
+  z-index: 1;
+}
+
+/* 활성화된 탭 */
+.tab-background.active {
+  background-color: #54d761 !important;
+}
+
+/* 탭 텍스트 공통 스타일 */
+.tab-text {
+  position: absolute;
+  font-family: "Pretendard", Helvetica;
+  font-weight: 600;
+  color: #7e7e87;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  z-index: 6;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+/* 각 탭 텍스트 위치 */
+.tab-menu-text {
+  top: 19px;
+  left: 0;
+  width: 225px;
+  font-size: 26px;
+}
+
+.tab-option-text {
+  top: 21px;
+  left: 160px;
+  width: 261px;
+  font-size: 22px;
+}
+
+.tab-benefit-text {
+  top: 21px;
+  left: 357px;
+  width: 261px;
+  font-size: 22px;
+}
+
+.tab-point-text {
+  top: 21px;
+  left: 553px;
+  width: 261px;
+  font-size: 22px;
+}
+
+.tab-payment-text {
+  top: 21px;
+  left: 759px;
+  width: 261px;
+  font-size: 22px;
+}
+
+/* 활성화된 탭 텍스트 */
+.tab-text.active {
+  color: #ffffff !important;
+}
+
+/* 호버 효과 */
+.tab-text:hover {
+  opacity: 0.8;
+}
+
+/* 반응형 대응 (선택사항) */
+@media (max-width: 1200px) {
+  .tab-navigation {
+    width: 90%;
+    left: 5%;
+  }
+  
+  .tab-background, .tab-text {
+    transform: scale(0.9);
+  }
+} 

@@ -1,0 +1,57 @@
+<!-- 번호 조회 모달 컴포넌트 -->
+<div id="numberModal" class="number-modal hidden">
+    <!-- 배경 오버레이 -->
+    <div class="modal-overlay"></div>
+    
+    <!-- 모달 컨텐츠 -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">번호 조회</h3>
+        </div>
+        
+        <!-- 번호 입력 영역 -->
+        <div class="number-input-area">
+            <div class="input-container">
+                <label for="phoneNumber" class="input-label">휴대폰 번호 입력</label>
+                <input type="tel" id="phoneNumber" class="phone-input" 
+                       placeholder="010-0000-0000" maxlength="13">
+                <div class="input-error hidden" id="phoneError">올바른 휴대폰 번호를 입력해주세요.</div>
+            </div>
+            
+            <!-- 숫자 자판 -->
+            <div class="number-keypad">
+                <div class="keypad-row">
+                    <button class="keypad-btn" data-number="1">1</button>
+                    <button class="keypad-btn" data-number="2">2</button>
+                    <button class="keypad-btn" data-number="3">3</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="keypad-btn" data-number="4">4</button>
+                    <button class="keypad-btn" data-number="5">5</button>
+                    <button class="keypad-btn" data-number="6">6</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="keypad-btn" data-number="7">7</button>
+                    <button class="keypad-btn" data-number="8">8</button>
+                    <button class="keypad-btn" data-number="9">9</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="keypad-btn keypad-empty"></button>
+                    <button class="keypad-btn" data-number="0">0</button>
+                    <button class="keypad-btn keypad-backspace" data-action="backspace">⌫</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 안내 텍스트 -->
+        <div class="instruction-text">
+            할인받을 휴대폰 번호를 입력해주세요.
+        </div>
+        
+        <!-- 버튼 영역 -->
+        <div class="button-area">
+            <button class="btn-cancel" onclick="closeNumberModal()">취소하기</button>
+            <button class="btn-confirm" onclick="confirmPhoneNumber()">확인</button>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/styleguide.css" />
+    <link rel="stylesheet" href="option.css" />
+    <title>아메리카노 주문</title>
+  </head>
+  <body>
+    <div class="screen">
+      <!-- 재사용 가능한 탭 네비게이션 컴포넌트 -->
+      <div id="navigation-container"></div>
+
+      <!-- 뒤로/처음으로 버튼 -->
+      <div class="nav-buttons">
+        <button class="back-btn">뒤로</button>
+        <p class="order-status">지금은 아메리카노 주문 중입니다.</p>
+        <button class="home-btn">처음으로</button>
+      </div>
+
+      <main>
+        <section class="options">
+          <h2 class="options-title">차갑게 / 뜨겁게</h2>
+          <div class="options-grid step1-options">
+            <div class="option-card" data-option="cold">
+              <img src="../../assets/images/option-cold.png" alt="" class="option-icon" />
+              <span class="option-label">차갑게</span>
+            </div>
+            <div class="option-card" data-option="hot">
+              <img src="../../assets/images/option-warm.png" alt="" class="option-icon" />
+              <span class="option-label">뜨겁게</span>
+            </div>
+          </div>
+          <h2 class="options-subtitle">추가 선택하기</h2>
+          <div class="options-grid step2-options">
+            <div class="option-card" data-option="strong">
+              <img src="../../assets/images/option-jin.png" alt="" class="option-icon" />
+              <span class="option-label">진하게</span>
+            </div>
+            <div class="option-card" data-option="light">
+              <img src="../../assets/images/option-yeon.png" alt="" class="option-icon" />
+              <span class="option-label">연하게</span>
+            </div>
+            <div class="option-card" data-option="sweet">
+              <img src="../../assets/images/option-dal.png" alt="" class="option-icon" />
+              <span class="option-label">더 달게</span>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <button class="button secondary">도움이 필요해요</button>
+        <button class="button primary">다 골랐어요</button>
+      </footer>
+    </div>
+    <!-- HelpSystem 컴포넌트 로드 -->
+    <script src="../../components/help/help-system.js"></script>
+    <!-- TabNavigation 컴포넌트 로드 -->
+    <script src="../../components/navigation/tab-navigation.js"></script>
+    <script src="option.js"></script>
+    
+    <script>
+        // 탭 네비게이션 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabNav = new TabNavigation({
+                container: document.getElementById('navigation-container'),
+                activeTab: 'option',
+                onTabChange: handleTabNavigation
+            });
+            
+            function handleTabNavigation(tabKey) {
+                console.log('탭 변경:', tabKey);
+                
+                switch(tabKey) {
+                    case 'menu':
+                        window.location.href = '../nuri/nuri-menu.html';
+                        break;
+                    case 'option':
+                        // 현재 페이지이므로 아무것도 하지 않음
+                        break;
+                    case 'benefit':
+                        // TODO: 혜택 페이지로 이동
+                        alert('혜택 페이지는 아직 구현되지 않았습니다.');
+                        break;
+                    case 'payment':
+                        // TODO: 계산 페이지로 이동
+                        alert('계산 페이지는 아직 구현되지 않았습니다.');
+                        break;
+                    case 'point':
+                        // TODO: 적립 페이지로 이동
+                        alert('적립 페이지는 아직 구현되지 않았습니다.');
+                        break;
+                }
+            }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>키오스크 누리 - 주문 유형 선택</title>
+    <link rel="stylesheet" href="../../assets/css/global.css" />
+    <link rel="stylesheet" href="../../assets/css/styleguide.css" />
+    <link rel="stylesheet" href="start.css" />
+  </head>
+  <body>
+    <div class="UI">
+      <div class="overlap" onclick="selectOrderType('dine-in')">
+        <img class="group" src="../../assets/images/image-eat.png" />
+        <div class="text-wrapper">먹고 가기</div>
+      </div>
+      <div class="overlap-group" onclick="selectOrderType('takeout')">
+        <div class="div">가져가기</div>
+        <img class="overlap-2" src="../../assets/images/image-takeout.png" />
+
+      </div>
+      <div class="group-wrapper" onclick="goToSettings()">
+        <img class="group-2" src="../../assets/images/image-language.png" />
+      </div>
+      <img class="group-3" src="../../assets/images/logo-nuri-green.png" />
+      <div class="text-wrapper-2">주문을 시작하시겠어요?</div>
+    </div>
+
+    <script>
+      // URL 파라미터에서 모드 정보 가져오기
+      function getSelectedMode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('mode') || 'normal';
+      }
+
+      function selectOrderType(orderType) {
+        const selectedMode = getSelectedMode();
+        console.log(`${orderType} 선택됨, 모드: ${selectedMode}`);
+        
+        // 선택된 주문 유형을 로컬 스토리지에 저장
+        localStorage.setItem('orderType', orderType);
+        localStorage.setItem('selectedMode', selectedMode);
+        
+        // 선택된 모드에 따라 해당 메뉴 페이지로 이동
+        if (selectedMode === 'normal') {
+          window.location.href = '../menu/normal/menu.html';
+        } else if (selectedMode === 'nuri') {
+          // 누리모드 메뉴로 이동
+          window.location.href = '../nuri/nuri-menu.html';
+        }
+      }
+
+      function goToSettings() {
+        console.log('설정 화면으로 이동');
+        window.location.href = '../settings/settings.html';
+      }
+
+      // 뒤로가기 기능
+      function goBack() {
+        window.location.href = '../../index.html';
+      }
+
+      // 키보드 접근성 지원
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          const activeElement = document.activeElement;
+          if (activeElement.classList.contains('overlap')) {
+            selectOrderType('dine-in');
+          } else if (activeElement.classList.contains('overlap-group')) {
+            selectOrderType('takeout');
+          } else if (activeElement.classList.contains('group-wrapper')) {
+            goToSettings();
+          }
+        } else if (event.key === 'Escape') {
+          goBack();
+        }
+      });
+
+      // 페이지 로드 시 선택된 모드 표시
+      document.addEventListener('DOMContentLoaded', function() {
+        const selectedMode = getSelectedMode();
+        console.log(`현재 선택된 모드: ${selectedMode}`);
+        
+        // 필요시 UI에 현재 모드 표시
+        // document.querySelector('.text-wrapper-2').textContent = 
+        //   `${selectedMode === 'nuri' ? '누리모드' : '일반모드'} - 주문을 시작하시겠어요?`;
+      });
+    </script>
+  </body>
+</html> 

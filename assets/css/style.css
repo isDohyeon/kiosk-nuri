@@ -1,0 +1,198 @@
+/* CSS 변수 정의 */
+:root {
+  --variable-collection-mono8: #f8f8f8;
+}
+
+.UI {
+  position: relative;
+  width: 1080px;
+  height: 1920px;
+  background-color: #54d761;
+}
+
+.UI .overlap {
+  position: absolute;
+  width: 411px;
+  height: 411px;
+  top: 976px;
+  left: 114px;
+  background-color: var(--variable-collection-mono8);
+  border-radius: 30px;
+  border: 2px solid;
+  border-color: #e4e4e5;
+}
+
+.UI .overlap-group {
+  position: absolute;
+  width: 173px;
+  height: 173px;
+  top: 57px;
+  left: 119px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  border: 2px solid;
+  border-color: #e4e4e5;
+}
+
+.UI .text-wrapper {
+  top: 24px;
+  left: 35px;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  font-size: 50px;
+  position: absolute;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.UI .div {
+  top: 254px;
+  left: 117px;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  font-size: 50px;
+  white-space: nowrap;
+  position: absolute;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.UI .text-wrapper-2 {
+  top: 324px;
+  left: 80px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #7e7e87;
+  font-size: 30px;
+  white-space: nowrap;
+  position: absolute;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.UI .overlap-group-2 {
+  position: absolute;
+  width: 411px;
+  height: 411px;
+  top: 976px;
+  left: 555px;
+  background-color: #dafbc0;
+  border-radius: 30px;
+  border: 2px solid;
+  border-color: #aff09a;
+}
+
+.UI .text-wrapper-3 {
+  top: 24px;
+  left: 41px;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  font-size: 100px;
+  white-space: nowrap;
+  position: absolute;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.UI .group-wrapper {
+  position: absolute;
+  width: 105px;
+  height: 105px;
+  top: 1775px;
+  left: 935px;
+  background-color: #ffffff;
+  border-radius: 20px;
+}
+
+.UI .group {
+  position: absolute;
+  width: 79px;
+  height: 79px;
+  top: 13px;
+  left: 13px;
+}
+
+.UI .img {
+  position: absolute;
+  width: 355px;
+  height: 191px;
+  top: 489px;
+  left: 371px;
+}
+
+.UI .text-wrapper-4 {
+  top: 864px;
+  left: 305px;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 50px;
+  white-space: nowrap;
+  position: absolute;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.UI .group-2 {
+  position: absolute;
+  width: 43px;
+  height: 43px;
+  top: 472px;
+  left: 683px;
+}
+
+.UI .lt-gt {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  top: 29px;
+  left: 18px;
+}
+
+.UI .lt-gt-2 {
+  position: absolute;
+  width: 14px;
+  height: 8px;
+  top: 18px;
+  left: 0;
+}
+
+.UI .lt-gt-3 {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  top: 0;
+  left: 18px;
+}
+
+.UI .lt-gt-4 {
+  position: absolute;
+  width: 14px;
+  height: 8px;
+  top: 18px;
+  left: 29px;
+}
+
+/* 클릭 가능한 요소들에 대한 추가 스타일 */
+.UI .overlap,
+.UI .overlap-group-2 {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.UI .overlap:hover,
+.UI .overlap-group-2:hover {
+  transform: scale(1.02);
+}
+
+.UI .group-wrapper {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.UI .group-wrapper:hover {
+  transform: scale(1.05);
+} 
