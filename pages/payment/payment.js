@@ -3,40 +3,21 @@ class PaymentPage {
         this.selectedPaymentMethod = null;
         this.orderData = null;
         this.helpSystem = new HelpSystem();
-        this.bottomPanel = null;
         this.paymentModal = null;
+        this.paymentTimer = null; // 결제 처리 타이머
+        this.processingTimer = null; // 처리 중 타이머
         this.init();
     }
 
     async init() {
         console.log('결제 페이지 초기화 시작');
         this.loadOrderData();
-        await this.initBottomPanel();
         this.initPaymentModal();
         this.setupHelpTargets();
         this.initPaymentMethods();
         this.updatePriceSummary();
-        this.renderOrderSummary();
         this.renderOrderItems(); // 주문 내역 카드 렌더링 추가
         console.log('결제 페이지 초기화 완료. 현재 주문 데이터:', this.orderData);
-    }
-
-    // 하단 패널 초기화
-    async initBottomPanel() {
-        this.bottomPanel = new BottomPanel({
-            container: document.querySelector('.screen'),
-            totalAmount: this.orderData ? this.orderData.finalAmount || this.orderData.totalAmount : 0,
-            discountAmount: this.orderData ? this.orderData.discountAmount || 0 : 0,
-            finalAmount: this.orderData ? this.orderData.finalAmount || this.orderData.totalAmount : 0,
-            secondaryButtonText: '도움이 필요해요',
-            primaryButtonText: '결제하기',
-            onSecondaryClick: () => this.requestHelp(),
-            onPrimaryClick: () => this.proceedToPayment(),
-            showDiscountRow: true
-        });
-
-        await this.bottomPanel.init();
-        console.log('BottomPanel 컴포넌트 초기화 완료');
     }
 
     // 주문 데이터 로드 (적립까지 완료된 데이터)
@@ -93,135 +74,25 @@ class PaymentPage {
                 this.selectedPaymentMethod = methodType;
                 console.log('선택 적용됨:', methodType, '클래스 목록:', method.classList.toString());
                 
-                this.updateBottomPanel();
+                // 바로 결제 진행
+                setTimeout(() => {
+                    this.proceedToPayment();
+                }, 300); // 선택 애니메이션이 보이도록 약간의 지연
+                
                 this.updateHelpStatus();
             });
         });
     }
 
-    // 주문 요약 렌더링
-    renderOrderSummary() {
-        const orderItemsContainer = document.getElementById('orderItems');
-        if (!orderItemsContainer || !this.orderData || !this.orderData.items) {
-            this.showEmptyOrder();
-            return;
-        }
 
-        if (this.orderData.items.length === 0) {
-            this.showEmptyOrder();
-            return;
-        }
-
-        let html = '';
-        this.orderData.items.forEach(item => {
-            html += `
-                <div class="order-item">
-                    <div class="item-info">
-                        <div class="item-name">${item.name}</div>
-                    </div>
-                    <div class="item-quantity">${item.quantity}개</div>
-                    <div class="item-price">₩ ${(item.price * item.quantity).toLocaleString()}</div>
-                </div>
-            `;
-        });
-
-        orderItemsContainer.innerHTML = html;
-    }
-
-    // 주문 항목의 옵션 텍스트 생성
-    getItemOptionsText(item) {
-        let options = [];
-        
-        if (item.temperature) {
-            options.push(item.temperature === 'hot' ? '뜨거움' : '차가움');
-        }
-        
-        if (item.strength) {
-            const strengthMap = {
-                'yeon': '연하게',
-                'dal': '달게',
-                'jin': '진하게'
-            };
-            options.push(strengthMap[item.strength] || item.strength);
-        }
-        
-        if (item.options && item.options.length > 0) {
-            options = options.concat(item.options);
-        }
-        
-        return options.length > 0 ? options.join(', ') : '기본';
-    }
-
-    // 빈 주문 상태 표시
-    showEmptyOrder() {
-        const orderItemsContainer = document.getElementById('orderItems');
-        if (orderItemsContainer) {
-            orderItemsContainer.innerHTML = `
-                <div class="empty-order">
-                    <div class="empty-order-icon">🛒</div>
-                    <div class="empty-order-text">주문 내역이 없습니다.</div>
-                </div>
-            `;
-        }
-    }
-
-    // 주문 내역 카드 렌더링 (주문 완료 화면과 동일한 스타일)
-    renderOrderItems() {
-        const orderItemsContainer = document.getElementById('orderItemsContainer');
-        if (!orderItemsContainer || !this.orderData || !this.orderData.items) {
-            if (orderItemsContainer) {
-                orderItemsContainer.innerHTML = '<div class="no-items">주문 내역이 없습니다.</div>';
-            }
-            return;
-        }
-
-        if (this.orderData.items.length === 0) {
-            orderItemsContainer.innerHTML = '<div class="no-items">주문 내역이 없습니다.</div>';
-            return;
-        }
-
-        let html = '';
-        this.orderData.items.forEach(item => {
-            html += `
-                <div class="complete-order-item">
-                    <span class="complete-item-name">${item.name}</span>
-                    <span class="complete-item-quantity">${item.quantity}개</span>
-                    <span class="complete-item-price">₩ ${(item.price * item.quantity).toLocaleString()}</span>
-                </div>
-            `;
-        });
-
-        orderItemsContainer.innerHTML = html;
-    }
-
-    // 가격 요약 업데이트
-    updatePriceSummary() {
-        if (!this.bottomPanel) return;
-
-        const totalAmount = this.orderData ? this.orderData.totalAmount || 0 : 0;
-        const discountAmount = this.orderData ? this.orderData.discountAmount || 0 : 0;
-        const finalAmount = this.orderData ? this.orderData.finalAmount || totalAmount : 0;
-
-        this.bottomPanel.setPrices(totalAmount, discountAmount, finalAmount);
-    }
-
-    // 하단 패널 업데이트
-    updateBottomPanel() {
-        if (!this.bottomPanel) return;
-
-        // 결제 방법이 선택되었으면 버튼 텍스트 변경
-        if (this.selectedPaymentMethod) {
-            this.bottomPanel.setButtonTexts('도움이 필요해요', '결제하기');
-        } else {
-            this.bottomPanel.setButtonTexts('도움이 필요해요', '결제 방법을 선택해주세요');
-        }
-    }
 
     // 결제 모달 초기화
     initPaymentModal() {
         this.paymentModal = new PaymentModal({
             onCancel: () => {
                 console.log('결제 취소됨');
+                // 모든 결제 타이머 정리
+                this.clearPaymentTimers();
                 this.paymentModal.close();
             },
             onRetry: () => {
@@ -269,23 +140,95 @@ class PaymentPage {
     showPaymentModal() {
         if (!this.paymentModal) return;
 
+        // 기존 타이머들 정리
+        this.clearPaymentTimers();
+
         // 결제 방식별 설정
         const paymentConfig = this.getPaymentConfig(this.selectedPaymentMethod);
         
         // 결제 방식 이미지 설정
         this.paymentModal.setPaymentIcon(paymentConfig.icon, paymentConfig.name);
         
-        // 모달 열기
+        // 모달 열기 (초기에는 인식중 메시지만 표시)
         this.paymentModal.open({
             title: paymentConfig.title,
             message: `${paymentConfig.name}으로 결제합니다.`,
-            status: 'waiting'
+            status: 'waiting',
+            showSpinner: false // 초기에는 스피너 숨김
         });
 
-        // 자동으로 결제 처리 시작 (2초 후)
-        setTimeout(() => {
-            this.processPaymentWithModal();
-        }, 1000);
+        // 초기에 "인식중..." 메시지 표시
+        this.showRecognizingStatus();
+
+        // 2초 후 결제 진행 메시지와 스피너 표시
+        this.paymentTimer = setTimeout(() => {
+            this.showProgressIndicators();
+            // 추가로 2초 후 처리 중 상태로 변경
+            this.processingTimer = setTimeout(() => {
+                this.processPaymentWithModal();
+            }, 2000);
+        }, 2000);
+    }
+
+    // 결제 타이머들 정리
+    clearPaymentTimers() {
+        if (this.paymentTimer) {
+            clearTimeout(this.paymentTimer);
+            this.paymentTimer = null;
+        }
+        if (this.processingTimer) {
+            clearTimeout(this.processingTimer);
+            this.processingTimer = null;
+        }
+    }
+
+    // 인식중 상태 표시 (검정 텍스트)
+    showRecognizingStatus() {
+        if (!this.paymentModal) return;
+        
+        const messageElement = this.paymentModal.modal.querySelector('.status-message');
+        const spinner = this.paymentModal.modal.querySelector('.loading-spinner');
+        
+        if (messageElement) {
+            messageElement.textContent = '인식중...';
+            messageElement.classList.add('recognizing');
+            messageElement.style.display = 'block';
+        }
+        if (spinner) {
+            spinner.style.display = 'none'; // 스피너는 숨김
+        }
+    }
+
+    // 진행 상태 표시 (초록 메시지와 스피너)
+    showProgressIndicators() {
+        if (!this.paymentModal) return;
+        
+        const messageElement = this.paymentModal.modal.querySelector('.status-message');
+        const spinner = this.paymentModal.modal.querySelector('.loading-spinner');
+        
+        if (messageElement) {
+            messageElement.textContent = '결제를 진행하고 있습니다...';
+            messageElement.classList.remove('recognizing'); // 검정 텍스트 클래스 제거
+            messageElement.style.display = 'block';
+        }
+        if (spinner) {
+            spinner.style.display = 'block';
+        }
+    }
+
+    // 진행 상태 숨김 (메시지와 스피너) - 더 이상 사용되지 않음
+    hideProgressIndicators() {
+        if (!this.paymentModal) return;
+        
+        const messageElement = this.paymentModal.modal.querySelector('.status-message');
+        const spinner = this.paymentModal.modal.querySelector('.loading-spinner');
+        
+        if (messageElement) {
+            messageElement.style.display = 'none';
+        }
+        if (spinner) {
+            spinner.style.display = 'none';
+        }
     }
 
     // 결제 방식별 설정 반환
@@ -293,27 +236,27 @@ class PaymentPage {
         const configs = {
             'card': {
                 name: '신용카드',
-                icon: '../../assets/images/payment-card.png',
-                title: '카드를 리더기에 꽂아주세요.'
+                icon: '../../assets/images/payment-credit-card.png',
+                title: '하단에 카드를 꽂아주세요.'
             },
             'samsung-pay': {
                 name: '삼성페이',
-                icon: '../../assets/images/payment-samsung.png',
+                icon: '../../assets/images/payment-pay.png',
                 title: '휴대폰을 리더기에 태그하세요.'
             },
             'kakao-pay': {
                 name: '카카오페이',
-                icon: '../../assets/images/payment-kakao.png',
+                icon: '../../assets/images/payment-pay.png',
                 title: 'QR코드를 스캔해주세요.'
             },
             'naver-pay': {
                 name: '네이버페이',
-                icon: '../../assets/images/payment-naver.png',
+                icon: '../../assets/images/payment-pay.png',
                 title: 'QR코드를 스캔해주세요.'
             },
             'voucher': {
                 name: '교환권',
-                icon: '../../assets/images/payment-voucher.png',
+                icon: '../../assets/images/payment-pay.png',
                 title: '교환권을 제출해주세요.'
             }
         };
@@ -325,14 +268,11 @@ class PaymentPage {
     processPaymentWithModal() {
         if (!this.paymentModal) return;
         
-
         this.paymentModal.setStatus('processing');
         
-        // 2초 후 바로 모달 닫고 주문완료 화면으로 이동
-        setTimeout(() => {
-            this.paymentModal.close();
-            this.completePayment(this.currentPaymentData);
-        }, 2000);
+        // 바로 모달 닫고 주문완료 화면으로 이동 (타이머는 showPaymentModal에서 이미 설정됨)
+        this.paymentModal.close();
+        this.completePayment(this.currentPaymentData);
     }
 
     // 결제 처리 시뮬레이션 (기존 메서드 유지 - 다른 곳에서 사용할 수 있음)
@@ -520,21 +460,11 @@ class PaymentPage {
             this.helpSystem.registerTarget('payment-methods', {
                 selector: '.payment-methods',
                 type: 'bottom',
-                message: '원하시는 결제 방법을 선택해주세요.',
+                message: '원하시는 결제 방법을 선택하시면 바로 결제가 진행됩니다.',
                 position: 'center',
                 offsetX: -240,
                 offsetY: -750,
                 textPosition: 'right'
-            });
-
-            this.helpSystem.registerTarget('complete', {
-                selector: '.primary-button',
-                type: 'bottom',
-                message: '결제 방법을 선택하셨으면, 결제하기 버튼을 눌러주세요.',
-                position: 'center',
-                offsetX: -580,
-                offsetY: -250,
-                textPosition: 'left'
             });
         }
     }
@@ -544,6 +474,64 @@ class PaymentPage {
         // 결제 방법 선택 상태에 따른 도움 시스템 업데이트
         const currentStep = this.selectedPaymentMethod ? 'payment-selected' : 'payment-selection';
         console.log('현재 단계:', currentStep);
+    }
+
+    // 주문 내역 카드 렌더링
+    renderOrderItems() {
+        const orderItemsContainer = document.getElementById('orderItemsContainer');
+        if (!orderItemsContainer || !this.orderData || !this.orderData.items) {
+            if (orderItemsContainer) {
+                orderItemsContainer.innerHTML = '<div class="no-items">주문 내역이 없습니다.</div>';
+            }
+            return;
+        }
+
+        if (this.orderData.items.length === 0) {
+            orderItemsContainer.innerHTML = '<div class="no-items">주문 내역이 없습니다.</div>';
+            return;
+        }
+
+        let html = '';
+        this.orderData.items.forEach(item => {
+            html += `
+                <div class="complete-order-item">
+                    <span class="complete-item-name">${item.name}</span>
+                    <span class="complete-item-quantity">${item.quantity}개</span>
+                    <span class="complete-item-price">₩ ${(item.price * item.quantity).toLocaleString()}</span>
+                </div>
+            `;
+        });
+
+        orderItemsContainer.innerHTML = html;
+    }
+
+    // 가격 요약 업데이트
+    updatePriceSummary() {
+        const totalAmount = this.orderData ? this.orderData.totalAmount || 0 : 0;
+        const discountAmount = this.orderData ? this.orderData.discountAmount || 0 : 0;
+        const finalAmount = this.orderData ? this.orderData.finalAmount || totalAmount : 0;
+
+        // 총 주문 금액
+        const totalAmountElement = document.getElementById('totalAmount');
+        if (totalAmountElement) {
+            totalAmountElement.textContent = `₩ ${totalAmount.toLocaleString()}`;
+        }
+
+        // 할인 금액 (있는 경우에만 표시)
+        const discountRow = document.getElementById('discountRow');
+        const discountAmountElement = document.getElementById('discountAmount');
+        if (discountAmount > 0) {
+            if (discountRow) discountRow.style.display = 'flex';
+            if (discountAmountElement) discountAmountElement.textContent = `- ₩ ${discountAmount.toLocaleString()}`;
+        } else {
+            if (discountRow) discountRow.style.display = 'none';
+        }
+
+        // 최종 결제 금액
+        const finalAmountElement = document.getElementById('finalAmount');
+        if (finalAmountElement) {
+            finalAmountElement.textContent = `₩ ${finalAmount.toLocaleString()}`;
+        }
     }
 }
 

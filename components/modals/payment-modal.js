@@ -47,12 +47,6 @@ class PaymentModal {
    * 이벤트 바인딩
    */
   bindEvents() {
-    // 닫기 버튼
-    const closeBtn = this.modal.querySelector('.modal-close-btn');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.close());
-    }
-    
     // 오버레이 클릭으로 닫기
     const overlay = this.modal.querySelector('.modal-overlay');
     if (overlay && this.options.closeOnOverlay) {
@@ -222,34 +216,27 @@ class PaymentModal {
   }
   
   /**
-   * 결제 아이콘 설정
-   * @param {string} iconUrl - 아이콘 이미지 URL
+   * 결제 일러스트레이션 설정
+   * @param {string} iconUrl - 이미지 URL (기본값: payment-credit-card.png)
    * @param {string} altText - 대체 텍스트
    */
-  setPaymentIcon(iconUrl, altText = '결제 방법') {
-    const iconSlot = this.modal.querySelector('.card-icon-slot');
-    if (iconSlot && iconUrl) {
-      // 기존 내용 제거
-      iconSlot.innerHTML = '';
-      
-      // 이미지 생성 및 추가
-      const img = document.createElement('img');
-      img.src = iconUrl;
-      img.alt = altText;
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.objectFit = 'contain';
-      
-      iconSlot.appendChild(img);
-      iconSlot.classList.add('has-image');
+  setPaymentIcon(iconUrl = '../../assets/images/payment-credit-card.png', altText = '카드 리더기') {
+    const illustration = this.modal.querySelector('.payment-illustration');
+    if (illustration) {
+      illustration.src = iconUrl;
+      illustration.alt = altText;
     }
   }
   
   /**
-   * 취소 버튼 클릭 처리
+   * 취소 버튼 클릭 처리 - 콜백 실행 후 모달 닫음
    */
   handleCancel() {
-    this.callbacks.onCancel(this);
+    // 먼저 콜백 실행 (타이머 정리 등)
+    if (this.callbacks.onCancel) {
+      this.callbacks.onCancel(this);
+    }
+    // 그 다음 모달 닫기
     this.close();
   }
   
@@ -364,8 +351,8 @@ window.PaymentModalUtils = {
   createCardPaymentModal() {
     const modal = new PaymentModal({
       onOpen: (modal) => {
-        // 카드 아이콘 설정 (실제 이미지 경로로 변경 필요)
-        modal.setPaymentIcon('/assets/images/payment-card.png', '신용카드');
+        // 기본 카드 리더기 이미지 사용
+        modal.setPaymentIcon('../../assets/images/payment-credit-card.png', '카드 리더기');
       }
     });
     
@@ -376,15 +363,10 @@ window.PaymentModalUtils = {
    * 모바일 결제 모달
    */
   createMobilePaymentModal(paymentType = 'kakao') {
-    const paymentIcons = {
-      kakao: '/assets/images/payment-kakao.png',
-      samsung: '/assets/images/payment-samsung.png',
-      naver: '/assets/images/payment-naver.png'
-    };
-    
     const modal = new PaymentModal({
       onOpen: (modal) => {
-        modal.setPaymentIcon(paymentIcons[paymentType], `${paymentType} 페이`);
+        // 모든 결제 방법에 대해 동일한 카드 리더기 이미지 사용
+        modal.setPaymentIcon('../../assets/images/payment-credit-card.png', '카드 리더기');
       }
     });
     

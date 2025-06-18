@@ -73,6 +73,7 @@
   overflow: hidden;
   min-height: 0; /* 플렉스 아이템이 축소될 수 있도록 */
   max-height: calc(1087px - 200px - 160px); /* 헤더와 푸터 높이 제외 */
+  position: relative; /* 절대 위치의 기준점 */
 }
 
 /* 카드 리더기 섹션 */
@@ -81,155 +82,51 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 40px; /* 간격 줄임 */
+  margin-top: 30px;
+  flex: 1; /* 사용 가능한 공간을 모두 차지 */
   flex-shrink: 0; /* 축소 방지 */
 }
 
-/* 카드 리더기 일러스트레이션 */
-.card-reader-illustration {
-  position: relative;
-  width: 280px;
-  height: 180px;
-  margin-bottom: 40px; /* 간격 줄임 */
-  flex-shrink: 0; /* 축소 방지 */
-}
-
-/* 리더기 메인 박스 */
-.reader-main-box {
-  position: absolute;
-  width: 272px;
-  height: 164px;
-  top: 18px;
-  left: 14px;
-  border: 5.86px solid #9e9fa4;
-  border-radius: 1.68px;
-  transform: rotate(-90deg);
-  background-color: #f8f8f8;
-}
-
-/* 카드 슬롯 */
-.card-slot {
-  position: absolute;
-  width: 58px;
-  height: 42px;
-  top: 61px;
-  left: 107px;
-  border: 5.86px solid #9e9fa4;
-  border-radius: 1.68px;
-  background-color: #333;
-}
-
-/* 리더기 상단 라인 */
-.reader-top-line {
-  position: absolute;
-  width: 272px;
-  height: 6px;
-  top: -86px;
-  left: -6px;
-  background-color: #9e9fa4;
-  transform: rotate(90deg);
-}
-
-/* 리더기 하단 라인 */
-.reader-bottom-line {
-  position: absolute;
-  width: 351px;
-  height: 7px;
-  top: 120px;
-  left: -25px;
-  background-color: #9e9fa4;
-}
-
-/* 카드 삽입 방향 화살표 */
-.card-arrow-indicator {
-  position: absolute;
-  width: 43px;
-  height: 76px;
-  top: 22px;
-  left: 128px;
-  background-color: #9e9fa4;
-}
-
-.card-arrow-indicator::before {
-  content: '↑';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 40px;
-  color: white;
-  font-weight: bold;
-}
-
-/* 안내 아이콘 영역 */
-.instruction-icons {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-bottom: 30px; /* 간격 줄임 */
-  flex-shrink: 0; /* 축소 방지 */
-}
-
-.payment-icon-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.icon-slot {
-  width: 120px;
-  height: 120px;
-  border: 3px dashed #d0d0d0;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #fafafa;
-  position: relative;
-}
-
-.icon-slot::after {
-  content: '이미지 영역';
-  font-size: 16px;
-  color: #9e9fa4;
-  text-align: center;
-}
-
-.card-icon-slot::after {
-  content: '카드 아이콘';
-}
-
-/* 실제 이미지가 삽입될 때 */
-.icon-slot img {
-  width: 100%;
-  height: 100%;
+/* 간소화된 결제 일러스트레이션 이미지 */
+.payment-illustration {
+  width: 320px; /* 400px에서 320px로 크기 축소 */
+  height: auto;
+  max-width: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  flex-shrink: 0; /* 축소 방지 */
 }
 
-.icon-slot.has-image::after {
-  display: none;
-}
+/* 기존 일러스트레이션 스타일 제거됨 */
+
+/* 아이콘 슬롯 스타일 제거됨 */
 
 /* 결제 상태 표시 */
 .payment-status {
+  position: absolute;
+  bottom: 80px; /* 모달 하단에서 80px 위에 고정 위치 */
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  margin-bottom: 20px; /* 간격 줄임 */
-  flex-shrink: 0; /* 축소 방지 */
-  min-height: 120px; /* 최소 높이 설정으로 스피너 공간 확보 */
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 .status-message {
-  font-size: 40px; /* 폰트 크기 줄임 */
-  font-weight: 500;
+  font-size: 40px; /* 폰트 크기를 조금 더 줄임 */
+  font-weight: 600;
   color: #54d761;
-  margin-bottom: 15px; /* 마진 줄임 */
+  margin-bottom: 20px; /* 스피너와의 간격 증가 */
   line-height: 1.3; /* 라인 높이 조정 */
+}
+
+/* 인식중 상태 텍스트 (검정색) */
+.status-message.recognizing {
+  color: #9E9EA4;
+  font-weight: 400;
 }
 
 /* 로딩 스피너 */
@@ -241,6 +138,10 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 10px auto 0 auto; /* 상단 마진 추가 */
+  flex-shrink: 0; /* 축소 방지 */
+  flex-grow: 0; /* 확대 방지 */
+  box-sizing: border-box; /* 테두리 포함한 정확한 크기 */
+  display: block; /* 블록 요소로 설정 */
 }
 
 @keyframes spin {
@@ -315,34 +216,7 @@
   color: inherit;
 }
 
-/* 닫기 버튼 */
-.modal-close-btn {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  width: 60px;
-  height: 60px;
-  border: none;
-  background-color: #f0f0f0;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.modal-close-btn:hover {
-  background-color: #e0e0e0;
-  transform: scale(1.1);
-}
-
-.close-icon {
-  font-size: 36px;
-  font-weight: bold;
-  color: #666;
-  line-height: 1;
-}
 
 /* 애니메이션 */
 @keyframes fadeIn {
@@ -384,14 +258,10 @@
   pointer-events: none;
 }
 
-/* 처리 중일 때 카드 리더기 일러스트 크기 줄이기 */
-.payment-modal.processing .card-reader-illustration {
-  height: 120px; /* 높이 더 줄임 */
-  margin-bottom: 20px;
-}
-
-.payment-modal.processing .instruction-icons {
-  margin-bottom: 15px;
+/* 처리 중일 때도 이미지 크기 유지 */
+.payment-modal.processing .payment-illustration {
+  width: 320px;
+  margin-bottom: 60px;
 }
 
 /* 성공/오류 상태일 때 스피너 숨기기 */
@@ -426,8 +296,7 @@
 }
 
 /* 접근성 개선 */
-.retry-button:focus,
-.modal-close-btn:focus {
+.retry-button:focus {
   outline: 3px solid #54d761;
   outline-offset: 2px;
 }
@@ -439,8 +308,7 @@
 
 /* 터치 디바이스 최적화 */
 @media (hover: none) {
-  .modal-button:hover,
-  .modal-close-btn:hover {
+  .modal-button:hover {
     transform: none;
   }
   
