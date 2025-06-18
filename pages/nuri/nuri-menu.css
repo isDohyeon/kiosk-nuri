@@ -7,6 +7,20 @@ body {
   align-items: center !important;
 }
 
+/* 탭 네비게이션 컨테이너 위치 조정 */
+#navigation-container {
+    position: relative;
+    z-index: 100;
+}
+
+/* 네비게이션 버튼 위치 조정 */
+.nav-buttons {
+    position: absolute;
+    top: 120px;
+    left: 35px;
+    z-index: 50;
+}
+
 .UI {
   height: 1920px !important;
   max-height: 1920px !important;
@@ -28,7 +42,7 @@ body {
   height: 297px;
   top: 40px;
   left: 35px;
-  z-index: 100;
+  z-index: 50;
 }
 
 .overlap-group {
@@ -148,7 +162,9 @@ body {
     text-align: center;
     letter-spacing: 0;
     line-height: normal;
-    z-index: 6;
+    z-index: 60;
+    cursor: pointer;
+    user-select: none;
 }
 
 .text-wrapper-2 {
@@ -163,7 +179,9 @@ body {
     text-align: center;
     letter-spacing: 0;
     line-height: normal;
-    z-index: 6;
+    z-index: 60;
+    cursor: pointer;
+    user-select: none;
 }
 
 .text-wrapper-3 {
@@ -178,7 +196,9 @@ body {
     text-align: center;
     letter-spacing: 0;
     line-height: normal;
-    z-index: 6;
+    z-index: 60;
+    cursor: pointer;
+    user-select: none;
 }
 
 .text-wrapper-4 {
@@ -193,7 +213,9 @@ body {
     text-align: center;
     letter-spacing: 0;
     line-height: normal;
-    z-index: 6;
+    z-index: 60;
+    cursor: pointer;
+    user-select: none;
 }
 
 .text-wrapper-5 {
@@ -208,7 +230,9 @@ body {
     text-align: center;
     letter-spacing: 0;
     line-height: normal;
-    z-index: 6;
+    z-index: 60;
+    cursor: pointer;
+    user-select: none;
 }
 
 /* 카테고리 탭 텍스트들 */
@@ -224,6 +248,9 @@ body {
     letter-spacing: 0;
     line-height: 43px;
     width: 104px;
+    z-index: 200;
+    cursor: pointer;
+    user-select: none;
 }
 
 .text-wrapper-7 {
@@ -238,6 +265,9 @@ body {
     letter-spacing: 0;
     line-height: 43px;
     width: 115px;
+    z-index: 200;
+    cursor: pointer;
+    user-select: none;
 }
 
 .text-wrapper-8 {
@@ -252,62 +282,12 @@ body {
     letter-spacing: 0;
     line-height: 43px;
     width: 115px;
+    z-index: 200;
+    cursor: pointer;
+    user-select: none;
 }
 
-/* 뒤로/처음으로 버튼들 */
-.overlap-2 {
-    position: absolute;
-    width: 141px;
-    height: 104px;
-    top: 109px;
-    left: 6px;
-}
-
-.overlap-3 {
-    position: absolute;
-    width: 141px;
-    height: 104px;
-    top: 109px;
-    left: 864px;
-}
-
-.rectangle-11 {
-  position: absolute;
-  width: 141px;
-  height: 104px;
-  top: 0;
-  left: 0;
-  background-color: #aff09a;
-  border-radius: 30px;
-}
-
-.text-wrapper-15 {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    font-family: "Pretendard", Helvetica;
-    font-weight: 600;
-    color: #53575d;
-    font-size: 35px;
-    text-align: center;
-    letter-spacing: 0;
-    line-height: normal;
-    width: 141px;
-}
-
-.text-wrapper-16 {
-    position: absolute;
-    top: 35px;
-    left: 0;
-    font-family: "Pretendard", Helvetica;
-    font-weight: 600;
-    color: #53575d;
-    font-size: 26px;
-    text-align: center;
-    letter-spacing: 0;
-    line-height: normal;
-    width: 141px;
-}
+/* 네비게이션 버튼 스타일은 nav-buttons.css에서 관리됩니다 */
 
 /* 동적 메뉴 컨테이너 */
 .menu-container {
@@ -447,13 +427,15 @@ body {
   text-align: center;
   letter-spacing: 0;
   line-height: 48px;
-  z-index: 10;
+  z-index: 60;
+  cursor: pointer;
+  user-select: none;
 }
 
 .text-wrapper-35 {
   position: absolute;
   top: 484px;
-  left: 157px;
+  left: 194px;
   font-family: "Pretendard", Helvetica;
   font-weight: 600;
   color: #9e9ea4;
@@ -461,7 +443,9 @@ body {
   text-align: center;
   letter-spacing: 0;
   line-height: 48px;
-  z-index: 10;
+  z-index: 60;
+  cursor: pointer;
+  user-select: none;
 }
 
 /* 장바구니 아이콘들 */

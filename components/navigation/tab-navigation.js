@@ -4,13 +4,13 @@
 class TabNavigation {
     constructor(options = {}) {
         this.currentTab = options.activeTab || 'menu';
-        this.onTabChange = options.onTabChange || (() => {});
+        this.onTabChange = options.onTabChange || null;
         this.container = options.container || document.body;
         
         this.tabConfig = {
             menu: { text: '메뉴', background: '.tab-menu', textElement: '.tab-menu-text' },
             option: { text: '옵션', background: '.tab-option', textElement: '.tab-option-text' },
-            benefit: { text: '혜택', background: '.tab-benefit', textElement: '.tab-benefit-text' },
+            benefit: { text: '할인', background: '.tab-benefit', textElement: '.tab-benefit-text' },
             payment: { text: '계산', background: '.tab-payment', textElement: '.tab-payment-text' },
             point: { text: '적립', background: '.tab-point', textElement: '.tab-point-text' }
         };
@@ -21,93 +21,170 @@ class TabNavigation {
     /**
      * 컴포넌트 초기화
      */
-    async init() {
-        await this.loadComponent();
+    init() {
+        console.log('TabNavigation 초기화 시작');
+        this.renderHTML();
         this.setupEventListeners();
         this.setActiveTab(this.currentTab);
         console.log('TabNavigation 컴포넌트 초기화 완료');
     }
 
     /**
-     * HTML과 CSS 로드
+     * HTML 직접 렌더링 (fetch 대신)
      */
-    async loadComponent() {
-        try {
-            // HTML 로드
-            const htmlResponse = await fetch('../../components/navigation/tab-navigation.html');
-            const htmlContent = await htmlResponse.text();
-            
-            // CSS 로드
-            const cssResponse = await fetch('../../components/navigation/tab-navigation.css');
-            const cssContent = await cssResponse.text();
-            
-            // CSS 스타일 추가
-            if (!document.querySelector('#tab-navigation-styles')) {
-                const styleElement = document.createElement('style');
-                styleElement.id = 'tab-navigation-styles';
-                styleElement.textContent = cssContent;
-                document.head.appendChild(styleElement);
-            }
-            
-            // HTML 삽입
-            this.container.innerHTML = htmlContent;
-            
-        } catch (error) {
-            console.error('TabNavigation 컴포넌트 로드 실패:', error);
-            this.fallbackRender();
-        }
-    }
-
-    /**
-     * 폴백 렌더링 (파일 로드 실패 시)
-     */
-    fallbackRender() {
-        this.container.innerHTML = `
+    renderHTML() {
+        console.log('TabNavigation HTML 렌더링 시작');
+        
+        const html = `
             <div class="tab-navigation">
                 <div class="tab-container">
+                    <!-- 상단 메인 탭 버튼들 -->
                     <div class="tab-background tab-menu"></div>
                     <div class="tab-background tab-option"></div>
                     <div class="tab-background tab-benefit"></div>
                     <div class="tab-background tab-point"></div>
                     <div class="tab-background tab-payment"></div>
                     
+                    <!-- 메인 탭 텍스트들 -->
                     <div class="tab-text tab-menu-text">메뉴</div>
                     <div class="tab-text tab-option-text">옵션</div>
-                    <div class="tab-text tab-benefit-text">혜택</div>
+                    <div class="tab-text tab-benefit-text">할인</div>
                     <div class="tab-text tab-point-text">적립</div>
                     <div class="tab-text tab-payment-text">계산</div>
                 </div>
             </div>
         `;
+        
+        this.container.innerHTML = html;
+        console.log('TabNavigation HTML 렌더링 완료');
+    }
+
+    /**
+     * 현재 페이지 위치에 따른 기본 경로 계산
+     */
+    getBasePath() {
+        const currentPath = window.location.pathname;
+        
+        // 페이지별 기본 경로 계산
+        if (currentPath.includes('/pages/menu/')) {
+            return '../../..';
+        } else if (currentPath.includes('/pages/')) {
+            return '../..';
+        } else {
+            return '.';
+        }
+    }
+
+    /**
+     * 페이지별 이동 경로 계산
+     */
+    getPagePath(tabKey) {
+        const currentPath = window.location.pathname;
+        const basePath = this.getBasePath();
+        
+        const pageMap = {
+            menu: '/pages/nuri/nuri-menu.html',
+            option: '/pages/option/option.html',
+            benefit: '/pages/discount/discount.html',
+            point: '/pages/point/point.html',
+            payment: '/pages/payment/payment.html'
+        };
+        
+        // 메뉴 페이지의 경우 일반 메뉴와 누리 메뉴 구분
+        if (tabKey === 'menu') {
+            if (currentPath.includes('/pages/menu/normal/')) {
+                // 일반 메뉴 페이지에서는 누리 메뉴로 이동
+                return `${basePath}/pages/nuri/nuri-menu.html`;
+            } else {
+                // 다른 페이지에서는 누리 메뉴로 이동
+                return `${basePath}/pages/nuri/nuri-menu.html`;
+            }
+        }
+        
+        return `${basePath}${pageMap[tabKey]}`;
     }
 
     /**
      * 이벤트 리스너 설정
      */
     setupEventListeners() {
-        Object.keys(this.tabConfig).forEach(tabKey => {
-            const textElement = this.container.querySelector(this.tabConfig[tabKey].textElement);
-            if (textElement) {
-                textElement.addEventListener('click', () => {
-                    this.handleTabClick(tabKey);
-                });
-            }
-        });
+        console.log('TabNavigation 이벤트 리스너 설정 시작');
+        
+        // 약간의 지연을 두어 DOM이 완전히 렌더링된 후 이벤트 리스너 설정
+        setTimeout(() => {
+            Object.keys(this.tabConfig).forEach(tabKey => {
+                const textElement = this.container.querySelector(this.tabConfig[tabKey].textElement);
+                if (textElement) {
+                    console.log(`이벤트 리스너 설정 성공: ${tabKey} -> ${this.tabConfig[tabKey].textElement}`);
+                    
+                    // 기존 이벤트 리스너 제거 (중복 방지)
+                    textElement.removeEventListener('click', textElement._tabClickHandler);
+                    
+                    // 새 이벤트 리스너 생성 및 저장
+                    textElement._tabClickHandler = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log(`탭 클릭 이벤트 발생: ${tabKey}`);
+                        this.handleTabClick(tabKey);
+                    };
+                    
+                    textElement.addEventListener('click', textElement._tabClickHandler);
+                    
+                    // 클릭 가능하도록 스타일 설정
+                    textElement.style.cursor = 'pointer';
+                    textElement.style.userSelect = 'none';
+                    textElement.style.pointerEvents = 'auto';
+                } else {
+                    console.error(`텍스트 요소를 찾을 수 없음: ${this.tabConfig[tabKey].textElement}`);
+                }
+            });
+            console.log('TabNavigation 이벤트 리스너 설정 완료');
+        }, 100);
     }
 
     /**
      * 탭 클릭 핸들러
      */
     handleTabClick(tabKey) {
-        console.log(`탭 클릭: ${tabKey}`);
-        this.setActiveTab(tabKey);
-        this.onTabChange(tabKey);
+        console.log(`탭 클릭 핸들러 실행: ${tabKey}`);
+        
+        // 현재 탭이 클릭된 경우 아무것도 하지 않음
+        if (tabKey === this.currentTab) {
+            console.log(`현재 탭(${tabKey})이므로 이동하지 않음`);
+            return;
+        }
+        
+        // 커스텀 콜백이 있으면 호출, 없으면 기본 네비게이션 처리
+        if (this.onTabChange && typeof this.onTabChange === 'function') {
+            console.log(`커스텀 콜백 호출: ${tabKey}`);
+            this.onTabChange(tabKey);
+        } else {
+            console.log(`기본 네비게이션 처리: ${tabKey}`);
+            this.navigateToPage(tabKey);
+        }
+    }
+
+    /**
+     * 페이지 이동 처리
+     */
+    navigateToPage(tabKey) {
+        const targetPath = this.getPagePath(tabKey);
+        console.log(`페이지 이동 실행: ${tabKey} -> ${targetPath}`);
+        
+        // 페이지 이동
+        try {
+            window.location.href = targetPath;
+        } catch (error) {
+            console.error(`페이지 이동 실패: ${error}`);
+        }
     }
 
     /**
      * 활성 탭 설정
      */
     setActiveTab(tabKey) {
+        console.log(`활성 탭 설정: ${tabKey}`);
+        
         if (!this.tabConfig[tabKey]) {
             console.warn(`알 수 없는 탭: ${tabKey}`);
             return;
@@ -133,7 +210,7 @@ class TabNavigation {
         if (activeBackground) activeBackground.classList.add('active');
         if (activeText) activeText.classList.add('active');
 
-        console.log(`활성 탭 변경: ${tabKey}`);
+        console.log(`활성 탭 변경 완료: ${tabKey}`);
     }
 
     /**
@@ -184,11 +261,6 @@ class TabNavigation {
     destroy() {
         if (this.container) {
             this.container.innerHTML = '';
-        }
-        
-        const styleElement = document.querySelector('#tab-navigation-styles');
-        if (styleElement) {
-            styleElement.remove();
         }
         
         console.log('TabNavigation 컴포넌트 제거됨');

@@ -31,30 +31,7 @@ body {
   background-color: #f8f8f8;
 }
 
-.back-btn, .home-btn {
-  width: 141px;
-  height: 104px;
-  background-color: #aff09a;
-  border: none;
-  border-radius: 30px;
-  font-size: 35px;
-  font-weight: 600;
-  color: #53575d;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.home-btn {
-  font-size: 30px;
-}
-
-.page-title {
-  font-size: 42px;
-  color: #2c5b3a;
-    font-weight: 700;
-  margin: 0;
-  text-align: center;
-}
+/* 네비게이션 버튼은 nav-buttons.css 컴포넌트에서 처리됩니다 */
 
 /* 메인 컨텐츠 */
 .main-content {

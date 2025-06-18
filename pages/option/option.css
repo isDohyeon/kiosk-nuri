@@ -18,42 +18,7 @@ body {
 
 /* 기존 탭 스타일은 재사용 가능한 컴포넌트로 이동됨 */
 
-/* 뒤로/처음으로 버튼 */
-.nav-buttons {
-  position: absolute;
-  top: 149px;
-  left: 0;
-  width: 1080px;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 40px;
-}
-
-.back-btn {
-  width: 141px;
-  height: 104px;
-  background-color: #aff09a;
-  border: none;
-  border-radius: 30px;
-  font-size: 35px;
-  font-weight: 600;
-  color: #53575d;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.home-btn {
-    width: 141px;
-    height: 104px;
-    background-color: #aff09a;
-    border: none;
-    border-radius: 30px;
-    font-size: 30px;
-    font-weight: 600;
-    color: #53575d;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+/* 네비게이션 버튼 스타일은 nav-buttons.css에서 관리됩니다 */
 
 /* 메인 컨텐츠 */
 main {
@@ -65,25 +30,7 @@ main {
   text-align: center;
 }
 
-/* 주문 상태 텍스트 */
-.order-status {
-  position: absolute;
-  top: 35px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 40px;
-  font-weight: 700;
-  color: #53575d;
-  text-align: center;
-  white-space: nowrap;
-  z-index: 10;
-}
-
-/* 주문 중인 커피 이름 하이라이팅 */
-.order-status .coffee-name {
-  color: #54d761;
-  font-weight: 800;
-}
+/* 주문 상태 텍스트 스타일은 nav-buttons.css에서 관리됩니다 */
 
 /* 옵션 섹션 */
 .options {

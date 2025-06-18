@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../assets/css/global.css">
     <link rel="stylesheet" href="../../assets/css/styleguide.css">
     <link rel="stylesheet" href="../../components/navigation/tab-navigation.css">
+    <link rel="stylesheet" href="../../components/buttons/nav-buttons.css">
     <link rel="stylesheet" href="../../components/modals/barcode-modal.css">
     <link rel="stylesheet" href="../../components/modals/number-modal.css">
     <link rel="stylesheet" href="../discount/discount.css">
@@ -17,12 +18,8 @@
         <!-- 재사용 가능한 탭 네비게이션 컴포넌트 -->
         <div id="navigation-container"></div>
 
-        <!-- 뒤로/처음으로 버튼과 제목 -->
-        <div class="nav-buttons">
-            <button class="back-btn" onclick="goBack()">뒤로</button>
-            <h1 class="page-title">적립 하시겠어요?</h1>
-            <button class="home-btn" onclick="goHome()">처음으로</button>
-        </div>
+        <!-- 네비게이션 버튼 컨테이너 -->
+        <div class="nav-buttons"></div>
 
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
@@ -166,6 +163,7 @@
 
     <!-- 컴포넌트 로드 -->
     <script src="../../components/navigation/tab-navigation.js"></script>
+    <script src="../../components/buttons/nav-buttons.js"></script>
     <script src="../../components/help/help-system.js"></script>
     <script src="../../components/modals/barcode-modal.js"></script>
     <script src="../../components/panels/bottom-panel.js"></script>
@@ -176,44 +174,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             const tabNav = new TabNavigation({
                 container: document.getElementById('navigation-container'),
-                activeTab: 'point', // 적립 탭 활성화
-                onTabChange: handleTabNavigation
+                activeTab: 'point' // 적립 탭 활성화
             });
-            
-            function handleTabNavigation(tabKey) {
-                console.log('탭 변경:', tabKey);
-                
-                switch(tabKey) {
-                    case 'menu':
-                        window.location.href = '../nuri/nuri-menu.html';
-                        break;
-                    case 'option':
-                        window.location.href = '../option/option.html';
-                        break;
-                    case 'benefit':
-                        window.location.href = '../discount/discount.html';
-                        break;
-                    case 'point':
-                        // 현재 페이지이므로 아무것도 하지 않음
-                        break;
-                    case 'payment':
-                        window.location.href = '../payment/payment.html';
-                        break;
-                }
-            }
         });
 
-        function goBack() {
-            window.location.href = '../discount/discount.html';
-        }
-
-        function goHome() {
-            // 모든 데이터 정리
-            localStorage.removeItem('selectedMenuItems');
-            localStorage.removeItem('completedCoffees');
-            localStorage.removeItem('finalOrder');
-            window.location.href = '../../../index.html';
-        }
+        // NavigationButtons 컴포넌트 초기화
+        const navButtons = NavigationButtons.createWithTitle('적립 하시겠어요?', {
+            onBackClick: () => {
+                window.location.href = '../discount/discount.html';
+            },
+            onHomeClick: () => {
+                // 모든 데이터 정리
+                localStorage.removeItem('selectedMenuItems');
+                localStorage.removeItem('completedCoffees');
+                localStorage.removeItem('finalOrder');
+                window.location.href = '../../../index.html';
+            }
+        });
 
         function requestHelp() {
             // PointPage 인스턴스의 requestHelp 메서드 호출

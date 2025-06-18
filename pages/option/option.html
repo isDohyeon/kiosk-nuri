@@ -5,6 +5,8 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../assets/css/global.css" />
     <link rel="stylesheet" href="../../assets/css/styleguide.css" />
+    <link rel="stylesheet" href="../../components/navigation/tab-navigation.css" />
+    <link rel="stylesheet" href="../../components/buttons/nav-buttons.css" />
     <link rel="stylesheet" href="option.css" />
     <title>아메리카노 주문</title>
   </head>
@@ -13,12 +15,8 @@
       <!-- 재사용 가능한 탭 네비게이션 컴포넌트 -->
       <div id="navigation-container"></div>
 
-      <!-- 뒤로/처음으로 버튼 -->
-      <div class="nav-buttons">
-        <button class="back-btn">뒤로</button>
-        <p class="order-status">지금은 아메리카노 주문 중입니다.</p>
-        <button class="home-btn">처음으로</button>
-      </div>
+      <!-- 네비게이션 버튼 컨테이너 -->
+      <div class="nav-buttons"></div>
 
       <main>
         <section class="options">
@@ -59,6 +57,8 @@
     <script src="../../components/help/help-system.js"></script>
     <!-- TabNavigation 컴포넌트 로드 -->
     <script src="../../components/navigation/tab-navigation.js"></script>
+    <!-- NavigationButtons 컴포넌트 로드 -->
+    <script src="../../components/buttons/nav-buttons.js"></script>
     <script src="option.js"></script>
     
     <script>
@@ -66,34 +66,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             const tabNav = new TabNavigation({
                 container: document.getElementById('navigation-container'),
-                activeTab: 'option',
-                onTabChange: handleTabNavigation
+                activeTab: 'option'
             });
-            
-            function handleTabNavigation(tabKey) {
-                console.log('탭 변경:', tabKey);
-                
-                switch(tabKey) {
-                    case 'menu':
-                        window.location.href = '../nuri/nuri-menu.html';
-                        break;
-                    case 'option':
-                        // 현재 페이지이므로 아무것도 하지 않음
-                        break;
-                    case 'benefit':
-                        // TODO: 혜택 페이지로 이동
-                        alert('혜택 페이지는 아직 구현되지 않았습니다.');
-                        break;
-                    case 'payment':
-                        // TODO: 계산 페이지로 이동
-                        alert('계산 페이지는 아직 구현되지 않았습니다.');
-                        break;
-                    case 'point':
-                        // TODO: 적립 페이지로 이동
-                        alert('적립 페이지는 아직 구현되지 않았습니다.');
-                        break;
+
+            // NavigationButtons 컴포넌트 초기화
+            const navButtons = NavigationButtons.createWithTitle('옵션을 선택해주세요.', {
+                onBackClick: () => {
+                    window.location.href = '../nuri/nuri-menu.html';
+                },
+                onHomeClick: () => {
+                    localStorage.clear();
+                    window.location.href = '../../index.html';
                 }
-            }
+            });
         });
     </script>
   </body>

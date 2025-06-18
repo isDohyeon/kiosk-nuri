@@ -11,12 +11,29 @@ class OptionSelectionSystem {
 
     init() {
         console.log('옵션 선택 시스템 초기화 시작...');
+        this.initializeNavigationButtons();
         this.initializeHelpSystem();
         this.loadSelectedMenuItem();
         this.setupEventListeners();
         this.displaySelectedMenuItem();
         this.loadCurrentCoffeeOptions();
         console.log('옵션 선택 시스템 초기화 완료!');
+    }
+
+    initializeNavigationButtons() {
+        // NavigationButtons 컴포넌트 초기화
+        if (typeof NavigationButtons !== 'undefined') {
+            this.navButtons = NavigationButtons.createWithOrderStatus(
+                '지금은 <span class="coffee-name">아메리카노</span> 주문 중입니다.',
+                {
+                    onBackClick: () => this.goBack(),
+                    onHomeClick: () => this.goHome()
+                }
+            );
+            console.log('NavigationButtons 초기화 완료');
+        } else {
+            console.warn('NavigationButtons 클래스를 찾을 수 없습니다.');
+        }
     }
 
     initializeHelpSystem() {
@@ -128,22 +145,24 @@ class OptionSelectionSystem {
     }
 
     displaySelectedMenuItem() {
-        const orderStatusElement = document.querySelector('.order-status');
-        if (orderStatusElement && this.selectedMenuItems.length > 0) {
+        if (this.selectedMenuItems.length > 0) {
             const currentCoffee = this.selectedMenuItems[this.currentCoffeeIndex];
             const progressText = this.selectedMenuItems.length > 1 
                 ? ` (${this.currentCoffeeIndex + 1}/${this.selectedMenuItems.length})`
                 : '';
             
-            // HTML로 구성하여 커피 이름을 하이라이팅
-            orderStatusElement.innerHTML = `지금은 <span class="coffee-name">${currentCoffee.name}</span> 주문 중입니다${progressText}`;
+            // NavigationButtons 컴포넌트의 가운데 컨텐츠 업데이트
+            const statusText = `지금은 <span class="coffee-name">${currentCoffee.name}</span> 주문 중입니다${progressText}`;
             
+            if (this.navButtons) {
+                this.navButtons.updateCenterContent(`<p class="order-status">${statusText}</p>`);
+            }
             
             console.log('주문 상태 텍스트 업데이트:', `지금은 ${currentCoffee.name} 주문 중입니다${progressText}`);
             console.log('현재 커피 인덱스:', this.currentCoffeeIndex);
             console.log('현재 커피 정보:', currentCoffee);
         } else {
-            console.log('주문 상태 업데이트 실패 - 요소 또는 커피 목록 없음');
+            console.log('주문 상태 업데이트 실패 - 커피 목록 없음');
         }
     }
 
@@ -274,21 +293,7 @@ class OptionSelectionSystem {
             });
         }
         
-        // 뒤로 버튼
-        const backButton = document.querySelector('.back-btn');
-        if (backButton) {
-            backButton.addEventListener('click', () => {
-                this.goBack();
-            });
-        }
-        
-        // 처음으로 버튼
-        const homeButton = document.querySelector('.home-btn');
-        if (homeButton) {
-            homeButton.addEventListener('click', () => {
-                this.goHome();
-            });
-        }
+        // 네비게이션 버튼은 이제 NavigationButtons 컴포넌트에서 처리됩니다
     }
 
     setupButtonEventListeners() {

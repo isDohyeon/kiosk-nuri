@@ -5,7 +5,8 @@
   height: 69px;
   top: 40px;
   left: 35px;
-  z-index: 100;
+  z-index: 999;
+  pointer-events: none;
 }
 
 .tab-container {
@@ -74,50 +75,54 @@
   text-align: center;
   letter-spacing: 0;
   line-height: normal;
-  z-index: 6;
+  z-index: 1000;
   cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
   transition: color 0.3s ease;
 }
 
 /* 각 탭 텍스트 위치 */
 .tab-menu-text {
-  top: 19px;
+  top: 21px;
   left: 0;
   width: 225px;
-  font-size: 26px;
+  font-size: 25px;
 }
 
 .tab-option-text {
   top: 21px;
   left: 160px;
   width: 261px;
-  font-size: 22px;
+  font-size: 25px;
 }
 
 .tab-benefit-text {
   top: 21px;
   left: 357px;
   width: 261px;
-  font-size: 22px;
+  font-size: 25px;
 }
 
 .tab-point-text {
   top: 21px;
   left: 553px;
   width: 261px;
-  font-size: 22px;
+  font-size: 25px;
 }
 
 .tab-payment-text {
   top: 21px;
   left: 759px;
   width: 261px;
-  font-size: 22px;
+  font-size: 25px;
 }
 
 /* 활성화된 탭 텍스트 */
 .tab-text.active {
   color: #ffffff !important;
+  top: 16px;
+  font-size: 30px !important;
 }
 
 /* 호버 효과 */

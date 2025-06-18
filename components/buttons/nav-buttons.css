@@ -1,0 +1,195 @@
+/**
+ * 재사용 가능한 네비게이션 버튼 스타일
+ * 뒤로 버튼과 처음으로 버튼에 대한 통합 스타일
+ */
+
+/* 네비게이션 버튼 컨테이너 */
+.nav-buttons {
+  position: absolute;
+  top: 149px;
+  left: 0;
+  width: 1080px;
+  height: 104px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  z-index: 100;
+}
+
+/* 기본 네비게이션 버튼 스타일 */
+.nav-btn {
+  width: 141px;
+  height: 104px;
+  background-color: #54D862;
+  border: none;
+  border-radius: 30px;
+  font-family: "Pretendard", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(175, 240, 154, 0.3);
+  gap: 8px;
+}
+
+/* 버튼 내 아이콘 영역 */
+.nav-btn .icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+/* 아이콘 이미지 스타일 */
+.nav-btn .icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 버튼 텍스트 스타일 */
+.nav-btn .text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* 뒤로 버튼 */
+.nav-btn.back .text {
+  font-size: 18px;
+}
+
+/* 처음으로 버튼 */
+.nav-btn.home .text {
+  font-size: 18px;
+}
+
+/* 호버 효과 */
+.nav-btn:hover {
+  background-color: #54d761;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(175, 240, 154, 0.4);
+}
+
+/* 활성화 효과 */
+.nav-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(175, 240, 154, 0.3);
+}
+
+/* 가운데 컨텐츠 영역 (제목 등) */
+.nav-center-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+  height: 100%;
+}
+
+/* 페이지 제목 스타일 */
+.page-title {
+  font-size: 42px;
+  color: #2c5b3a;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 주문 상태 텍스트 스타일 */
+.order-status {
+  font-size: 40px;
+  font-weight: 700;
+  color: #53575d;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* 커피 이름 하이라이팅 */
+.order-status .coffee-name {
+  color: #54d761;
+  font-weight: 800;
+}
+
+/* 누리 메뉴 페이지용 스타일 (기존 디자인 유지) */
+.nav-buttons.nuri-style {
+  top: 150px;
+  padding: 0 6px;
+  justify-content: space-between;
+  width: 1014px;
+  height: 104px;
+  align-items: center;
+  left: 30;
+  right: 0;
+  margin: 0;
+}
+
+.nav-buttons.nuri-style .nav-btn {
+  position: relative;
+  background-color: #54D862;
+}
+
+.nav-buttons.nuri-style .nav-btn.back .text {
+  font-size: 18px;
+}
+
+.nav-buttons.nuri-style .nav-btn.home .text {
+  font-size: 18px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1080px) {
+  .nav-buttons {
+    width: 100%;
+    padding: 0 20px;
+  }
+  
+  .nav-btn {
+    width: 120px;
+    height: 90px;
+    font-size: 16px;
+  }
+  
+  .nav-btn .text {
+    font-size: 16px;
+  }
+  
+  .nav-btn .icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .page-title {
+    font-size: 36px;
+  }
+  
+  .order-status {
+    font-size: 32px;
+  }
+}
+
+/* 로딩 상태 */
+.nav-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(175, 240, 154, 0.2);
+}
+
+.nav-btn:disabled:hover {
+  background-color: #aff09a;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(175, 240, 154, 0.2);
+} 

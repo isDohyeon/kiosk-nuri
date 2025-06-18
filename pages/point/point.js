@@ -525,22 +525,29 @@ let pointPageInstance;
 
 // 페이지 로드 시 인스턴스 생성
 document.addEventListener('DOMContentLoaded', () => {
+    // NavigationButtons 컴포넌트 초기화
+    const navButtons = NavigationButtons.createWithTitle('적립 하시겠어요?', {
+        onBackClick: () => {
+            window.location.href = '../discount/discount.html';
+        },
+        onHomeClick: () => {
+            // 모든 데이터 정리
+            localStorage.removeItem('selectedMenuItems');
+            localStorage.removeItem('completedCoffees');
+            localStorage.removeItem('finalOrder');
+            localStorage.removeItem('finalOrderWithDiscount');
+            localStorage.removeItem('finalOrderWithPoint');
+            
+            window.location.href = '../../index.html';
+        }
+    });
+
     pointPageInstance = new PointPage();
     window.pointPageInstance = pointPageInstance; // 모달에서 접근 가능하도록
     console.log('PointPage 인스턴스가 window.pointPageInstance에 설정되었습니다.');
 });
 
-function goBack() {
-    if (pointPageInstance) {
-        pointPageInstance.goBack();
-    }
-}
-
-function goHome() {
-    if (pointPageInstance) {
-        pointPageInstance.goHome();
-    }
-}
+// 네비게이션 버튼 핸들러는 NavigationButtons 컴포넌트에서 직접 처리됩니다
 
 function requestHelp() {
     if (pointPageInstance) {

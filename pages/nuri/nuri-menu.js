@@ -60,6 +60,7 @@ class NuriMenuSystem {
         // 초기화 시 기존 데이터 정리
         this.clearPreviousSessionData();
         
+        this.initializeNavigationButtons();
         this.setupEventListeners();
         this.renderMenu();
         
@@ -73,6 +74,21 @@ class NuriMenuSystem {
         this.setupCartEventListeners(); // 장바구니 렌더링 후 이벤트 리스너 설정
         this.updateTabStates();
         console.log('누리 메뉴 시스템 초기화 완료!');
+    }
+
+    initializeNavigationButtons() {
+        // NavigationButtons 컴포넌트 초기화 (누리 스타일)
+        if (typeof NavigationButtons !== 'undefined') {
+            this.navButtons = new NavigationButtons({
+                container: '.nav-buttons.nuri-style',
+                style: 'nuri',
+                onBackClick: () => this.goBack(),
+                onHomeClick: () => this.goHome()
+            });
+            console.log('NavigationButtons (누리 스타일) 초기화 완료');
+        } else {
+            console.warn('NavigationButtons 클래스를 찾을 수 없습니다.');
+        }
     }
 
     setupEventListeners() {
@@ -101,9 +117,7 @@ class NuriMenuSystem {
         addSafeEventListener('.text-wrapper-7', 'click', () => this.switchCategoryTab('tea'), '음료 카테고리');
         addSafeEventListener('.text-wrapper-8', 'click', () => this.switchCategoryTab('dessert'), '디저트 카테고리');
 
-        // 뒤로/처음으로 버튼 이벤트
-        addSafeEventListener('.text-wrapper-15', 'click', () => this.goBack(), '뒤로 버튼');
-        addSafeEventListener('.text-wrapper-16', 'click', () => this.goHome(), '처음으로 버튼');
+        // 네비게이션 버튼은 이제 NavigationButtons 컴포넌트에서 처리됩니다
 
         // 장바구니 토글 이벤트 (vector 요소가 없으므로 주석 처리)
         // addSafeEventListener('.vector', 'click', () => this.toggleCart(), '장바구니 토글');
