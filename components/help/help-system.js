@@ -362,7 +362,7 @@ class HelpSystem {
             
             /* 도움말 텍스트 스타일 */
             .help-text {
-                font-size: 30px;
+                font-size: 26px;
                 color: ${this.config.arrowColor};
                 font-weight: bold;
                 text-shadow: 0 2px 4px rgba(84, 215, 97, 0.3);

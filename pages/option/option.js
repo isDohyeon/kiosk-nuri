@@ -30,7 +30,7 @@ class OptionSelectionSystem {
                     selector: '.options-title',
                     type: 'left',
                     position: 'center',
-                    offsetX: 430,
+                    offsetX: 440,
                     offsetY: -5,
                     message: '차갑게 또는 뜨겁게 중 하나를 선택해주세요',
                     textPosition: 'right'
@@ -39,7 +39,7 @@ class OptionSelectionSystem {
                     selector: '.options-subtitle',
                     type: 'left',
                     position: 'center',
-                    offsetX: 400,
+                    offsetX: 410,
                     offsetY: -5,
                     message: '추가 옵션을 선택하거나 다음 단계로 진행하세요',
                     textPosition: 'right'
@@ -48,7 +48,7 @@ class OptionSelectionSystem {
                     selector: '.button.primary',
                     type: 'bottom',
                     position: 'center',
-                    offsetX: -400,
+                    offsetX: -420,
                     offsetY: -250,
                     message: '다 골랐어요 버튼을 클릭하세요',
                     textPosition: 'left'
