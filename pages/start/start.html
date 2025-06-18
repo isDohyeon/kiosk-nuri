@@ -19,9 +19,7 @@
         <img class="overlap-2" src="../../assets/images/image-takeout.png" />
 
       </div>
-      <div class="group-wrapper" onclick="goToSettings()">
-        <img class="group-2" src="../../assets/images/image-language.png" />
-      </div>
+
       <img class="group-3" src="../../assets/images/logo-nuri-green.png" />
       <div class="text-wrapper-2">주문을 시작하시겠어요?</div>
     </div>
@@ -60,10 +58,7 @@
         }
       }
 
-      function goToSettings() {
-        console.log('설정 화면으로 이동');
-        window.location.href = '../settings/settings.html';
-      }
+
 
       // 뒤로가기 기능
       function goBack() {
@@ -78,8 +73,6 @@
             selectOrderType('dine-in');
           } else if (activeElement.classList.contains('overlap-group')) {
             selectOrderType('takeout');
-          } else if (activeElement.classList.contains('group-wrapper')) {
-            goToSettings();
           }
         } else if (event.key === 'Escape') {
           goBack();

@@ -154,6 +154,12 @@ class TabNavigation {
             return;
         }
         
+        // 옵션 탭 클릭 시 특별 처리
+        if (tabKey === 'option') {
+            this.showOptionMessage();
+            return;
+        }
+        
         // 커스텀 콜백이 있으면 호출, 없으면 기본 네비게이션 처리
         if (this.onTabChange && typeof this.onTabChange === 'function') {
             console.log(`커스텀 콜백 호출: ${tabKey}`);
@@ -162,6 +168,117 @@ class TabNavigation {
             console.log(`기본 네비게이션 처리: ${tabKey}`);
             this.navigateToPage(tabKey);
         }
+    }
+
+    /**
+     * 옵션 메시지 표시
+     */
+    showOptionMessage() {
+        console.log('옵션 메시지 표시');
+        
+        // 기존 메시지가 있으면 제거
+        const existingMessage = document.querySelector('.option-message-overlay');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // 메시지 오버레이 생성
+        const messageOverlay = document.createElement('div');
+        messageOverlay.className = 'option-message-overlay';
+        messageOverlay.innerHTML = `
+            <div class="option-message-container">
+                <div class="option-message-content">
+                    <div class="option-message-text">먼저 메뉴를 선택해주세요!</div>
+                    <button class="option-message-close" onclick="this.closest('.option-message-overlay').remove()">확인</button>
+                </div>
+            </div>
+        `;
+        
+        // CSS 스타일 추가
+        messageOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        `;
+        
+        const messageContainer = messageOverlay.querySelector('.option-message-container');
+        messageContainer.style.cssText = `
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 40px 60px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+        `;
+        
+        const messageText = messageOverlay.querySelector('.option-message-text');
+        messageText.style.cssText = `
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        `;
+        
+        const closeButton = messageOverlay.querySelector('.option-message-close');
+        closeButton.style.cssText = `
+            background-color: #54d761;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 40px;
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        `;
+        
+        // 호버 효과 추가
+        closeButton.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#45c451';
+            this.style.transform = 'translateY(-2px)';
+        });
+        
+        closeButton.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#54d761';
+            this.style.transform = 'translateY(0)';
+        });
+        
+        // 배경 클릭 시 닫기
+        messageOverlay.addEventListener('click', function(e) {
+            if (e.target === messageOverlay) {
+                messageOverlay.remove();
+            }
+        });
+        
+        // ESC 키로 닫기
+        const handleEscape = function(e) {
+            if (e.key === 'Escape') {
+                messageOverlay.remove();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
+        
+        // 문서에 추가
+        document.body.appendChild(messageOverlay);
+        
+        // 3초 후 자동으로 닫기
+        setTimeout(() => {
+            if (document.body.contains(messageOverlay)) {
+                messageOverlay.remove();
+            }
+        }, 3000);
     }
 
     /**

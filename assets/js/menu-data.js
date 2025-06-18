@@ -19,12 +19,16 @@ const MENU_DATA = {
       { id: 'hazelnut-latte', name: '헤이즐넛라떼', price: 3000, image: '아메리카노.png', position: { row: 2, col: 1 } },
       { id: 'chocolate-latte', name: '초코라떼', price: 3500, image: '초코라떼.png', position: { row: 2, col: 2 } },
       { id: 'toffee-nut-latte', name: '토피넛라떼', price: 4000, image: '토피넛라떼.png', position: { row: 2, col: 3 } },
-      { id: 'hazelnut-latte-2', name: '헤이즐넛라떼', price: 3000, image: '아메리카노.png', position: { row: 3, col: 1 } },
+      { id: 'hazelnut-latte-2', name: '돌체라떼', price: 3000, image: '카페라떼.png', position: { row: 3, col: 1 } },
       { id: 'chocolate-latte-2', name: '딥초코라떼', price: 4000, image: '초코라떼.png', position: { row: 3, col: 2 } },
       { id: 'toffee-nut-latte-2', name: '콜드브루라떼', price: 3500, image: '콜드브루라떼.png', position: { row: 3, col: 3 } },
       { id: 'toffee-nut-latte-3', name: '카페모카', price: 3500, image: '카페모카.png', position: { row: 4, col: 1 } },
       { id: 'toffee-nut-latte-5', name: '카푸치노', price: 4000, image: '카푸치노.png', position: { row: 4, col: 2 } },
-      { id: 'toffee-nut-latte-4', name: '아샷추', price: 3500, image: '아샷추.png', position: { row: 4, col: 3 } },
+      { id: 'toffee-nut-latte-4', name: '콜드브루', price: 3500, image: '아샷추.png', position: { row: 4, col: 3 } },
+      { id: 'toffee-nut-latte-6', name: '왕아메리카노', price: 4000, image: '아샷추.png', position: { row: 5, col: 1 } },
+      { id: 'toffee-nut-latte-7', name: '왕카페라떼', price: 4000, image: '카페라떼.png', position: { row: 5, col: 2 } },
+      { id: 'toffee-nut-latte-8', name: '왕초코라떼', price: 4000, image: '초코라떼.png', position: { row: 5, col: 3 } },
+      { id: 'toffee-nut-latte-9', name: '왕콜드브루', price: 4000, image: '아샷추.png', position: { row: 5, col: 4 } },
     ],
     
     new: [
