@@ -195,4 +195,18 @@
 
 .UI .group-wrapper:hover {
   transform: scale(1.05);
+}
+
+/* 물음표 아이콘 스타일 */
+.UI .question-mark-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-size: 60px;
+  font-weight: 700;
+  color: #54d761;
+  text-align: center;
+  line-height: 1;
 } 

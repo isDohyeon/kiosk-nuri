@@ -37,9 +37,6 @@ class NuriMenuSystem {
                 { id: 32, name: "유자차", price: 3000, image: "../../assets/images/menu/tea/유자차.png" }
             ],
             dessert: [
-                { id: 41, name: "초코스모쿠키", price: 2500, image: "../../assets/images/menu/dessert/초코스모어쿠키.png" },
-                { id: 42, name: "초코칩쿠키", price: 2000, image: "../../assets/images/menu/dessert/초코칩쿠키.png" },
-                { id: 43, name: "마카다미쿠키", price: 2000, image: "../../assets/images/menu/dessert/마카다미쿠키.png" },
                 { id: 44, name: "밀크티쿠키", price: 3500, image: "../../assets/images/menu/dessert/밀크티쿠키.png" },
                 { id: 45, name: "몽쉘케이크", price: 2500, image: "../../assets/images/menu/dessert/몽쉘케이크.png" },
                 { id: 46, name: "초코마카롱", price: 2000, image: "../../assets/images/menu/dessert/초코마카롱.png" },
