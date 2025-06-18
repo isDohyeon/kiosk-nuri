@@ -4,6 +4,7 @@ class PointPage {
         this.orderData = null;
         this.helpSystem = new HelpSystem();
         this.bottomPanel = null;
+        this.keypadEventListeners = []; // 키패드 이벤트 리스너 참조 저장
         // 적립 페이지 인스턴스를 전역으로 등록
         window.pointPageInstance = this;
         this.init();
@@ -170,8 +171,8 @@ class PointPage {
                 errorElement.classList.add('hidden');
             }
             
-            // 키패드 리스너 플래그 리셋
-            this.keypadListenersSet = false;
+            // 키패드 이벤트 리스너 제거
+            this.removeKeypadEventListeners();
         }
     }
 
@@ -239,18 +240,33 @@ class PointPage {
 
     // 키패드 이벤트 리스너 설정
     setupKeypadEventListeners() {
-        // 기존 리스너가 이미 설정되어 있다면 중복 설정 방지
-        if (this.keypadListenersSet) {
-            return;
-        }
+        // 기존 리스너들 먼저 제거
+        this.removeKeypadEventListeners();
         
         const keypadBtns = document.querySelectorAll('#numberModal .keypad-btn');
         
         keypadBtns.forEach(btn => {
-            btn.addEventListener('click', this.handleKeypadClick.bind(this));
+            const handler = this.handleKeypadClick.bind(this);
+            btn.addEventListener('click', handler);
+            
+            // 나중에 제거할 수 있도록 참조 저장
+            this.keypadEventListeners.push({
+                element: btn,
+                type: 'click',
+                handler: handler
+            });
         });
         
-        this.keypadListenersSet = true;
+        console.log('키패드 이벤트 리스너 설정 완료:', this.keypadEventListeners.length);
+    }
+
+    // 키패드 이벤트 리스너 제거
+    removeKeypadEventListeners() {
+        this.keypadEventListeners.forEach(({ element, type, handler }) => {
+            element.removeEventListener(type, handler);
+        });
+        this.keypadEventListeners = [];
+        console.log('키패드 이벤트 리스너 제거 완료');
     }
 
     // 키패드 클릭 처리
