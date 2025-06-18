@@ -535,7 +535,7 @@ class DiscountPage {
         this.selectedDiscountMethods.forEach(method => {
             switch (method) {
                 case 'number':
-                    const numberDiscount = Math.floor(originalAmount * 0.05);
+                    const numberDiscount = Math.floor(originalAmount * 0.1);
                     discountAmount += numberDiscount;
                     console.log(`번호 조회 할인: ₩${numberDiscount.toLocaleString()}`);
                     break;
@@ -552,13 +552,13 @@ class DiscountPage {
             let carrierDiscount = 0;
             switch (this.selectedCarrier) {
                 case 'skt':
-                    carrierDiscount = Math.floor(originalAmount * 0.03); // 3% 추가 할인
+                    carrierDiscount = Math.floor(originalAmount * 0.03);
                     break;
                 case 'kt':
-                    carrierDiscount = Math.floor(originalAmount * 0.05); // 5% 추가 할인
+                    carrierDiscount = Math.floor(originalAmount * 0.04);
                     break;
                 case 'uplus':
-                    carrierDiscount = Math.floor(originalAmount * 0.04); // 4% 추가 할인
+                    carrierDiscount = Math.floor(originalAmount * 0.05);
                     break;
             }
             discountAmount += carrierDiscount;

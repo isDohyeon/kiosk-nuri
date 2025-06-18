@@ -591,7 +591,7 @@ class NuriMenuSystem {
                     // 10초 후 자동으로 도움말 숨기기
                     setTimeout(() => {
                         this.helpSystem.hideHelp('helpButton');
-                    }, 10000);
+                    }, 60000);
                 }
             }, 100);
             
