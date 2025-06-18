@@ -37,6 +37,16 @@
         const selectedMode = getSelectedMode();
         console.log(`${orderType} 선택됨, 모드: ${selectedMode}`);
         
+        // 새 주문 시작 - 이전 세션 데이터 정리
+        sessionStorage.clear();
+        localStorage.removeItem('selectedMenuItems');
+        localStorage.removeItem('completedCoffees');
+        localStorage.removeItem('finalOrder');
+        localStorage.removeItem('finalOrderWithDiscount');
+        localStorage.removeItem('finalOrderWithPoint');
+        localStorage.removeItem('coffeeOptions');
+        localStorage.removeItem('nonCoffeeItems');
+        
         // 선택된 주문 유형을 로컬 스토리지에 저장
         localStorage.setItem('orderType', orderType);
         localStorage.setItem('selectedMode', selectedMode);

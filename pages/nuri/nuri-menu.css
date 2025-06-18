@@ -18,7 +18,7 @@ body {
     position: absolute;
     top: 120px;
     left: 35px;
-    z-index: 50;
+    z-index: 100;
 }
 
 .UI {
@@ -35,22 +35,14 @@ body {
   overflow: hidden;
 }
 
-/* 상단 탭 영역 */
-.overlap {
+/* 카테고리 탭 영역 */
+.category-container {
   position: absolute;
-  width: 1010px;
-  height: 297px;
-  top: 40px;
-  left: 35px;
-  z-index: 50;
-}
-
-.overlap-group {
-  position: absolute;
-  width: 1010px;
-  height: 297px;
-  top: 0;
-  left: 0;
+  width: 598px;
+  height: 120px;
+  top: 217px;
+  left: 234px;
+  z-index: 300;
 }
 
 /* 회전된 카테고리 탭들 */
@@ -58,34 +50,40 @@ body {
     position: absolute;
     width: 104px;
     height: 223px;
-    top: 51px;
-    left: 234px;
+    top: -125px;
+    left: 38px;
     background-color: #e4e4e5;
     border-radius: 30px 30px 0px 0px;
     transform: rotate(-90deg);
+    transform-origin: center center;
+    z-index: 310;
 }
 
 .div {
     position: absolute;
     width: 108px;
     height: 223px;
-    top: 51px;
-    left: 451px;
+    top: -125px;
+    left: 255px;
     background-color: #e4e4e5;
     border: 4px solid #ffffff;
     transform: rotate(-90deg);
+    transform-origin: center center;
+    z-index: 310;
 }
 
 .rectangle-2 {
     position: absolute;
     width: 108px;
     height: 223px;
-    top: 51px;
-    left: 670px;
+    top: -125px;
+    left: 474px;
     background-color: #e4e4e5;
     border-radius: 0px 0px 30px 30px;
     border: 4px solid #ffffff;
     transform: rotate(-90deg);
+    transform-origin: center center;
+    z-index: 310;
 }
 
 /* 상단 메인 탭 버튼들 */
@@ -238,8 +236,8 @@ body {
 /* 카테고리 탭 텍스트들 */
 .text-wrapper-6 {
     position: absolute;
-    top: 140px;
-    left: 234px;
+    top: -34px;
+    left: 36px;
     font-family: "Pretendard", Helvetica;
     font-weight: 600;
     color: #ffffff;
@@ -248,15 +246,15 @@ body {
     letter-spacing: 0;
     line-height: 43px;
     width: 104px;
-    z-index: 200;
+    z-index: 320;
     cursor: pointer;
     user-select: none;
 }
 
 .text-wrapper-7 {
     position: absolute;
-    top: 140px;
-    left: 443px;
+    top: -34px;
+    left: 253px;
     font-family: "Pretendard", Helvetica;
     font-weight: 600;
     color: #7e7e87;
@@ -264,16 +262,16 @@ body {
     text-align: center;
     letter-spacing: 0;
     line-height: 43px;
-    width: 115px;
-    z-index: 200;
+    width: 108px;
+    z-index: 320;
     cursor: pointer;
     user-select: none;
 }
 
 .text-wrapper-8 {
     position: absolute;
-    top: 140px;
-    left: 662px;
+    top: -34px;
+    left: 472px;
     font-family: "Pretendard", Helvetica;
     font-weight: 600;
     color: #7e7e87;
@@ -281,8 +279,8 @@ body {
     text-align: center;
     letter-spacing: 0;
     line-height: 43px;
-    width: 115px;
-    z-index: 200;
+    width: 108px;
+    z-index: 320;
     cursor: pointer;
     user-select: none;
 }

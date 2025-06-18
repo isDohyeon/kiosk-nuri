@@ -425,7 +425,9 @@ class OptionSelectionSystem {
             allCompletedCoffees.push({
                 ...coffee,
                 options: options,
-                completedAt: new Date().toISOString()
+                completedAt: new Date().toISOString(),
+                selectedTimestamp: coffee.selectedTimestamp || Date.now(), // 원래 선택 시간 보존
+                uniqueId: `${coffee.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` // 고유 ID 생성
             });
         });
         
