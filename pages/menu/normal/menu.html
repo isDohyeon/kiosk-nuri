@@ -16,11 +16,11 @@
   </head>
   <body>
     <div class="UI" id="menu-container">
-      <!-- 재사용 가능한 탭 네비게이션 컴포넌트 -->
-      <div id="navigation-container"></div>
+      <!-- 일반 모드에서는 탭 네비게이션 숨김 -->
+      <!-- <div id="navigation-container"></div> -->
 
-      <!-- 네비게이션 버튼 컨테이너 -->
-      <div class="nav-buttons"></div>
+      <!-- 일반 모드에서는 네비게이션 버튼 숨김 -->
+      <!-- <div class="nav-buttons"></div> -->
 
       <!-- 헤더 영역 -->
       <div class="overlap-13">
@@ -61,13 +61,16 @@
     <script>
       // 페이지 로드 시 메뉴 렌더러 초기화
       document.addEventListener('DOMContentLoaded', function() {
-        // 탭 네비게이션 초기화
+        // 일반 모드에서는 탭 네비게이션 초기화 안함
+        /*
         const tabNav = new TabNavigation({
           container: document.getElementById('navigation-container'),
           activeTab: 'menu'
         });
+        */
 
-        // NavigationButtons 컴포넌트 초기화 (텍스트 없이)
+        // 일반 모드에서는 네비게이션 버튼 초기화 안함
+        /*
         const navButtons = NavigationButtons.createButtonsOnly({
           onBackClick: () => {
             window.location.href = '../../../index.html';
@@ -77,6 +80,23 @@
             window.location.href = '../../../index.html';
           }
         });
+        */
+
+        // home-icon 클릭 이벤트 추가
+        const homeIcon = document.querySelector('.home-icon');
+        if (homeIcon) {
+          homeIcon.addEventListener('click', function() {
+            // 모든 데이터 정리
+            localStorage.clear();
+            // 첫 화면으로 이동
+            window.location.href = '../../../index.html';
+          });
+          
+          // 클릭 가능한 요소임을 시각적으로 표시
+          homeIcon.style.cursor = 'pointer';
+          
+          console.log('홈 아이콘 클릭 이벤트 등록됨');
+        }
 
         // MenuRenderer 인스턴스 생성
         const menuRenderer = new MenuRenderer('#menu-container');

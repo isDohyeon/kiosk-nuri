@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>누리 키오스크 소개</title>
+    <link rel="stylesheet" href="../../assets/css/global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="UI nuri-info-page">
+        <!-- 뒤로가기 버튼 -->
+        <button class="nuri-info-back-button" onclick="goBack()">
+            <span class="nuri-info-back-text">뒤로</span>
+        </button>
+        
+        <!-- 누리 키오스크 설명 이미지 -->
+        <img src="../../assets/images/nuri-info.png" alt="누리 키오스크 설명" class="nuri-info-image">
+    </div>
+
+    <script>
+        function goBack() {
+            // 메인 페이지로 돌아가기
+            window.location.href = '../../index.html';
+        }
+
+        // 키보드 접근성 지원
+        document.addEventListener('keydown', function(event) {
+            // ESC 키로 뒤로가기
+            if (event.key === 'Escape') {
+                goBack();
+            }
+            // Enter 또는 Space로 뒤로가기 버튼 활성화
+            if ((event.key === 'Enter' || event.key === ' ') && document.activeElement.classList.contains('nuri-info-back-button')) {
+                event.preventDefault();
+                goBack();
+            }
+        });
+
+        // 페이지 로드 완료 시 로그
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('누리 키오스크 설명 페이지 로드 완료');
+        });
+    </script>
+</body>
+</html> 
