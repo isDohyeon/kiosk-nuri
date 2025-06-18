@@ -323,13 +323,13 @@ class HelpSystem {
             /* 도움이 필요해요 버튼 전역 스타일 */
             .button.secondary {
                 background-color: #ffffff !important;
-                color: ${this.config.arrowColor} !important;
-                border: 2px solid ${this.config.arrowColor} !important;
+                color: #9e9ea4 !important;
+                border: none !important;
             }
             
             .button.secondary:hover {
                 background-color: #f8f8f8 !important;
-                color: ${this.config.arrowColor} !important;
+                color: #9e9ea4 !important;
             }
             
             /* 화살표 컨테이너 스타일 */

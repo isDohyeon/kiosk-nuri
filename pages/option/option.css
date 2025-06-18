@@ -121,15 +121,15 @@ main {
 .options-grid {
   display: flex;
   gap: 30px;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
   align-items: center;
   justify-content: flex-start;
 }
 
 /* 옵션 카드 */
 .option-card {
-  width: 250px;
-  height: 317px;
+  width: 300px;
+  height: 300px;
   background-color: #ffffff;
   border-radius: 36px;
   border: 4px solid #e4e4e5;
@@ -139,7 +139,7 @@ main {
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0;
 }
 
 .option-card:hover {
@@ -159,8 +159,18 @@ main {
 
 .option-icon {
   width: 100px;
-  height: 149px;
+  height: 140px;
+  margin-top: 5px;
   margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-icon img {
+  width: 100px;
+  height: 140px;
+  object-fit: contain;
 }
 
 .option-label {
@@ -202,10 +212,10 @@ main {
   vertical-align: middle;
 }
 
-/* 추가 옵션들의 아이콘 크기 조정 */
+/* 2단계 옵션들도 동일한 아이콘 크기 사용 */
 .options-grid:last-child .option-icon {
   width: 100px;
-  height: 140px;
+  height: 130px;
 }
 
 /* 푸터 */
@@ -233,6 +243,14 @@ footer {
 .button.secondary {
   background-color: #ffffff;
   color: #9e9ea4;
+  border: none;
+}
+
+.button.secondary:hover {
+  background-color: #f8f8f8;
+  color: #9e9ea4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .button.primary {
@@ -240,7 +258,7 @@ footer {
   color: #ffffff;
 }
 
-.button:hover {
+.button.primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
