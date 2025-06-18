@@ -5,6 +5,7 @@ class NuriMenuSystem {
         this.currentCategoryTab = 'coffee';
         this.cartItems = [];
         this.isCartExpanded = false;
+        this.helpSystem = null;
         
         this.menuData = {
             coffee: [
@@ -54,6 +55,9 @@ class NuriMenuSystem {
         // 장바구니 관리자 초기화
         this.cartManager = new CartManager(this.menuData);
         
+        // Help System 초기화
+        this.initializeHelpSystem();
+        
         this.init();
     }
 
@@ -99,6 +103,9 @@ class NuriMenuSystem {
         this.updateTabStates();
         
         console.log('누리 메뉴 시스템 초기화 완료!');
+        
+        // 첫 세션 감지 및 도움말 표시
+        this.checkFirstSession();
     }
 
     initializeNavigationButtons() {
@@ -493,7 +500,19 @@ class NuriMenuSystem {
     }
 
     requestHelp() {
-        alert('직원을 호출하였습니다. 잠시만 기다려주세요.');
+        console.log('도움말 시스템 활성화');
+        
+        if (this.helpSystem) {
+            // 기존에 표시된 모든 도움말 제거 (특히 helpButton 도움말)
+            this.helpSystem.hideHelp('helpButton');
+            this.helpSystem.hideHelp();
+            
+            // 새로운 도움말들 표시 (계속 유지됨)
+            setTimeout(() => {
+                this.helpSystem.showHelp('finishButton');
+                this.helpSystem.showHelp('categoryTabs');
+            }, 100);
+        }
     }
 
     goToBenefitStep() {
@@ -516,6 +535,74 @@ class NuriMenuSystem {
         
         // 할인 페이지로 이동
         window.location.href = '../discount/discount.html';
+    }
+
+    initializeHelpSystem() {
+        if (typeof HelpSystem !== 'undefined') {
+            this.helpSystem = new HelpSystem({
+                arrowColor: '#54d761',
+                highlightColor: '#54d761'
+            });
+            
+            // "도움이 필요해요" 버튼에 대한 도움말 타겟 등록 (첫 세션용)
+            this.helpSystem.registerTarget('helpButton', {
+                selector: '.text-wrapper-35',
+                type: 'bottom',
+                message: '현재 화면에서 도움이 필요하면 눌러주세요!',
+                textPosition: 'right',
+                offsetY: -200,
+                offsetX: 100
+            });
+
+            // "다 골랐어요" 버튼에 대한 도움말 타겟 등록
+            this.helpSystem.registerTarget('finishButton', {
+                selector: '.text-wrapper-34',
+                type: 'bottom',
+                message: '메뉴 선택이 끝나면 다 골랐어요 버튼을 눌러주세요!',
+                textPosition: 'left',
+                offsetY: -200,
+                offsetX: -420
+            });
+
+            // 카테고리 탭에 대한 도움말 타겟 등록
+            this.helpSystem.registerTarget('categoryTabs', {
+                selector: '.rectangle.active-category',
+                type: 'top',
+                message: '여기서 메뉴의 종류를 선택할 수 있어요!',
+                textPosition: 'right',
+                offsetY: 190
+            });
+            
+            console.log('Help System 초기화 완료');
+        } else {
+            console.warn('HelpSystem 클래스를 찾을 수 없습니다.');
+        }
+    }
+
+    checkFirstSession() {
+        // 첫 세션인지 확인 (nuri-menu-visited 키 사용)
+        const hasVisitedBefore = localStorage.getItem('nuri-menu-visited');
+        
+        if (!hasVisitedBefore) {
+            console.log('첫 세션 감지됨 - 도움말 표시');
+            
+            // 페이지 요소들이 완전히 로드된 후 도움말 표시
+            setTimeout(() => {
+                if (this.helpSystem) {
+                    this.helpSystem.showHelp('helpButton');
+                    
+                    // 10초 후 자동으로 도움말 숨기기
+                    setTimeout(() => {
+                        this.helpSystem.hideHelp('helpButton');
+                    }, 10000);
+                }
+            }, 100);
+            
+            // 방문 기록 저장
+            localStorage.setItem('nuri-menu-visited', 'true');
+        } else {
+            console.log('재방문 세션 - 도움말 표시하지 않음');
+        }
     }
 }
 

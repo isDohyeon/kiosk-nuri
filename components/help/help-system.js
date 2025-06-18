@@ -320,6 +320,11 @@ class HelpSystem {
                 color: #ffffff !important;
             }
             
+            /* "다 골랐어요" 버튼에 하이라이트 적용 시 흰색 텍스트 유지 */
+            .text-wrapper-34.help-highlight {
+                color: #ffffff !important;
+            }
+            
             /* 도움이 필요해요 버튼 전역 스타일 */
             .button.secondary {
                 background-color: #ffffff !important;

@@ -17,6 +17,7 @@ class PaymentPage {
         this.initPaymentMethods();
         this.updatePriceSummary();
         this.renderOrderItems(); // 주문 내역 카드 렌더링 추가
+        this.showHelpSystem(); // 페이지 로드 시 헬프 시스템 자동 표시
         console.log('결제 페이지 초기화 완료. 현재 주문 데이터:', this.orderData);
     }
 
@@ -447,8 +448,12 @@ class PaymentPage {
     // 도움 요청
     requestHelp() {
         if (this.helpSystem) {
-            this.helpSystem.showHelp('payment-methods');
-            this.helpSystem.showHelp('complete');
+            // 기존 헬프 시스템이 있으면 갱신, 없으면 표시
+            this.helpSystem.hideHelp();
+            setTimeout(() => {
+                this.helpSystem.showHelp('payment-methods');
+                this.helpSystem.showHelp('order-items-title');
+            }, 100);
         } else {
             alert('도움을 요청했습니다. 직원이 곧 도와드리겠습니다.');
         }
@@ -457,15 +462,37 @@ class PaymentPage {
     // 도움 대상 설정
     setupHelpTargets() {
         if (this.helpSystem) {
+            // 결제 방법 선택 섹션에 대한 도움말
             this.helpSystem.registerTarget('payment-methods', {
-                selector: '.payment-methods',
+                selector: '.payment-section',
                 type: 'bottom',
-                message: '원하시는 결제 방법을 선택하시면 바로 결제가 진행됩니다.',
-                position: 'center',
-                offsetX: -240,
+                message: '원하시는 결제 방법을 선택해주세요!',
+                textPosition: 'right',
                 offsetY: -750,
-                textPosition: 'right'
+                offsetX: -210
             });
+
+            // 주문내역 타이틀에 대한 도움말
+            this.helpSystem.registerTarget('order-items-title', {
+                selector: '.order-items-title',
+                type: 'left',
+                message: '주문 내역을 확인해주세요!',
+                textPosition: 'right',
+                offsetX: 210,
+                offsetY: -2
+            });
+        }
+    }
+
+    // 헬프 시스템 표시
+    showHelpSystem() {
+        if (this.helpSystem) {
+            // 페이지 요소들이 완전히 로드된 후 헬프 시스템 표시
+            setTimeout(() => {
+                this.helpSystem.showHelp('payment-methods');
+                this.helpSystem.showHelp('order-items-title');
+                console.log('결제 페이지 헬프 시스템 표시됨');
+            }, 500);
         }
     }
 

@@ -580,14 +580,14 @@ class PointPage {
                 position: 'end',
                 offsetX: 300,
                 offsetY: -20,
-                message: '일반 적립 방법을 선택해주세요'
+                message: '적립을 원하시면, 적립 방법을 선택해주세요!'
             },
             'complete': {
                 selector: '.primary-button',
                 type: 'bottom',
                 offsetX: -550,
                 offsetY: -250,
-                message: '적립이 필요 없으시면, 다음으로 버튼을 눌러주세요',
+                message: '적립이 필요 없으시면, 다음으로 버튼을 눌러주세요!',
                 textPosition: 'left'
             }
         });

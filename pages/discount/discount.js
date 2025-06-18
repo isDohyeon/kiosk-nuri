@@ -704,7 +704,7 @@ class DiscountPage {
                 position: 'end',
                 offsetX: 370,
                 offsetY: -20,
-                message: '카페 회원이시면, 일반 할인 방법을 선택해주세요'
+                message: '카페 회원이시면, 회원 할인 방법을 선택해주세요!'
             },
             'carrier-discount': {
                 selector: '.carrier-discount .section-title',
@@ -712,7 +712,7 @@ class DiscountPage {
                 position: 'end',
                 offsetX: 333,
                 offsetY: -19,
-                message: '통신사 회원이시면, 통신사 할인을 선택해주세요'
+                message: '통신사 회원이시면, 통신사 할인을 선택해주세요!'
             },
             'complete': {
                 selector: '.primary-button',
@@ -720,7 +720,7 @@ class DiscountPage {
                 position: 'center',
                 offsetX: -550,
                 offsetY: -250,
-                message: '할인이 필요 없으시면, 다음으로 버튼을 눌러주세요',
+                message: '할인이 필요 없으시면, 다음으로 버튼을 눌러주세요!',
                 textPosition: 'left'
             }
         });

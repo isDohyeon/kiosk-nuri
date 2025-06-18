@@ -49,7 +49,7 @@ class OptionSelectionSystem {
                     position: 'center',
                     offsetX: 440,
                     offsetY: -5,
-                    message: '차갑게 또는 뜨겁게 중 하나를 선택해주세요',
+                    message: '차갑게 또는 뜨겁게 중 하나를 선택해주세요!',
                     textPosition: 'right'
                 },
                 'step2': {
@@ -58,16 +58,16 @@ class OptionSelectionSystem {
                     position: 'center',
                     offsetX: 410,
                     offsetY: -5,
-                    message: '추가 옵션을 선택하거나 다음 단계로 진행하세요',
+                    message: '추가 옵션을 선택하거나, 다 골랐어요 버튼을 눌러주세요!',
                     textPosition: 'right'
                 },
                 'step3': {
                     selector: '.button.primary',
                     type: 'bottom',
                     position: 'center',
-                    offsetX: -420,
+                    offsetX: -360,
                     offsetY: -250,
-                    message: '다 골랐어요 버튼을 클릭하세요',
+                    message: '다 골랐어요 버튼을 눌러주세요!',
                     textPosition: 'left'
                 }
             });
