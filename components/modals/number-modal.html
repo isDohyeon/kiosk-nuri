@@ -12,9 +12,8 @@
         <!-- 번호 입력 영역 -->
         <div class="number-input-area">
             <div class="input-container">
-                <label for="phoneNumber" class="input-label">휴대폰 번호 입력</label>
                 <input type="tel" id="phoneNumber" class="phone-input" 
-                       placeholder="010-0000-0000" maxlength="13">
+                       placeholder="010-1234-5678" maxlength="13">
                 <div class="input-error hidden" id="phoneError">올바른 휴대폰 번호를 입력해주세요.</div>
             </div>
             
@@ -43,15 +42,10 @@
             </div>
         </div>
         
-        <!-- 안내 텍스트 -->
-        <div class="instruction-text">
-            할인받을 휴대폰 번호를 입력해주세요.
-        </div>
-        
         <!-- 버튼 영역 -->
         <div class="button-area">
             <button class="btn-cancel" onclick="closeNumberModal()">취소하기</button>
-            <button class="btn-confirm" onclick="confirmPhoneNumber()">확인</button>
+            <button class="btn-retry" onclick="confirmPhoneNumber()">확인</button>
         </div>
     </div>
 </div> 

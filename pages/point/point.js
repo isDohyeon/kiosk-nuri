@@ -5,6 +5,7 @@ class PointPage {
         this.helpSystem = new HelpSystem();
         this.bottomPanel = null;
         this.keypadEventListeners = []; // 키패드 이벤트 리스너 참조 저장
+        this.modalsLoaded = false; // 모달 로드 상태 추적
         // 적립 페이지 인스턴스를 전역으로 등록
         window.pointPageInstance = this;
         this.init();
@@ -13,11 +14,87 @@ class PointPage {
     async init() {
         console.log('적립 페이지 초기화 시작');
         this.loadOrderData();
+        await this.loadModals(); // 모달 컴포넌트 로드
         await this.initBottomPanel();
         this.setupHelpTargets();
         this.initPointMethods();
         this.updatePriceSummary();
         console.log('적립 페이지 초기화 완료. 현재 주문 데이터:', this.orderData);
+    }
+
+    // 모달 컴포넌트들을 동적으로 로드
+    async loadModals() {
+        try {
+            // 바코드 모달 HTML 로드
+            const barcodeResponse = await fetch('../../components/modals/barcode-modal.html');
+            const barcodeHTML = await barcodeResponse.text();
+            
+            // 번호 조회 모달 HTML 로드
+            const numberResponse = await fetch('../../components/modals/number-modal.html');
+            const numberHTML = await numberResponse.text();
+            
+            // HTML에서 모달 부분만 추출하여 body에 추가
+            const parser = new DOMParser();
+            const barcodeDoc = parser.parseFromString(barcodeHTML, 'text/html');
+            const numberDoc = parser.parseFromString(numberHTML, 'text/html');
+            
+            const barcodeModal = barcodeDoc.getElementById('barcodeModal');
+            const numberModal = numberDoc.getElementById('numberModal');
+            
+            if (barcodeModal) {
+                document.body.appendChild(barcodeModal);
+            }
+            
+            if (numberModal) {
+                // 번호 조회 모달의 제목을 적립용으로 수정
+                const modalTitle = numberModal.querySelector('.modal-title');
+                if (modalTitle) {
+                    modalTitle.textContent = '적립 번호 조회';
+                }
+                document.body.appendChild(numberModal);
+            }
+            
+            // 바코드 모달 JavaScript 동적 로드
+            await this.loadBarcodeModalScript();
+            
+            this.modalsLoaded = true;
+            console.log('모달 컴포넌트 로드 완료');
+        } catch (error) {
+            console.error('모달 로드 실패:', error);
+        }
+    }
+
+    // 바코드 모달 JavaScript 동적 로드
+    async loadBarcodeModalScript() {
+        return new Promise((resolve, reject) => {
+            // 이미 로드되어 있는지 확인
+            if (window.BarcodeModal) {
+                console.log('바코드 모달 JavaScript 이미 로드됨');
+                // 이미 로드된 경우에도 다시 초기화
+                window.BarcodeModal.init();
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = '../../components/modals/barcode-modal.js';
+            script.onload = () => {
+                console.log('바코드 모달 JavaScript 로드 완료');
+                
+                // 바코드 모달 초기화
+                if (window.BarcodeModal) {
+                    window.BarcodeModal.init();
+                    console.log('바코드 모달 초기화 완료');
+                }
+                
+                resolve();
+            };
+            script.onerror = () => {
+                console.error('바코드 모달 JavaScript 로드 실패');
+                reject(new Error('바코드 모달 JavaScript 로드 실패'));
+            };
+            document.head.appendChild(script);
+        });
     }
 
     // 하단 패널 초기화
@@ -103,18 +180,31 @@ class PointPage {
     // 바코드 모달 열기
     openBarcodeModal() {
         console.log('바코드 모달을 엽니다.');
-        if (typeof openBarcodeModal === 'function') {
-            openBarcodeModal();
-        } else if (window.BarcodeModal) {
+        
+        if (!this.modalsLoaded) {
+            alert('모달이 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요.');
+            return;
+        }
+        
+        console.log('BarcodeModal 객체 확인:', window.BarcodeModal);
+        
+        if (window.BarcodeModal) {
+            console.log('BarcodeModal.open() 호출');
             window.BarcodeModal.open();
         } else {
+            console.error('BarcodeModal 객체가 없습니다.');
             alert('바코드 스캔 기능이 준비되지 않았습니다.');
         }
     }
 
-    // 번호 조회 모달 열기 (내장된 모달 사용)
+    // 번호 조회 모달 열기
     openNumberModal() {
         console.log('번호 조회 모달을 엽니다.');
+        
+        if (!this.modalsLoaded) {
+            alert('모달이 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요.');
+            return;
+        }
         
         const modal = document.getElementById('numberModal');
         if (modal) {
@@ -367,8 +457,6 @@ class PointPage {
             this.proceedToNext();
         }
     }
-
-
 
     // 가격 요약 업데이트 (적립 화면에서는 가격 변경 없음)
     updatePriceSummary() {

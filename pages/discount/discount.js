@@ -7,18 +7,97 @@ class DiscountPage {
         this.helpSystem = new HelpSystem();
         this.bottomPanel = null;
         this.keypadEventListeners = []; // 키패드 이벤트 리스너 참조 저장
+        this.modalsLoaded = false; // 모달 로드 상태 추적
         this.init();
     }
 
     async init() {
         console.log('할인 페이지 초기화 시작');
         this.loadOrderData();
+        await this.loadModals(); // 모달 컴포넌트 로드
         await this.initBottomPanel();
         this.setupHelpTargets();
         this.initDiscountMethods();
         this.initCarrierOptions();
         this.updatePriceSummary();
         console.log('할인 페이지 초기화 완료. 현재 주문 데이터:', this.orderData);
+    }
+
+    // 모달 컴포넌트들을 동적으로 로드
+    async loadModals() {
+        try {
+            // 바코드 모달 HTML 로드
+            const barcodeResponse = await fetch('../../components/modals/barcode-modal.html');
+            const barcodeHTML = await barcodeResponse.text();
+            
+            // 번호 조회 모달 HTML 로드
+            const numberResponse = await fetch('../../components/modals/number-modal.html');
+            const numberHTML = await numberResponse.text();
+            
+            // HTML에서 모달 부분만 추출하여 body에 추가
+            const parser = new DOMParser();
+            const barcodeDoc = parser.parseFromString(barcodeHTML, 'text/html');
+            const numberDoc = parser.parseFromString(numberHTML, 'text/html');
+            
+            const barcodeModal = barcodeDoc.getElementById('barcodeModal');
+            const numberModal = numberDoc.getElementById('numberModal');
+            
+            if (barcodeModal) {
+                document.body.appendChild(barcodeModal);
+            }
+            
+            if (numberModal) {
+                // 번호 조회 모달의 제목을 할인용으로 수정
+                const modalTitle = numberModal.querySelector('.modal-title');
+                if (modalTitle) {
+                    modalTitle.textContent = '할인 번호 조회';
+                }
+                document.body.appendChild(numberModal);
+            }
+            
+            // 바코드 모달 JavaScript 동적 로드
+            await this.loadBarcodeModalScript();
+            
+            this.modalsLoaded = true;
+            console.log('모달 컴포넌트 로드 완료');
+        } catch (error) {
+            console.error('모달 로드 실패:', error);
+        }
+    }
+
+    // 바코드 모달 JavaScript 동적 로드
+    async loadBarcodeModalScript() {
+        return new Promise((resolve, reject) => {
+            // 이미 로드되어 있는지 확인
+            if (window.BarcodeModal) {
+                // 이미 로드된 경우에도 다시 초기화
+                window.BarcodeModal.init();
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = '../../components/modals/barcode-modal.js';
+            script.onload = () => {
+                console.log('바코드 모달 JavaScript 로드 완료');
+                
+                // 할인 페이지 인스턴스를 전역으로 등록
+                window.discountPageInstance = this;
+                
+                // 바코드 모달 초기화
+                if (window.BarcodeModal) {
+                    window.BarcodeModal.init();
+                    console.log('바코드 모달 초기화 완료');
+                }
+                
+                resolve();
+            };
+            script.onerror = () => {
+                console.error('바코드 모달 JavaScript 로드 실패');
+                reject(new Error('바코드 모달 JavaScript 로드 실패'));
+            };
+            document.head.appendChild(script);
+        });
     }
 
     // 하단 패널 초기화
@@ -96,18 +175,31 @@ class DiscountPage {
     // 바코드 모달 열기
     openBarcodeModal() {
         console.log('바코드 모달을 엽니다.');
-        if (typeof openBarcodeModal === 'function') {
-            openBarcodeModal();
-        } else if (window.BarcodeModal) {
+        
+        if (!this.modalsLoaded) {
+            alert('모달이 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요.');
+            return;
+        }
+        
+        console.log('BarcodeModal 객체 확인:', window.BarcodeModal);
+        
+        if (window.BarcodeModal) {
+            console.log('BarcodeModal.open() 호출');
             window.BarcodeModal.open();
         } else {
+            console.error('BarcodeModal 객체가 없습니다.');
             alert('바코드 스캔 기능이 준비되지 않았습니다.');
         }
     }
 
-    // 번호 조회 모달 열기 (내장된 모달 사용)
+    // 번호 조회 모달 열기
     openNumberModal() {
         console.log('번호 조회 모달을 엽니다.');
+        
+        if (!this.modalsLoaded) {
+            alert('모달이 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요.');
+            return;
+        }
         
         const modal = document.getElementById('numberModal');
         if (modal) {
@@ -317,27 +409,25 @@ class DiscountPage {
 
     // 바코드 스캔 완료 처리 (바코드 모달에서 호출됨)
     onBarcodeScanned(barcodeData) {
-        console.log('바코드 스캔 완료:', barcodeData);
+        console.log('할인 페이지 - 바코드 스캔 완료:', barcodeData);
         
-        // 바코드 할인 방법 선택
+        // 바코드 조회 방법을 선택된 상태로 표시
         const barcodeMethod = document.querySelector('.discount-method[data-method="barcode"]');
-        if (barcodeMethod) {
-            // 바코드 할인 선택
+        if (barcodeMethod && !barcodeMethod.classList.contains('selected')) {
             barcodeMethod.classList.add('selected');
             if (!this.selectedDiscountMethods.includes('barcode')) {
                 this.selectedDiscountMethods.push('barcode');
             }
-            
-            console.log('바코드 할인이 적용되었습니다:', this.selectedDiscountMethods);
-            
-            this.updatePriceSummary();
-            this.updateHelpStatus();
-            
-            // 바로 적립 화면으로 이동
-            setTimeout(() => {
-                this.proceedToNext();
-            }, 1000); // 0.5초 딜레이로 사용자가 처리 완료를 인지할 수 있도록
         }
+        
+        console.log('선택된 할인 방법들:', this.selectedDiscountMethods);
+        this.updatePriceSummary();
+        this.updateHelpStatus();
+        
+        // 바로 적립 화면으로 이동
+        setTimeout(() => {
+            this.proceedToNext();
+        }, 300);
     }
 
     // 번호 인증 완료 처리 (번호 모달에서 호출됨)
