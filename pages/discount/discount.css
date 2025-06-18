@@ -134,7 +134,7 @@ body {
 .method-text {
   font-size: 32px;
   font-weight: 600;
-  color: #53575d;
+  color: #7e7e87;
 }
 
 .discount-method.selected .method-text {
@@ -232,7 +232,7 @@ body {
 .carrier-name {
   font-size: 32px;
   font-weight: 600;
-  color: #53575d;
+  color: #7e7e87;
 }
 
 .carrier-option.selected .carrier-name {

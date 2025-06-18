@@ -520,13 +520,13 @@ class OptionSelectionSystem {
     }
 
     showHelpAnimation(step) {
-        // 기존 showHelpAnimation은 더 이상 사용하지 않음 (호환성을 위해 유지)
-        console.log(`기존 도움말 시스템 호출됨 - 단계 ${step}`);
+        // 레거시 호환성 - 아무것도 하지 않음
+        console.log(`레거시 도움말 시스템 호출됨 - 단계 ${step}`);
     }
 
     hideHelpAnimation() {
-        // 기존 hideHelpAnimation은 더 이상 사용하지 않음 (호환성을 위해 유지)
-        console.log('기존 도움말 시스템 숨김');
+        // 레거시 호환성 - 아무것도 하지 않음
+        console.log('레거시 도움말 시스템 숨김');
     }
 
     updateHelpStatus() {

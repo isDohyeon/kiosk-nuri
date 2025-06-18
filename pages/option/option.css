@@ -5,6 +5,8 @@
 body {
   overflow: hidden !important;
   align-items: center !important;
+  font-family: "Pretendard", Helvetica, sans-serif;
+
 }
 
 .screen {
@@ -243,93 +245,4 @@ footer {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 도움말 활성화 상태 - 1단계 */
-.help-step1 .options-title {
-  color: #54d761 !important;
-  position: relative;
-}
-
-.help-step1 .options-title::after {
-  content: '◀';
-  position: relative;
-  margin-left: 20px;
-  font-size: 40px;
-  color: #54d761;
-  font-weight: bold;
-  animation: bounce-horizontal 0.8s ease-in-out infinite;
-  text-shadow: 0 2px 4px rgba(84, 215, 97, 0.3);
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* 도움말 활성화 상태 - 2단계 */
-.help-step2 .options-subtitle {
-  color: #54d761 !important;
-  position: relative;
-}
-
-.help-step2 .options-subtitle::after {
-  content: '◀';
-  position: relative;
-  margin-left: 20px;
-  font-size: 40px;
-  color: #54d761;
-  font-weight: bold;
-  animation: bounce-horizontal 0.8s ease-in-out infinite;
-  text-shadow: 0 2px 4px rgba(84, 215, 97, 0.3);
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* 도움말 활성화 상태 - 완료 단계 (다 골랐어요 버튼) */
-.help-complete::after {
-  content: '▼';
-  position: absolute;
-  left: 75%;
-  bottom: 190px;
-  transform: translateX(-50%);
-  font-size: 50px;
-  color: #ffffff;
-  font-weight: bold;
-  animation: bounce-vertical 0.8s ease-in-out infinite;
-  text-shadow: 0 2px 4px rgba(84, 215, 97, 0.3);
-  z-index: 100000;
-}
-
-/* 좌우 통통 튀는 애니메이션 */
-@keyframes bounce-horizontal {
-  0%, 100% {
-    transform: translateX(0) scale(1);
-  }
-  25% {
-    transform: translateX(-15px) scale(1.1);
-  }
-  50% {
-    transform: translateX(0) scale(1.2);
-  }
-  75% {
-    transform: translateX(15px) scale(1.1);
-  }
-}
-
-/* 상하 통통 튀는 애니메이션 */
-@keyframes bounce-vertical {
-  0%, 100% {
-    transform: translateX(-50%) translateY(0) scale(1);
-  }
-  25% {
-    transform: translateX(-50%) translateY(-15px) scale(1.1);
-  }
-  50% {
-    transform: translateX(-50%) translateY(0) scale(1.2);
-  }
-  75% {
-    transform: translateX(-50%) translateY(15px) scale(1.1);
-  }
-}
-
-/* 도움말 비활성화 상태 */
-.options-title,
-.options-subtitle {
-  transition: color 0.3s ease;
-} 
+/* 기존 도움말 CSS 스타일 제거됨 - HelpSystem 컴포넌트만 사용 */ 
