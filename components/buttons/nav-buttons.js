@@ -146,6 +146,14 @@ class NavigationButtons {
         }
     }
 
+    // 제목 업데이트 (createWithTitle로 생성된 경우)
+    updateTitle(title) {
+        if (this.centerElement) {
+            this.centerElement.innerHTML = `<h1 class="page-title">${title}</h1>`;
+            console.log('NavigationButtons 제목 업데이트:', title);
+        }
+    }
+
     // 버튼 텍스트 업데이트
     updateButtonTexts(backText = '뒤로 가기', homeText = '처음으로') {
         if (this.backButton) {

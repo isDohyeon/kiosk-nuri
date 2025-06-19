@@ -5,15 +5,20 @@ class OptionSelectionSystem {
         this.currentCoffeeIndex = 0; // 현재 옵션 설정 중인 커피 인덱스
         this.allCoffeeOptions = []; // 모든 커피의 옵션 저장
         this.helpSystem = null; // help system 인스턴스
+        this.menuData = null; // 메뉴 데이터
+        this.basePrices = []; // 각 커피의 기본 가격 저장
+        this.currentPrices = []; // 각 커피의 현재 가격 저장 (옵션 포함)
         
         this.init();
     }
 
-    init() {
+    async init() {
         console.log('옵션 선택 시스템 초기화 시작...');
+        await this.loadMenuData();
+        this.loadSelectedMenuItem();
+        this.initializePrices();
         this.initializeNavigationButtons();
         this.initializeHelpSystem();
-        this.loadSelectedMenuItem();
         this.setupEventListeners();
         this.displaySelectedMenuItem();
         this.loadCurrentCoffeeOptions();
@@ -22,19 +27,108 @@ class OptionSelectionSystem {
 
     initializeNavigationButtons() {
         // NavigationButtons 컴포넌트 초기화
+        console.log('NavigationButtons 초기화 시작...');
+        console.log('NavigationButtons 클래스 존재 여부:', typeof NavigationButtons !== 'undefined');
+        
         if (typeof NavigationButtons !== 'undefined') {
-            this.navButtons = NavigationButtons.createWithOrderStatus(
-                '지금은 <span class="coffee-name">아메리카노</span> 주문 중입니다.',
-                {
-                    onBackClick: () => this.goBack(),
-                    onHomeClick: () => this.goHome()
+            // 현재 선택된 메뉴 이름 가져오기
+            const currentCoffee = this.selectedMenuItems[this.currentCoffeeIndex];
+            const menuName = currentCoffee ? currentCoffee.name : '아메리카노';
+            const title = `<span class="menu-name">${menuName}</span>의 옵션을 선택해주세요.`;
+            
+            console.log('초기 제목 생성:', title);
+            
+            this.navButtons = NavigationButtons.createWithTitle(title, {
+                onBackClick: () => this.goBack(),
+                onHomeClick: () => this.goHome()
+            });
+            
+            console.log('NavigationButtons 인스턴스 생성됨:', this.navButtons);
+            console.log('NavigationButtons updateTitle 메서드 존재 여부:', typeof this.navButtons.updateTitle === 'function');
+            console.log('NavigationButtons centerElement:', this.navButtons.centerElement);
+            
+            // DOM에 실제로 렌더링되었는지 확인
+            setTimeout(() => {
+                const pageTitle = document.querySelector('.page-title');
+                console.log('DOM에서 page-title 요소 찾기:', pageTitle);
+                if (pageTitle) {
+                    console.log('현재 page-title 내용:', pageTitle.innerHTML);
+                } else {
+                    console.error('page-title 요소를 DOM에서 찾을 수 없음!');
+                    // nav-buttons 컨테이너 확인
+                    const navButtons = document.querySelector('.nav-buttons');
+                    console.log('nav-buttons 컨테이너:', navButtons);
+                    if (navButtons) {
+                        console.log('nav-buttons 내용:', navButtons.innerHTML);
+                    }
                 }
-            );
-            console.log('NavigationButtons 초기화 완료');
+            }, 100);
+            
+            console.log('NavigationButtons 초기화 완료:', title);
         } else {
             console.warn('NavigationButtons 클래스를 찾을 수 없습니다.');
         }
     }
+
+    async loadMenuData() {
+        try {
+            const response = await fetch('../../assets/data/menu-config.json');
+            this.menuData = await response.json();
+            console.log('메뉴 데이터 로드 완료:', this.menuData);
+        } catch (error) {
+            console.error('메뉴 데이터 로드 실패:', error);
+            // 기본 데이터 설정
+            this.menuData = {
+                menuItems: {},
+                settings: {}
+            };
+        }
+    }
+
+    initializePrices() {
+        console.log('가격 초기화 시작...');
+        
+        // 각 커피의 기본 가격 및 현재 가격 초기화
+        this.basePrices = [];
+        this.currentPrices = [];
+        
+        if (this.selectedMenuItems && this.selectedMenuItems.length > 0) {
+            this.selectedMenuItems.forEach((coffee, index) => {
+                const basePrice = this.findMenuPrice(coffee.name);
+                this.basePrices[index] = basePrice;
+                this.currentPrices[index] = basePrice;
+                
+                console.log(`커피 ${coffee.name}: 기본가격 ${basePrice}원`);
+            });
+        }
+        
+        console.log('가격 초기화 완료:', {
+            basePrices: this.basePrices,
+            currentPrices: this.currentPrices
+        });
+    }
+
+    findMenuPrice(menuName) {
+        if (!this.menuData || !this.menuData.menuItems) {
+            console.warn('메뉴 데이터가 없어 기본 가격 적용:', menuName);
+            return 3000; // 기본 가격
+        }
+
+        // 모든 카테고리에서 메뉴 검색
+        for (const category in this.menuData.menuItems) {
+            const items = this.menuData.menuItems[category];
+            const foundItem = items.find(item => item.name === menuName);
+            if (foundItem) {
+                console.log(`${menuName} 가격 찾음: ${foundItem.price}원`);
+                return foundItem.price;
+            }
+        }
+
+        console.warn(`${menuName}의 가격을 찾을 수 없어 기본 가격 적용`);
+        return 3000; // 기본 가격
+    }
+
+    // 가격 표시 UI는 제거되었지만, 가격 계산 로직은 백그라운드에서 계속 동작합니다.
 
     initializeHelpSystem() {
         // HelpSystem 클래스가 로드되었는지 확인
@@ -79,7 +173,20 @@ class OptionSelectionSystem {
     }
 
     loadSelectedMenuItem() {
-        console.log('커피 데이터 로딩 시작...');
+        console.log('=== 커피 데이터 로딩 시작 ===');
+        
+        // 현재 URL과 파라미터 확인
+        console.log('현재 URL:', window.location.href);
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log('URL 파라미터:', Object.fromEntries(urlParams));
+        
+        // localStorage 상태 확인
+        console.log('=== localStorage 상태 확인 ===');
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            console.log(`${key}:`, localStorage.getItem(key));
+        }
+        console.log('===========================');
         
         // localStorage에서 선택된 커피들 가져오기
         const storedMenus = localStorage.getItem('selectedMenuItems');
@@ -94,6 +201,8 @@ class OptionSelectionSystem {
                 this.selectedMenuItems = [{ name: '아메리카노', quantity: 1 }];
             }
         } else {
+            console.log('selectedMenuItems가 localStorage에 없음');
+            
             // 구버전 호환성을 위해 selectedMenuItem도 확인
             const oldStoredMenu = localStorage.getItem('selectedMenuItem');
             console.log('localStorage selectedMenuItem (구버전):', oldStoredMenu);
@@ -110,17 +219,16 @@ class OptionSelectionSystem {
             
             // URL 파라미터에서 가져오기 (단일 메뉴의 경우)
             if (!this.selectedMenuItems || this.selectedMenuItems.length === 0) {
-                const urlParams = new URLSearchParams(window.location.search);
                 const menuName = urlParams.get('menu');
                 console.log('URL 파라미터 menu:', menuName);
                 
                 if (menuName) {
-                    this.selectedMenuItems = [{ name: menuName, quantity: 1 }];
-                    console.log('✓ URL 파라미터에서 커피 로드:', menuName);
+                    this.selectedMenuItems = [{ name: decodeURIComponent(menuName), quantity: 1 }];
+                    console.log('✓ URL 파라미터에서 커피 로드:', decodeURIComponent(menuName));
                 } else {
                     // 기본값으로 아메리카노 설정
                     this.selectedMenuItems = [{ name: '아메리카노', quantity: 1 }];
-                    console.log('✓ 기본값: 아메리카노 설정');
+                    console.log('✓ 기본값: 아메리카노 설정 (데이터 없음)');
                 }
             }
         }
@@ -151,18 +259,52 @@ class OptionSelectionSystem {
                 ? ` (${this.currentCoffeeIndex + 1}/${this.selectedMenuItems.length})`
                 : '';
             
-            // NavigationButtons 컴포넌트의 가운데 컨텐츠 업데이트
-            const statusText = `지금은 <span class="coffee-name">${currentCoffee.name}</span> 주문 중입니다${progressText}`;
+            // 제목 업데이트
+            this.updatePageTitle();
             
-            if (this.navButtons) {
-                this.navButtons.updateCenterContent(`<p class="order-status">${statusText}</p>`);
-            }
-            
-            console.log('주문 상태 텍스트 업데이트:', `지금은 ${currentCoffee.name} 주문 중입니다${progressText}`);
+            console.log('메뉴 표시 업데이트:', `${currentCoffee.name}${progressText}`);
             console.log('현재 커피 인덱스:', this.currentCoffeeIndex);
             console.log('현재 커피 정보:', currentCoffee);
+            console.log('현재 가격 (백그라운드):', this.currentPrices[this.currentCoffeeIndex]);
         } else {
-            console.log('주문 상태 업데이트 실패 - 커피 목록 없음');
+            console.log('메뉴 표시 업데이트 실패 - 커피 목록 없음');
+        }
+    }
+
+    updatePageTitle() {
+        console.log('updatePageTitle 호출됨');
+        console.log('selectedMenuItems 길이:', this.selectedMenuItems ? this.selectedMenuItems.length : 'undefined');
+        
+        if (this.selectedMenuItems.length > 0) {
+            const currentCoffee = this.selectedMenuItems[this.currentCoffeeIndex];
+            const title = `<span class="menu-name">${currentCoffee.name}</span>의 옵션을 선택해주세요.`;
+            
+            console.log('업데이트할 제목:', title);
+            console.log('navButtons 존재 여부:', !!this.navButtons);
+            console.log('updateTitle 메서드 존재 여부:', this.navButtons && typeof this.navButtons.updateTitle === 'function');
+            
+            // NavigationButtons의 제목 업데이트
+            if (this.navButtons && this.navButtons.updateTitle) {
+                console.log('updateTitle 메서드 호출 중...');
+                this.navButtons.updateTitle(title);
+                
+                // 업데이트 후 DOM 확인
+                setTimeout(() => {
+                    const pageTitle = document.querySelector('.page-title');
+                    console.log('업데이트 후 DOM 확인 - page-title 요소:', pageTitle);
+                    if (pageTitle) {
+                        console.log('업데이트 후 page-title 내용:', pageTitle.innerHTML);
+                    }
+                }, 50);
+            } else {
+                console.error('navButtons.updateTitle 메서드를 호출할 수 없음!');
+                console.log('navButtons:', this.navButtons);
+                if (this.navButtons) {
+                    console.log('navButtons의 사용 가능한 메서드들:', Object.getOwnPropertyNames(Object.getPrototypeOf(this.navButtons)));
+                }
+            }
+            
+            console.log('페이지 제목 업데이트 완료');
         }
     }
 
@@ -193,6 +335,9 @@ class OptionSelectionSystem {
             card.classList.remove('selected');
         });
         
+        // 현재 커피의 가격을 기본 가격으로 리셋
+        this.currentPrices[this.currentCoffeeIndex] = this.basePrices[this.currentCoffeeIndex];
+        
         // 이미 선택된 옵션이 있다면 복원
         if (currentOptions.temperature) {
             const tempCard = document.querySelector(`[data-option="${currentOptions.temperature}"]`);
@@ -202,7 +347,29 @@ class OptionSelectionSystem {
         if (currentOptions.strength) {
             const strengthCard = document.querySelector(`[data-option="${currentOptions.strength}"]`);
             if (strengthCard) strengthCard.classList.add('selected');
+            
+            // 진하게 옵션이 선택되어 있다면 가격 추가
+            if (currentOptions.strength === 'strong') {
+                this.currentPrices[this.currentCoffeeIndex] += 500;
+            }
         }
+        
+        // 추가 옵션들 복원
+        if (currentOptions.additionalOptions) {
+            Object.keys(currentOptions.additionalOptions).forEach(option => {
+                if (currentOptions.additionalOptions[option]) {
+                    const optionCard = document.querySelector(`[data-option="${option}"]`);
+                    if (optionCard) optionCard.classList.add('selected');
+                    
+                    // 더 달게 옵션이 선택되어 있다면 가격 추가
+                    if (option === 'sweet') {
+                        this.currentPrices[this.currentCoffeeIndex] += 500;
+                    }
+                }
+            });
+        }
+        
+        console.log('옵션 복원 완료 - 현재 가격 (백그라운드):', this.currentPrices[this.currentCoffeeIndex]);
     }
 
     setupEventListeners() {
@@ -221,67 +388,109 @@ class OptionSelectionSystem {
     }
 
     setupOptionEventListeners() {
-        const optionElements = document.querySelectorAll('[data-type][data-value]');
+        // 모든 옵션 카드에 이벤트 리스너 추가
+        const optionCards = document.querySelectorAll('.option-card');
         
-        optionElements.forEach(element => {
-            element.addEventListener('click', (e) => {
+        optionCards.forEach(card => {
+            card.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const type = e.currentTarget.dataset.type;
-                const value = e.currentTarget.dataset.value;
-                
-                this.selectOption(type, value);
+                const option = e.currentTarget.dataset.option;
+                this.selectOption(option);
             });
         });
-        
-        // 연하게 옵션 추가 (div-wrapper)
-        const mildOption = document.querySelector('.div-wrapper');
-        if (mildOption) {
-            mildOption.dataset.type = 'strength';
-            mildOption.dataset.value = 'mild';
-            mildOption.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.selectOption('strength', 'mild');
-            });
-        }
     }
 
-    selectOption(type, value) {
-        console.log('옵션 선택:', type, value);
+    selectOption(option) {
+        console.log('옵션 선택:', option);
         
-        // 이전 선택 해제
-        const sameTypeElements = document.querySelectorAll(`[data-type="${type}"]`);
-        sameTypeElements.forEach(el => {
-            el.classList.remove('selected');
-        });
+        const currentCard = document.querySelector(`[data-option="${option}"]`);
+        if (!currentCard) return;
         
-        // div-wrapper의 경우 특별 처리
-        if (type === 'strength') {
-            const mildWrapper = document.querySelector('.div-wrapper');
-            if (mildWrapper) {
-                mildWrapper.classList.remove('selected');
+        // 옵션 타입에 따른 선택 로직
+        if (option === 'cold' || option === 'hot') {
+            // 온도 옵션: 상호 배타적
+            document.querySelectorAll('[data-option="cold"], [data-option="hot"]').forEach(card => {
+                card.classList.remove('selected');
+            });
+            currentCard.classList.add('selected');
+            
+            // 현재 커피의 온도 옵션 저장
+            this.allCoffeeOptions[this.currentCoffeeIndex].temperature = option;
+            
+        } else if (option === 'strong' || option === 'light') {
+            // 농도 옵션: 상호 배타적
+            const wasStrongSelected = document.querySelector('[data-option="strong"]').classList.contains('selected');
+            
+            document.querySelectorAll('[data-option="strong"], [data-option="light"]').forEach(card => {
+                card.classList.remove('selected');
+            });
+            currentCard.classList.add('selected');
+            
+            // 현재 커피의 농도 옵션 저장
+            this.allCoffeeOptions[this.currentCoffeeIndex].strength = option;
+            
+            // 가격 계산 (진하게 옵션만 +500원)
+            if (option === 'strong') {
+                // 진하게 선택: +500원
+                this.currentPrices[this.currentCoffeeIndex] = this.basePrices[this.currentCoffeeIndex] + 500 + this.getAdditionalOptionsPrice();
+            } else if (option === 'light') {
+                // 연하게 선택: 기본 가격 + 추가 옵션 가격만
+                this.currentPrices[this.currentCoffeeIndex] = this.basePrices[this.currentCoffeeIndex] + this.getAdditionalOptionsPrice();
             }
+            
+            // 이전에 진하게가 선택되어 있었다면 가격 재계산
+            if (wasStrongSelected && option === 'light') {
+                this.currentPrices[this.currentCoffeeIndex] = this.basePrices[this.currentCoffeeIndex] + this.getAdditionalOptionsPrice();
+            }
+            
+        } else if (option === 'sweet' || option === 'personal-cup') {
+            // 추가 옵션: 개별적으로 토글 가능
+            const wasSelected = currentCard.classList.contains('selected');
+            currentCard.classList.toggle('selected');
+            
+            // 현재 커피의 추가 옵션 저장
+            if (!this.allCoffeeOptions[this.currentCoffeeIndex].additionalOptions) {
+                this.allCoffeeOptions[this.currentCoffeeIndex].additionalOptions = {};
+            }
+            
+            const isSelected = currentCard.classList.contains('selected');
+            this.allCoffeeOptions[this.currentCoffeeIndex].additionalOptions[option] = isSelected;
+            
+            // 가격 계산 (더 달게 옵션만 +500원)
+            if (option === 'sweet') {
+                if (isSelected && !wasSelected) {
+                    // 더 달게 선택: +500원
+                    this.currentPrices[this.currentCoffeeIndex] += 500;
+                } else if (!isSelected && wasSelected) {
+                    // 더 달게 해제: -500원
+                    this.currentPrices[this.currentCoffeeIndex] -= 500;
+                }
+            }
+            // 개인 컵 사용은 가격 변동 없음
         }
         
-        // 새로운 선택 적용
-        if (type === 'strength' && value === 'mild') {
-            const mildWrapper = document.querySelector('.div-wrapper');
-            if (mildWrapper) {
-                mildWrapper.classList.add('selected');
+        console.log('현재 커피 옵션:', this.allCoffeeOptions[this.currentCoffeeIndex]);
+        console.log('현재 가격 (백그라운드):', this.currentPrices[this.currentCoffeeIndex] + '원');
+        
+        // 헬프 시스템이 활성화되어 있다면 상태 업데이트
+        this.updateHelpStatus();
+    }
+
+    getAdditionalOptionsPrice() {
+        const currentOptions = this.allCoffeeOptions[this.currentCoffeeIndex];
+        let additionalPrice = 0;
+        
+        if (currentOptions.additionalOptions) {
+            // 더 달게 옵션 가격 추가
+            if (currentOptions.additionalOptions.sweet) {
+                additionalPrice += 500;
             }
-        } else {
-            const selectedElement = document.querySelector(`[data-type="${type}"][data-value="${value}"]`);
-            if (selectedElement) {
-                selectedElement.classList.add('selected');
-            }
+            // 개인 컵 사용은 가격 변동 없음
         }
         
-        // 옵션 선택 상태 업데이트
-        this.optionSelections[type] = value;
-        
-        console.log('현재 선택된 옵션들:', this.optionSelections);
+        return additionalPrice;
     }
 
     setupTabEventListeners() {
@@ -419,16 +628,25 @@ class OptionSelectionSystem {
             }
         }
         
-        // 새로 완료된 커피들 추가
+        // 새로 완료된 커피들 추가 (옵션으로 인한 가격 변동 포함)
         this.selectedMenuItems.forEach((coffee, index) => {
             const options = this.allCoffeeOptions[index];
+            const basePrice = this.basePrices[index];
+            const finalPrice = this.currentPrices[index];
+            const priceIncrease = finalPrice - basePrice;
+            
             allCompletedCoffees.push({
                 ...coffee,
                 options: options,
+                basePrice: basePrice, // 기본 가격
+                finalPrice: finalPrice, // 옵션 포함 최종 가격
+                priceIncrease: priceIncrease, // 옵션으로 인한 가격 증가
                 completedAt: new Date().toISOString(),
                 selectedTimestamp: coffee.selectedTimestamp || Date.now(), // 원래 선택 시간 보존
                 uniqueId: `${coffee.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` // 고유 ID 생성
             });
+            
+            console.log(`${coffee.name}: 기본 ${basePrice}원 → 최종 ${finalPrice}원 (+${priceIncrease}원)`);
         });
         
         // 모든 완료된 커피들 저장
@@ -495,35 +713,51 @@ class OptionSelectionSystem {
 
     saveCurrentCoffeeOptions() {
         // 현재 선택된 옵션들을 저장
-        const step1Selected = document.querySelector('.step1-options .option-card.selected');
-        const step2Selected = document.querySelector('.step2-options .option-card.selected');
+        const currentOptions = this.allCoffeeOptions[this.currentCoffeeIndex];
         
-        if (step1Selected) {
-            this.allCoffeeOptions[this.currentCoffeeIndex].temperature = step1Selected.dataset.option;
+        // 온도 옵션 저장
+        const tempSelected = document.querySelector('[data-option="cold"].selected, [data-option="hot"].selected');
+        if (tempSelected) {
+            currentOptions.temperature = tempSelected.dataset.option;
         }
         
-        if (step2Selected) {
-            this.allCoffeeOptions[this.currentCoffeeIndex].strength = step2Selected.dataset.option;
+        // 농도 옵션 저장
+        const strengthSelected = document.querySelector('[data-option="strong"].selected, [data-option="light"].selected');
+        if (strengthSelected) {
+            currentOptions.strength = strengthSelected.dataset.option;
         }
+        
+        // 추가 옵션들 저장
+        if (!currentOptions.additionalOptions) {
+            currentOptions.additionalOptions = {};
+        }
+        
+        // 더 달게 옵션
+        const sweetSelected = document.querySelector('[data-option="sweet"].selected');
+        currentOptions.additionalOptions.sweet = !!sweetSelected;
+        
+        // 개인 컵 사용 옵션
+        const personalCupSelected = document.querySelector('[data-option="personal-cup"].selected');
+        currentOptions.additionalOptions['personal-cup'] = !!personalCupSelected;
     }
 
     getCurrentRequiredStep() {
         // 1단계 (차갑게/뜨겁게) 선택 확인
-        const step1Selected = document.querySelector('.step1-options .option-card.selected');
+        const tempSelected = document.querySelector('[data-option="cold"].selected, [data-option="hot"].selected');
         
-        if (!step1Selected) {
+        if (!tempSelected) {
             return 1; // 1단계를 선택해야 함
         }
         
-        // 2단계 (진하게/연하게/더 달게) 선택 확인
-        const step2Selected = document.querySelector('.step2-options .option-card.selected');
+        // 2단계 옵션 선택 확인 (선택 사항)
+        const step2Selected = document.querySelector('[data-option="strong"].selected, [data-option="light"].selected, [data-option="sweet"].selected, [data-option="personal-cup"].selected');
         
-        if (!step2Selected) {
-            return 2; // 2단계를 선택해야 함
+        if (step2Selected) {
+            return 3; // 2단계 옵션이 선택되었으므로 완료 단계
         }
         
-        // 모든 단계가 완료됨
-        return 3; // 완료 단계 - 다 골랐어요 버튼을 누를 차례
+        // 1단계만 완료되었으므로 2단계 안내
+        return 2; // 2단계 - 추가 옵션 선택 안내 (하지만 바로 완료도 가능)
     }
 
     showHelpAnimation(step) {
@@ -544,6 +778,8 @@ class OptionSelectionSystem {
             // 도움말이 활성화되어 있다면 현재 상태에 맞게 업데이트
             const currentStep = this.getCurrentRequiredStep();
             
+            console.log('헬프 상태 업데이트 - 현재 단계:', currentStep);
+            
             // 기존 도움말 모두 숨기기
             this.helpSystem.hideHelp();
             
@@ -552,7 +788,17 @@ class OptionSelectionSystem {
                 this.helpSystem.showHelp('step1');
             } else if (currentStep === 2) {
                 this.helpSystem.showHelp('step2');
+                
+                // 2단계에서 3초 후 자동으로 3단계로 전환
+                setTimeout(() => {
+                    if (this.helpSystem && this.helpSystem.isHelpActive()) {
+                        this.helpSystem.showHelp('step3');
+                    }
+                }, 3000); // 3초 후 자동 전환
+                
             } else if (currentStep === 3) {
+                this.helpSystem.showHelp('step2');
+
                 this.helpSystem.showHelp('step3');
             }
         }
@@ -586,6 +832,55 @@ function clearTestData() {
     location.reload();
 }
 
+// 실시간 디버깅 함수
+function debugCurrentData() {
+    console.log('=== 현재 상태 디버깅 ===');
+    console.log('URL:', window.location.href);
+    console.log('selectedMenuItems:', localStorage.getItem('selectedMenuItems'));
+    
+    if (window.optionSystem) {
+        console.log('옵션 시스템 커피 목록:', window.optionSystem.selectedMenuItems);
+        console.log('현재 커피 인덱스:', window.optionSystem.currentCoffeeIndex);
+        console.log('기본 가격들:', window.optionSystem.basePrices);
+        console.log('현재 가격들 (옵션 포함):', window.optionSystem.currentPrices);
+        
+        if (window.optionSystem.selectedMenuItems && window.optionSystem.selectedMenuItems.length > 0) {
+            console.log('현재 커피:', window.optionSystem.selectedMenuItems[window.optionSystem.currentCoffeeIndex]);
+            
+            // 각 커피별 가격 변동 표시
+            window.optionSystem.selectedMenuItems.forEach((coffee, index) => {
+                const basePrice = window.optionSystem.basePrices[index];
+                const currentPrice = window.optionSystem.currentPrices[index];
+                const increase = currentPrice - basePrice;
+                console.log(`${coffee.name}: ${basePrice}원 → ${currentPrice}원 (${increase > 0 ? '+' : ''}${increase}원)`);
+            });
+        }
+    }
+    console.log('========================');
+}
+
+// 가격 증가 테스트 함수
+function testPriceIncrease() {
+    if (!window.optionSystem) {
+        console.log('옵션 시스템이 로드되지 않았습니다.');
+        return;
+    }
+    
+    console.log('=== 가격 증가 테스트 ===');
+    console.log('1. 진하게 옵션 선택 테스트...');
+    window.optionSystem.selectOption('strong');
+    
+    setTimeout(() => {
+        console.log('2. 더 달게 옵션 추가 테스트...');
+        window.optionSystem.selectOption('sweet');
+        
+        setTimeout(() => {
+            console.log('3. 최종 가격 확인...');
+            debugCurrentData();
+        }, 1000);
+    }, 1000);
+}
+
 // DOM 로드 완료 후 초기화
 document.addEventListener('DOMContentLoaded', () => {
     const optionSystem = new OptionSelectionSystem();
@@ -597,46 +892,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.setTestData = setTestData;
     window.setSingleCoffee = setSingleCoffee;
     window.clearTestData = clearTestData;
-
-    // 1단계 옵션 (차갑게/뜨겁게) - 하나만 선택 가능
-    const step1Options = document.querySelectorAll('.step1-options .option-card');
-    
-    step1Options.forEach(card => {
-        card.addEventListener('click', function() {
-            // 1단계에서 다른 모든 카드의 selected 클래스 제거
-            step1Options.forEach(otherCard => {
-                otherCard.classList.remove('selected');
-            });
-            
-            // 클릭된 카드에 selected 클래스 추가
-            this.classList.add('selected');
-            
-            // 현재 커피의 옵션 저장
-            optionSystem.saveCurrentCoffeeOptions();
-            
-            // 도움말 상태 업데이트
-            optionSystem.updateHelpStatus();
-        });
-    });
-
-    // 2단계 옵션 (진하게/연하게/더 달게) - 하나만 선택 가능 (라디오 버튼 방식)
-    const step2Options = document.querySelectorAll('.step2-options .option-card');
-    
-    step2Options.forEach(card => {
-        card.addEventListener('click', function() {
-            // 2단계에서 다른 모든 카드의 selected 클래스 제거
-            step2Options.forEach(otherCard => {
-                otherCard.classList.remove('selected');
-            });
-            
-            // 클릭된 카드에 selected 클래스 추가
-            this.classList.add('selected');
-            
-            // 현재 커피의 옵션 저장
-            optionSystem.saveCurrentCoffeeOptions();
-            
-            // 도움말 상태 업데이트
-            optionSystem.updateHelpStatus();
-        });
-    });
+    window.debugCurrentData = debugCurrentData;
+    window.testPriceIncrease = testPriceIncrease;
 }); 

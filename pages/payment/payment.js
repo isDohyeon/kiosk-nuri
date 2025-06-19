@@ -427,9 +427,11 @@ class PaymentPage {
         console.log('영수증 출력 요청');
     }
 
-    // 홈으로 이동
+    // 홈으로 이동 (완전한 세션 초기화)
     goHome() {
-        // 모든 주문 데이터 정리
+        console.log('완전한 세션 초기화 시작...');
+        
+        // 모든 주문 관련 데이터 정리
         localStorage.removeItem('selectedMenuItems');
         localStorage.removeItem('completedCoffees');
         localStorage.removeItem('finalOrder');
@@ -437,6 +439,19 @@ class PaymentPage {
         localStorage.removeItem('finalOrderWithPoint');
         localStorage.removeItem('finalPayment');
         
+        // 옵션 관련 데이터 정리
+        localStorage.removeItem('coffeeOptions');
+        localStorage.removeItem('selectedMenuItem'); // 구버전 호환
+        
+        // 기타 세션 데이터 정리
+        localStorage.removeItem('nonCoffeeItems');
+        localStorage.removeItem('orderData');
+        localStorage.removeItem('currentStep');
+        localStorage.removeItem('selectedOptions');
+        localStorage.removeItem('nuri-menu-visited');
+        localStorage.removeItem('testMode');
+        
+        console.log('세션 초기화 완료');
         window.location.href = '../../index.html';
     }
 

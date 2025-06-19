@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 확인</title>
+</head>
+<body>
+    <!-- 주문 확인 모달 템플릿 -->
+    <div class="order-confirm-modal" id="orderConfirmModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">주문 내역 확인</h2>
+            </div>
+            
+            <div class="modal-body">
+                <div class="order-items-section" id="orderItemsList">
+                    <!-- 주문 내역이 동적으로 들어갈 곳 -->
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">총 수량</span>
+                        <span class="summary-value" id="totalQuantity">0개</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span class="summary-label">총 결제 금액</span>
+                        <span class="summary-value" id="totalAmount">₩ 0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="modal-button cancel-button" type="button">
+                        <span class="button-text">취소</span>
+                    </button>
+                    <button class="modal-button confirm-button" type="button">
+                        <span class="button-text">결제하기</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

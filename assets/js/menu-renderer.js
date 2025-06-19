@@ -4,6 +4,7 @@ class MenuRenderer {
     this.container = document.querySelector(containerId);
     this.currentCategory = 'coffee'; // 기본 카테고리
     this.selectedItems = []; // 장바구니 아이템들
+    this.optionModal = null; // 옵션 모달 인스턴스
     
     if (!this.container) {
       console.error(`Container with id '${containerId}' not found`);
@@ -18,6 +19,7 @@ class MenuRenderer {
     this.createMenuGridContainer();
     this.renderCategories();
     this.renderMenuItems(this.currentCategory);
+    this.initOptionModal();
     this.setupEventListeners();
   }
   
@@ -157,23 +159,69 @@ class MenuRenderer {
     this.renderMenuItems(categoryId);
   }
   
-  // 메뉴 아이템 선택 (장바구니에 추가)
+  // 옵션 모달 초기화
+  initOptionModal() {
+    // OptionModal 클래스가 존재하는지 확인
+    if (typeof OptionModal === 'undefined') {
+      console.warn('OptionModal 클래스를 찾을 수 없습니다. 옵션 모달 없이 진행합니다.');
+      return;
+    }
+    
+    // 옵션 모달 인스턴스 생성
+    this.optionModal = new OptionModal({
+      onConfirm: (modal, cartItem) => {
+        this.addItemToCart(cartItem);
+        console.log('옵션 선택 완료, 장바구니에 추가:', cartItem);
+      },
+      onCancel: (modal) => {
+        console.log('옵션 선택 취소됨');
+      }
+    });
+    
+    console.log('옵션 모달이 초기화되었습니다.');
+  }
+
+  // 메뉴 아이템 선택 (옵션 모달 열기)
   selectMenuItem(item) {
     console.log(`${item.name} (₩${item.price.toLocaleString()}) 선택됨`);
     
-    // 기존에 있는 아이템인지 확인
-    const existingItemIndex = this.selectedItems.findIndex(selected => selected.id === item.id);
+    // 옵션 모달이 있으면 모달 열기, 없으면 바로 장바구니에 추가
+    if (this.optionModal) {
+      this.optionModal.open(item);
+    } else {
+      // 옵션 모달이 없는 경우 기본 동작 (바로 장바구니에 추가)
+      this.addItemToCart({
+        ...item,
+        quantity: 1,
+        temperature: 'ice', // 옵션 모달이 없는 경우 기본값
+        options: { shot: 0, weak: 0, syrup: 0, milk: 0 },
+        totalPrice: item.price,
+        optionPrice: 0
+      });
+    }
+  }
+  
+  // 장바구니에 아이템 추가 (옵션 모달에서 호출)
+  addItemToCart(cartItem) {
+    console.log('장바구니에 추가:', cartItem);
+    
+    // 같은 메뉴, 같은 옵션의 기존 아이템 찾기
+    const existingItemIndex = this.selectedItems.findIndex(selected => 
+      selected.id === cartItem.id &&
+      selected.temperature === cartItem.temperature &&
+      JSON.stringify(selected.options) === JSON.stringify(cartItem.options)
+    );
     
     if (existingItemIndex !== -1) {
       // 기존 아이템 수량 증가
-      this.selectedItems[existingItemIndex].quantity += 1;
+      this.selectedItems[existingItemIndex].quantity += cartItem.quantity;
+      // 총 가격 재계산
+      this.selectedItems[existingItemIndex].totalPrice = 
+        (cartItem.totalPrice / cartItem.quantity) * this.selectedItems[existingItemIndex].quantity;
     } else {
       // 새 아이템 추가 (최대 20개 아이템)
       if (this.selectedItems.length < 20) {
-        this.selectedItems.push({
-          ...item,
-          quantity: 1
-        });
+        this.selectedItems.push(cartItem);
       } else {
         alert('장바구니가 가득 찼습니다. (최대 20개 메뉴)');
         return;
@@ -274,7 +322,10 @@ class MenuRenderer {
 
   // 총 금액 업데이트
   updateTotalPrice() {
-    const totalPrice = this.selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const totalPrice = this.selectedItems.reduce((sum, item) => {
+      // 옵션이 포함된 총 가격이 있으면 사용, 없으면 기본 가격 * 수량
+      return sum + (item.totalPrice || (item.price * item.quantity));
+    }, 0);
     const totalElement = this.container.querySelector('#total-amount');
     if (totalElement) {
       totalElement.textContent = `₩ ${totalPrice.toLocaleString()}`;
@@ -310,33 +361,33 @@ class MenuRenderer {
       return;
     }
     
-    const totalPrice = this.selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const totalPrice = this.selectedItems.reduce((sum, item) => {
+      return sum + (item.totalPrice || (item.price * item.quantity));
+    }, 0);
     const totalQuantity = this.selectedItems.reduce((sum, item) => sum + item.quantity, 0);
     
-    // 주문 확인 메시지
+    // 주문 확인 메시지 (메뉴와 가격만 표시)
     const orderSummary = this.selectedItems
-      .map(item => `${item.name} x${item.quantity} (₩${(item.price * item.quantity).toLocaleString()})`)
+      .map(item => {
+        const itemTotal = item.totalPrice || (item.price * item.quantity);
+        return `${item.name} x${item.quantity} - ₩${itemTotal.toLocaleString()}`;
+      })
       .join('\n');
     
-    const confirmMessage = `주문 내역:\n${orderSummary}\n\n총 ${totalQuantity}개 상품\n총 결제 금액: ₩${totalPrice.toLocaleString()}\n\n결제를 진행하시겠습니까?`;
+    const confirmMessage = `주문 내역:\n\n${orderSummary}\n\n총 결제 금액: ₩${totalPrice.toLocaleString()}\n\n결제하시겠습니까?`;
     
     if (confirm(confirmMessage)) {
-      // 주문 데이터를 localStorage에 저장
-      localStorage.setItem('orderData', JSON.stringify({
-        items: this.selectedItems,
-        totalPrice: totalPrice,
-        totalQuantity: totalQuantity,
-        orderTime: new Date().toISOString()
-      }));
+      // 결제 완료 알림
+      alert('결제되었습니다!\n주문해주셔서 감사합니다.');
       
-      console.log('결제 진행:', {
+      // 장바구니 비우기
+      this.clearCart();
+      
+      console.log('결제 완료:', {
         items: this.selectedItems,
         totalPrice: totalPrice,
         totalQuantity: totalQuantity
       });
-      
-      // 결제 페이지로 이동 (향후 구현)
-      alert('결제 기능은 추후 구현 예정입니다.\n주문 데이터가 localStorage에 저장되었습니다.');
     }
   }
   

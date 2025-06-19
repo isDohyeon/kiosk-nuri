@@ -11,17 +11,33 @@
 </head>
 <body>
     <div class="UI nuri-info-page">
-        <!-- 뒤로가기 버튼 -->
-        <button class="nuri-info-back-button" onclick="goBack()">
-            <span class="nuri-info-back-text">뒤로</span>
-        </button>
-        
         <!-- 누리 키오스크 설명 이미지 -->
-        <img src="../../assets/images/nuri-info.png" alt="누리 키오스크 설명" class="nuri-info-image">
+        <img src="../../assets/images/info-page.png" alt="누리 키오스크 설명" class="nuri-info-image">
+        
+        <!-- 클릭 가능한 투명 영역 (이미지 하단 부분) -->
+        <div class="clickable-area" onclick="goToHome()"></div>
     </div>
 
+    <style>
+        .clickable-area {
+            position: absolute;
+            bottom: 50px; /* 이미지 하단에서 100px 위 */
+            left: 50px; /* 좌측에서 50px */
+            width: 400px; /* 클릭 영역 너비 */
+            height: 180px; /* 클릭 영역 높이 */
+            background-color: transparent;
+            cursor: pointer;
+            border-radius: 10px;
+            z-index: 10;
+        }
+        
+        .clickable-area:hover {
+            background-color: rgba(84, 215, 97, 0.1); /* 호버 시 살짝 보이는 효과 */
+        }
+    </style>
+
     <script>
-        function goBack() {
+        function goToHome() {
             // 메인 페이지로 돌아가기
             window.location.href = '../../index.html';
         }
@@ -30,12 +46,7 @@
         document.addEventListener('keydown', function(event) {
             // ESC 키로 뒤로가기
             if (event.key === 'Escape') {
-                goBack();
-            }
-            // Enter 또는 Space로 뒤로가기 버튼 활성화
-            if ((event.key === 'Enter' || event.key === ' ') && document.activeElement.classList.contains('nuri-info-back-button')) {
-                event.preventDefault();
-                goBack();
+                goToHome();
             }
         });
 

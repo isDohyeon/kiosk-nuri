@@ -165,6 +165,36 @@ main {
   height: 130px;
 }
 
+/* 2단계 옵션들을 세로 배치로 변경 */
+.step2-options {
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: 300px 300px;
+  gap: 30px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.step2-options .option-card:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.step2-options .option-card:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.step2-options .option-card:nth-child(3) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.step2-options .option-card:nth-child(4) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
 /* 푸터 */
 footer {
   position: absolute;
@@ -211,3 +241,9 @@ footer {
 }
 
 /* 기존 도움말 CSS 스타일 제거됨 - HelpSystem 컴포넌트만 사용 */ 
+
+/* 메뉴 이름 스타일 */
+.menu-name {
+  color: #6bc76e;
+  font-size: 46px;
+} 

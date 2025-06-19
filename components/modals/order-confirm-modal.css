@@ -1,0 +1,227 @@
+/* 주문 확인 모달 스타일 */
+.order-confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: none;
+}
+
+.order-confirm-modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-confirm-modal .modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.order-confirm-modal .modal-container {
+  position: relative;
+  background-color: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+}
+
+.order-confirm-modal .modal-header {
+  padding: 24px;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: center;
+}
+
+.order-confirm-modal .modal-title {
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.order-confirm-modal .modal-body {
+  padding: 24px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.order-confirm-modal .order-items-section {
+  margin-bottom: 24px;
+}
+
+.order-confirm-modal .order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.order-confirm-modal .order-item:last-child {
+  border-bottom: none;
+}
+
+.order-confirm-modal .item-info {
+  flex: 1;
+  margin-right: 16px;
+}
+
+.order-confirm-modal .item-name {
+  font-family: "Pretendard-Medium", Helvetica;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.order-confirm-modal .item-details {
+  font-family: "Pretendard-Regular", Helvetica;
+  font-size: 14px;
+  color: #666;
+}
+
+.order-confirm-modal .item-quantity {
+  font-family: "Pretendard-Medium", Helvetica;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-right: 16px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.order-confirm-modal .item-price {
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  min-width: 80px;
+  text-align: right;
+}
+
+.order-confirm-modal .order-summary {
+  border-top: 2px solid #333;
+  padding-top: 16px;
+}
+
+.order-confirm-modal .summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.order-confirm-modal .summary-row:last-child {
+  margin-bottom: 0;
+}
+
+.order-confirm-modal .summary-row.total {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  border-top: 1px solid #e5e5e5;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.order-confirm-modal .summary-label {
+  font-family: "Pretendard-Medium", Helvetica;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.order-confirm-modal .summary-value {
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.order-confirm-modal .summary-row.total .summary-label,
+.order-confirm-modal .summary-row.total .summary-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.order-confirm-modal .modal-footer {
+  padding: 24px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.order-confirm-modal .modal-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.order-confirm-modal .modal-button {
+  flex: 1;
+  height: 56px;
+  border: none;
+  border-radius: 12px;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.order-confirm-modal .cancel-button {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.order-confirm-modal .cancel-button:hover {
+  background-color: #e5e5e5;
+}
+
+.order-confirm-modal .confirm-button {
+  background-color: #54d761;
+  color: white;
+}
+
+.order-confirm-modal .confirm-button:hover {
+  background-color: #45c454;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 700px) {
+  .order-confirm-modal .modal-container {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .order-confirm-modal .modal-header,
+  .order-confirm-modal .modal-body,
+  .order-confirm-modal .modal-footer {
+    padding: 16px;
+  }
+  
+  .order-confirm-modal .modal-title {
+    font-size: 20px;
+  }
+  
+  .order-confirm-modal .item-name {
+    font-size: 16px;
+  }
+  
+  .order-confirm-modal .item-details {
+    font-size: 12px;
+  }
+  
+  .order-confirm-modal .modal-button {
+    height: 48px;
+    font-size: 16px;
+  }
+} 

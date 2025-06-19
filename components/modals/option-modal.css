@@ -1,0 +1,586 @@
+/* 옵션 선택 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content {
+  position: relative;
+  width: 841px;
+  height: 1362px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+/* 메뉴 이미지 */
+.item-image-container {
+  position: absolute;
+  width: 146px;
+  height: 177px;
+  top: 133px;
+  left: 79px;
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* 메뉴명 */
+.item-title {
+  position: absolute;
+  top: 161px;
+  left: 265px;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #000000;
+  font-size: 44px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+/* 수량 컨테이너 - 필요시 사용 */
+.quantity-price-container {
+  position: relative;
+}
+
+/* 수량 선택기 */
+.quantity-selector {
+  position: relative;
+}
+
+.quantity-controls {
+  position: relative;
+}
+
+/* 수량 감소 버튼 */
+.quantity-btn.decrease {
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  top: 254px;
+  left: 265px;
+  border-radius: 5px;
+  border: 2px solid #9e9ea4;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #666;
+}
+
+/* 수량 증가 버튼 */
+.quantity-btn.increase {
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  top: 254px;
+  left: 398px;
+  border-radius: 5px;
+  border: 2px solid #9e9ea4;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #666;
+}
+
+.quantity-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #54d761;
+  color: #54d761;
+}
+
+/* 수량 숫자 */
+.quantity {
+  position: absolute;
+  top: 252px;
+  left: 342px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 34px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* 가격 */
+.item-price {
+  position: absolute;
+  top: 253px;
+  left: 627px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 34px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* 온도 선택기 */
+.temperature-selector {
+  position: relative;
+}
+
+/* Ice 버튼 */
+.temperature-option[data-temp="ice"] {
+  position: absolute;
+  width: 246px;
+  height: 74px;
+  top: 412px;
+  left: 160px;
+  border-radius: 43.25px;
+  border: 2px solid #9e9ea4;
+  background-color: transparent;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  font-size: 34px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  cursor: pointer;
+}
+
+/* Hot 버튼 */
+.temperature-option[data-temp="hot"] {
+  position: absolute;
+  width: 246px;
+  height: 74px;
+  top: 412px;
+  left: 437px;
+  border-radius: 43.25px;
+  border: 2px solid #9e9ea4;
+  background-color: transparent;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  font-size: 34px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.temperature-option:hover {
+  border-color: #54d761;
+}
+
+.temperature-option.active {
+  background-color: #54d761;
+  border-color: #54d761;
+  color: #ffffff;
+}
+
+/* 구분선 */
+.divider {
+  position: absolute;
+  width: 656px;
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.divider:first-of-type {
+  top: 529px;
+  left: 94px;
+}
+
+.divider:last-of-type {
+  top: 880px;
+  left: 94px;
+}
+
+/* 옵션 제목 */
+.options-title {
+  position: absolute;
+  top: 555px;
+  left: 85px;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #000000;
+  font-size: 30px;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+/* 옵션 리스트 */
+.options-list {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 옵션 아이템들 */
+.option-item {
+  position: relative;
+}
+
+/* 첫 번째 옵션 - 샷추가 */
+.option-item:nth-child(1) .option-name {
+  position: absolute;
+  top: 637px;
+  left: 90px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.option-item:nth-child(1) .option-price {
+  position: absolute;
+  top: 637px;
+  left: 437px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* 두 번째 옵션 - 연하게 */
+.option-item:nth-child(2) .option-name {
+  position: absolute;
+  top: 703px;
+  left: 90px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.option-item:nth-child(2) .option-price {
+  position: absolute;
+  top: 703px;
+  left: 437px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* 세 번째 옵션 - 시럽 추가 */
+.option-item:nth-child(3) .option-name {
+  position: absolute;
+  top: 768px;
+  left: 90px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.option-item:nth-child(3) .option-price {
+  position: absolute;
+  top: 768px;
+  left: 437px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* 네 번째 옵션 - 개인 텀블러 사용 */
+.option-item:nth-child(4) .option-name {
+  position: absolute;
+  top: 833px;
+  left: 90px;
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* 체크박스 컨테이너 */
+.option-checkbox {
+  position: absolute;
+  top: 833px;
+  right: 145px;
+  display: flex;
+  align-items: center;
+}
+
+/* 체크박스 숨기기 */
+.option-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+/* 커스텀 체크박스 라벨 */
+.option-checkbox label {
+  position: relative;
+  width: 41px;
+  height: 41px;
+  background-color: #d9d9d9;
+  border-radius: 20.57px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 체크박스 체크 표시 */
+.option-checkbox input[type="checkbox"]:checked + label {
+  background-color: #54d761;
+}
+
+.option-checkbox input[type="checkbox"]:checked + label::after {
+  content: "✓";
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* 옵션 수량 버튼들 */
+.option-quantity {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 첫 번째 옵션 수량 컨테이너 */
+.option-item:nth-child(1) .option-quantity {
+  top: 631px;
+  left: 609px;
+}
+
+/* 두 번째 옵션 수량 컨테이너 */
+.option-item:nth-child(2) .option-quantity {
+  top: 697px;
+  left: 609px;
+}
+
+/* 세 번째 옵션 수량 컨테이너 */
+.option-item:nth-child(3) .option-quantity {
+  top: 762px;
+  left: 609px;
+}
+
+/* 옵션 버튼 공통 스타일 */
+.option-btn {
+  width: 41px;
+  height: 41px;
+  background-color: #d9d9d9;
+  border-radius: 20.57px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.option-btn:hover {
+  background-color: #c0c0c0;
+}
+
+
+
+/* 옵션 카운트 숫자 */
+.option-count {
+  font-family: "Pretendard-Medium", Helvetica;
+  font-weight: 500;
+  color: #000000;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* 모달 액션 버튼 */
+.modal-actions {
+  position: relative;
+}
+
+/* 취소 버튼 */
+.modal-btn.cancel {
+  position: absolute;
+  width: 313px;
+  height: 95px;
+  top: 1198px;
+  left: 94px;
+  border-radius: 47.32px;
+  border: 2px solid #9e9ea4;
+  background-color: transparent;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  font-size: 34px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  cursor: pointer;
+}
+
+/* 선택 완료 버튼 */
+.modal-btn.confirm {
+  position: absolute;
+  width: 313px;
+  height: 95px;
+  top: 1198px;
+  left: 437px;
+  border-radius: 47.32px;
+  border: 2px solid #9e9ea4;
+  background-color: transparent;
+  font-family: "Pretendard-SemiBold", Helvetica;
+  font-weight: 600;
+  color: #53575d;
+  font-size: 34px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.modal-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #54d761;
+  color: #54d761;
+}
+
+.modal-btn.confirm:hover {
+  background-color: #54d761;
+  border-color: #54d761;
+  color: #ffffff;
+}
+
+/* 반응형 대응 */
+@media (max-width: 700px) {
+  .modal-content {
+    width: 95%;
+    max-width: 400px;
+    max-height: 85vh;
+    padding: 20px;
+  }
+  
+  .item-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .item-image-container {
+    width: 100px;
+    height: 120px;
+    align-self: center;
+  }
+  
+  .item-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .quantity-selector {
+    margin-bottom: 20px;
+  }
+  
+  .quantity {
+    font-size: 18px;
+  }
+  
+  .item-price {
+    font-size: 20px;
+  }
+  
+  .temperature-selector {
+    margin-bottom: 25px;
+  }
+  
+  .temperature-option {
+    max-width: 150px;
+    height: 45px;
+    font-size: 16px;
+  }
+  
+  .options-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .options-list {
+    margin-bottom: 25px;
+  }
+  
+  .option-item {
+    padding: 12px 0;
+  }
+  
+  .option-name {
+    font-size: 14px;
+  }
+  
+  .option-price {
+    font-size: 14px;
+    width: 60px;
+  }
+  
+  .option-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .option-count {
+    font-size: 14px;
+  }
+  
+  .modal-btn {
+    height: 45px;
+    font-size: 14px;
+  }
+} 

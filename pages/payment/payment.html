@@ -154,13 +154,30 @@
                     window.location.href = '../point/point.html';
                 },
                 onHomeClick: () => {
-                    // 모든 데이터 정리
+                    // 완전한 세션 초기화
+                    console.log('완전한 세션 초기화 시작...');
+                    
+                    // 모든 주문 관련 데이터 정리
                     localStorage.removeItem('selectedMenuItems');
                     localStorage.removeItem('completedCoffees');
                     localStorage.removeItem('finalOrder');
                     localStorage.removeItem('finalOrderWithDiscount');
                     localStorage.removeItem('finalOrderWithPoint');
+                    localStorage.removeItem('finalPayment');
                     
+                    // 옵션 관련 데이터 정리
+                    localStorage.removeItem('coffeeOptions');
+                    localStorage.removeItem('selectedMenuItem'); // 구버전 호환
+                    
+                    // 기타 세션 데이터 정리
+                    localStorage.removeItem('nonCoffeeItems');
+                    localStorage.removeItem('orderData');
+                    localStorage.removeItem('currentStep');
+                    localStorage.removeItem('selectedOptions');
+                    localStorage.removeItem('nuri-menu-visited');
+                    localStorage.removeItem('testMode');
+                    
+                    console.log('세션 초기화 완료');
                     window.location.href = '../../index.html';
                 }
             });

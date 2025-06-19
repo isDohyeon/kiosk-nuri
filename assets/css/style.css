@@ -197,16 +197,13 @@
   transform: scale(1.05);
 }
 
-/* 물음표 아이콘 스타일 */
-.UI .question-mark-icon {
+/* 정보 버튼 이미지 스타일 */
+.UI .info-button-image {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Pretendard-SemiBold", Helvetica;
-  font-size: 60px;
-  font-weight: 700;
-  color: #54d761;
-  text-align: center;
-  line-height: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 } 

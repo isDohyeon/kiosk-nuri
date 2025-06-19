@@ -868,7 +868,9 @@ class CartManager {
                             id: coffee.id,
                             name: coffee.name,
                             displayName: displayName,
-                            price: coffee.price,
+                            price: coffee.finalPrice || coffee.price, // 옵션으로 증가된 최종 가격 사용
+                            basePrice: coffee.basePrice || coffee.price, // 기본 가격 보존
+                            priceIncrease: coffee.priceIncrease || 0, // 가격 증가 정보 보존
                             image: coffee.image,
                             quantity: coffee.quantity || 1,
                             options: coffee.options,
@@ -983,14 +985,44 @@ class CartManager {
 
     // 최종 주문 정보 저장
     saveFinalOrder() {
+        // 총 금액 계산 (옵션으로 인한 가격 증가 포함)
+        const totalAmount = this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+        
+        // 옵션으로 인한 총 추가 비용 계산
+        const totalOptionIncrease = this.items.reduce((total, item) => {
+            const increase = item.priceIncrease || 0;
+            return total + (increase * item.quantity);
+        }, 0);
+        
         const finalOrderData = {
             items: this.items,
             timestamp: new Date().toISOString(),
-            totalAmount: this.items.reduce((total, item) => total + (item.price * item.quantity), 0)
+            totalAmount: totalAmount,
+            totalOptionIncrease: totalOptionIncrease, // 옵션으로 인한 총 추가 비용
+            summary: {
+                itemCount: this.items.length,
+                totalQuantity: this.items.reduce((total, item) => total + item.quantity, 0),
+                baseAmount: totalAmount - totalOptionIncrease, // 기본 가격의 총합
+                optionAmount: totalOptionIncrease // 옵션으로 추가된 금액
+            }
         };
         
         localStorage.setItem('finalOrder', JSON.stringify(finalOrderData));
-        console.log('최종 주문 정보 저장 완료');
+        
+        console.log('최종 주문 정보 저장 완료:');
+        console.log(`- 총 금액: ₩${totalAmount.toLocaleString()}`);
+        console.log(`- 기본 금액: ₩${(totalAmount - totalOptionIncrease).toLocaleString()}`);
+        console.log(`- 옵션 추가: ₩${totalOptionIncrease.toLocaleString()}`);
+        
+        // 옵션 추가 금액이 있는 항목들 로그
+        if (totalOptionIncrease > 0) {
+            console.log('옵션으로 가격이 증가한 항목들:');
+            this.items.forEach(item => {
+                if (item.priceIncrease > 0) {
+                    console.log(`  - ${item.displayName || item.name}: +₩${item.priceIncrease * item.quantity}`);
+                }
+            });
+        }
     }
 }
 

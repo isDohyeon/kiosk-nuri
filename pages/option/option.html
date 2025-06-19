@@ -37,13 +37,17 @@
               <img src="../../assets/images/option-jin.png" alt="" class="option-icon" />
               <span class="option-label">진하게</span>
             </div>
+            <div class="option-card" data-option="sweet">
+              <img src="../../assets/images/option-dal.png" alt="" class="option-icon" />
+              <span class="option-label">더 달게</span>
+            </div>
             <div class="option-card" data-option="light">
               <img src="../../assets/images/option-yeon.png" alt="" class="option-icon" />
               <span class="option-label">연하게</span>
             </div>
-            <div class="option-card" data-option="sweet">
-              <img src="../../assets/images/option-dal.png" alt="" class="option-icon" />
-              <span class="option-label">더 달게</span>
+            <div class="option-card" data-option="personal-cup">
+              <img src="../../assets/images/option-cup.png" alt="" class="option-icon" />
+              <span class="option-label">개인 컵 사용</span>
             </div>
           </div>
         </section>
@@ -67,17 +71,6 @@
             const tabNav = new TabNavigation({
                 container: document.getElementById('navigation-container'),
                 activeTab: 'option'
-            });
-
-            // NavigationButtons 컴포넌트 초기화
-            const navButtons = NavigationButtons.createWithTitle('옵션을 선택해주세요.', {
-                onBackClick: () => {
-                    window.location.href = '../nuri/nuri-menu.html';
-                },
-                onHomeClick: () => {
-                    localStorage.clear();
-                    window.location.href = '../../index.html';
-                }
             });
         });
     </script>

@@ -1,0 +1,91 @@
+<!-- 옵션 선택 모달 -->
+<div class="modal-overlay" id="optionModal">
+  <div class="modal-container">
+          <div class="modal-content">
+        <!-- 상단 헤더 (이미지 + 제목 + 수량) -->
+        <div class="item-header">
+          <!-- 메뉴 이미지 -->
+          <div class="item-image-container">
+            <img src="" alt="" class="item-image" id="modal-item-image" />
+          </div>
+          
+          <!-- 메뉴 정보 (제목 + 수량 + 가격) -->
+          <div class="item-info">
+            <!-- 메뉴명 -->
+            <h2 class="item-title" id="modal-item-title">아메리카노</h2>
+            
+            <!-- 수량과 가격 컨테이너 -->
+            <div class="quantity-price-container">
+              <!-- 수량 선택기 -->
+              <div class="quantity-selector">
+                <div class="quantity-controls">
+                  <button class="quantity-btn decrease" id="decrease-quantity" aria-label="수량 감소">-</button>
+                  <span class="quantity" id="item-quantity">1</span>
+                  <button class="quantity-btn increase" id="increase-quantity" aria-label="수량 증가">+</button>
+                </div>
+              </div>
+              <!-- 가격 -->
+              <span class="item-price" id="modal-item-price">₩2,500</span>
+            </div>
+          </div>
+        </div>
+      
+      <!-- 온도 선택 -->
+      <div class="temperature-selector">
+        <button class="temperature-option" data-temp="ice" id="temp-ice">Ice</button>
+        <button class="temperature-option" data-temp="hot" id="temp-hot">Hot</button>
+      </div>
+      
+      <!-- 구분선 -->
+      <div class="divider"></div>
+      
+      <!-- 옵션 추가 -->
+      <h3 class="options-title">옵션 추가</h3>
+      <ul class="options-list" id="options-list">
+        <li class="option-item">
+          <span class="option-name">샷추가</span>
+          <span class="option-price">₩ 500</span>
+          <div class="option-quantity">
+            <button class="option-btn decrease" data-option="shot" aria-label="옵션 수량 감소">-</button>
+            <span class="option-count" data-option="shot">0</span>
+            <button class="option-btn increase" data-option="shot" aria-label="옵션 수량 증가">+</button>
+          </div>
+        </li>
+        <li class="option-item">
+          <span class="option-name">연하게</span>
+          <span class="option-price">₩ 0</span>
+          <div class="option-quantity">
+            <button class="option-btn decrease" data-option="weak" aria-label="옵션 수량 감소">-</button>
+            <span class="option-count" data-option="weak">0</span>
+            <button class="option-btn increase" data-option="weak" aria-label="옵션 수량 증가">+</button>
+          </div>
+        </li>
+        <li class="option-item">
+          <span class="option-name">시럽 추가</span>
+          <span class="option-price">₩ 500</span>
+          <div class="option-quantity">
+            <button class="option-btn decrease" data-option="syrup" aria-label="옵션 수량 감소">-</button>
+            <span class="option-count" data-option="syrup">0</span>
+            <button class="option-btn increase" data-option="syrup" aria-label="옵션 수량 증가">+</button>
+          </div>
+        </li>
+        <li class="option-item">
+          <span class="option-name">개인 텀블러 사용</span>
+          <div class="option-checkbox">
+            <input type="checkbox" id="tumbler-checkbox" data-option="tumbler" />
+            <label for="tumbler-checkbox"></label>
+          </div>
+        </li>
+      </ul>
+      
+      <!-- 구분선 -->
+      <div class="divider"></div>
+      
+      <!-- 모달 액션 버튼 -->
+      <div class="modal-actions">
+        <button class="modal-btn cancel" id="modal-cancel">취소</button>
+        <button class="modal-btn confirm" id="modal-confirm">선택 완료</button>
+      </div>
+    </div>
+  </div>
+</div> 
