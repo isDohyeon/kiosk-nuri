@@ -11,8 +11,9 @@
 
 .order-confirm-modal.active {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 100px;
 }
 
 .order-confirm-modal .modal-overlay {

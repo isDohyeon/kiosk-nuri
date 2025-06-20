@@ -4,7 +4,8 @@
 /* 페이지 스크롤 설정 */
 body {
   overflow: hidden !important;
-  align-items: center !important;
+  align-items: flex-start !important;
+  padding-top: 50px !important;
 }
 
 /* 탭 네비게이션 컨테이너 위치 조정 */

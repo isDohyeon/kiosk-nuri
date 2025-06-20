@@ -17,8 +17,9 @@
 
 .payment-modal.active {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 400px;
 }
 
 /* 모달 오버레이 (배경) */
