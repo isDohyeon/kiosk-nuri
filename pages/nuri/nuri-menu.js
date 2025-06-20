@@ -68,12 +68,127 @@ class NuriMenuSystem {
                                referrer.includes('point.html') || 
                                referrer.includes('payment.html');
         
+        // 옵션 페이지에서 뒤로가기 한 경우 감지
+        const isFromOptionPage = referrer.includes('option.html');
+        
         // 새 주문 시작인지 확인 (세션 스토리지 기반)
         const isNewOrder = !sessionStorage.getItem('orderInProgress');
         
         console.log('Referrer:', referrer);
         console.log('알려진 페이지에서 돌아온 경우:', isFromKnownPage);
+        console.log('옵션 페이지에서 돌아온 경우:', isFromOptionPage);
         console.log('새 주문 시작:', isNewOrder);
+        
+        // 🔥 CRITICAL: 옵션 페이지에서 뒤로가기 한 경우만 처리
+        if (isFromOptionPage) {
+            const hasSelectedMenuItems = localStorage.getItem('selectedMenuItems');
+            
+            // selectedMenuItems가 있으면서 완료된 커피가 최근에 업데이트되지 않은 경우 = 뒤로가기
+            if (hasSelectedMenuItems) {
+                const completedCoffeesData = localStorage.getItem('completedCoffees');
+                let isBackFromOption = true;
+                
+                if (completedCoffeesData) {
+                    try {
+                        const data = JSON.parse(completedCoffeesData);
+                        const lastUpdated = new Date(data.lastUpdated || 0).getTime();
+                        const now = Date.now();
+                        // 5초 이내에 업데이트되었으면 정상 완료로 간주
+                        if (now - lastUpdated < 5000) {
+                            isBackFromOption = false;
+                        }
+                    } catch (e) {
+                        console.warn('completedCoffees 파싱 실패');
+                    }
+                }
+                
+                if (isBackFromOption) {
+                    console.log('⚠️ 옵션 페이지에서 뒤로가기 감지 - 선택했던 커피를 미완료 상태로 복원');
+                    
+                    // 1. 먼저 기존 미완료 커피들 복원
+                    const tempIncompleteCoffeesData = localStorage.getItem('tempIncompleteCoffees');
+                    if (tempIncompleteCoffeesData) {
+                        try {
+                            const tempData = JSON.parse(tempIncompleteCoffeesData);
+                            const tempCoffees = tempData.items || [];
+                            
+                            tempCoffees.forEach(coffee => {
+                                // 기존 미완료 커피들을 장바구니에 다시 추가
+                                this.cartManager.items.push({
+                                    ...coffee,
+                                    addedTimestamp: coffee.addedTimestamp || Date.now()
+                                });
+                                console.log(`기존 미완료 커피 복원: ${coffee.name} x${coffee.quantity}`);
+                            });
+                            
+                            // 임시 데이터 정리
+                            localStorage.removeItem('tempIncompleteCoffees');
+                            console.log('기존 미완료 커피들 복원 완료');
+                        } catch (e) {
+                            console.error('기존 미완료 커피 복원 중 오류:', e);
+                        }
+                    }
+                    
+                    // 2. 선택 중이던 커피를 미완료 상태로 추가 (뒤로가기 시)
+                    try {
+                        const selectedCoffees = JSON.parse(hasSelectedMenuItems);
+                        
+                        // 🔥 디버깅: 뒤로가기 복원 과정 로그
+                        console.log('=== 뒤로가기 시 selectedMenuItems 복원 ===');
+                        console.log('selectedMenuItems 데이터:', selectedCoffees);
+                        
+                        selectedCoffees.forEach(coffee => {
+                            // 메뉴 데이터에서 해당 커피의 전체 정보 찾기
+                            let fullCoffeeInfo = null;
+                            for (const category in this.menuData) {
+                                const foundCoffee = this.menuData[category].find(item => item.id === coffee.id);
+                                if (foundCoffee) {
+                                    fullCoffeeInfo = foundCoffee;
+                                    break;
+                                }
+                            }
+                            
+                            if (fullCoffeeInfo) {
+                                // 🔥 수정: selectedMenuItems의 수량은 이미 "기존 수량 + 새로 선택한 수량"의 전체 수량
+                                // 따라서 뒤로가기 시에는 이 전체 수량을 그대로 복원해야 함
+                                const existingCoffee = this.cartManager.items.find(item => 
+                                    item.id === coffee.id && !item.isCompletedCoffee
+                                );
+                                
+                                if (existingCoffee) {
+                                    // 🔥 중요: 기존 수량을 selectedMenuItems의 전체 수량으로 설정
+                                    const previousQuantity = existingCoffee.quantity;
+                                    existingCoffee.quantity = coffee.quantity || 1; // 전체 수량으로 설정
+                                    console.log(`기존 커피 수량 복원: ${fullCoffeeInfo.name} x${previousQuantity} → x${existingCoffee.quantity}`);
+                                } else {
+                                    // 새로운 커피라면 selectedMenuItems의 수량으로 미완료 상태로 추가
+                                    this.cartManager.items.push({
+                                        ...fullCoffeeInfo,
+                                        quantity: coffee.quantity || 1, // 전체 수량으로 추가
+                                        addedTimestamp: coffee.selectedTimestamp || Date.now(),
+                                        isCompletedCoffee: false
+                                    });
+                                    console.log(`새로운 미완료 커피 추가: ${fullCoffeeInfo.name} x${coffee.quantity || 1}`);
+                                }
+                            }
+                        });
+                        
+                        console.log('뒤로가기 복원 완료, 현재 장바구니:', this.cartManager.items.map(i => `${i.name} x${i.quantity} (완료:${!!i.isCompletedCoffee})`));
+                        console.log('=======================================');
+                        
+                        // 복원된 상태 저장
+                        this.cartManager.saveNonCoffeeItems();
+                    } catch (e) {
+                        console.error('선택된 커피 복원 중 오류:', e);
+                    }
+                    
+                    // selectedMenuItems 정리
+                    localStorage.removeItem('selectedMenuItems');
+                } else {
+                    console.log('✓ 옵션 페이지에서 정상 완료 감지');
+                }
+            }
+        }
         
         // 새 주문이 아니고 알려진 페이지에서 돌아온 경우에만 데이터 유지
         const shouldKeepData = !isNewOrder && isFromKnownPage;
@@ -270,8 +385,14 @@ class NuriMenuSystem {
         
         // 커피인지 확인
         if (this.cartManager.isCoffeeItem(item.id)) {
-            // 커피는 옵션 선택 화면으로 이동
+            // 커피는 옵션 선택 화면으로 이동 (장바구니에 실제 추가하지 않음)
             this.cartManager.saveForOptions(item);
+            
+            // 🔥 수정: 커피는 옵션 선택 완료 후에만 장바구니에 추가되므로
+            // 여기서는 장바구니 렌더링을 하지 않음
+            this.cartItems = this.cartManager.getItems();
+            this.renderCart(); // 기존 미완료 커피가 제거된 상태로 렌더링
+            
             window.location.href = '../option/option.html';
             return;
         }
@@ -289,8 +410,15 @@ class NuriMenuSystem {
 
     // 수량 증가
     increaseQuantity(itemId) {
+        console.log('=== Plus 버튼 클릭 디버깅 ===');
+        console.log('증가 전 장바구니 상태:', this.cartManager.items.map(i => `${i.name} x${i.quantity} (완료:${!!i.isCompletedCoffee})`));
+        
         this.cartManager.increaseQuantity(parseInt(itemId));
         this.cartItems = this.cartManager.getItems();
+        
+        console.log('증가 후 장바구니 상태:', this.cartManager.items.map(i => `${i.name} x${i.quantity} (완료:${!!i.isCompletedCoffee})`));
+        console.log('================================');
+        
         this.updateQuantityDisplayOnly(parseInt(itemId), this.cartManager.getItemQuantity(parseInt(itemId)));
     }
 
@@ -475,6 +603,7 @@ class NuriMenuSystem {
             localStorage.removeItem('coffeeOptions');
             localStorage.removeItem('finalOrder');
             localStorage.removeItem('nonCoffeeItems');
+            localStorage.removeItem('tempIncompleteCoffees'); // 임시 커피 데이터도 정리
         }
     }
 
@@ -677,8 +806,15 @@ class CartManager {
         const item = this.items.find(item => item.id === itemId);
         if (item) {
             item.quantity += 1;
-            this.saveNonCoffeeItems();
-            console.log(`${item.name} 수량 증가: ${item.quantity}`);
+            console.log(`${item.displayName || item.name} 수량 증가: ${item.quantity}`);
+            
+            // 완료된 커피인 경우 localStorage도 업데이트
+            if (item.isCompletedCoffee) {
+                this.updateCompletedCoffeeQuantity(item, item.quantity);
+            } else {
+                // 비커피 아이템인 경우만 saveNonCoffeeItems 호출
+                this.saveNonCoffeeItems();
+            }
         }
     }
 
@@ -688,8 +824,15 @@ class CartManager {
         if (item) {
             if (item.quantity > 1) {
                 item.quantity -= 1;
-                this.saveNonCoffeeItems();
-                console.log(`${item.name} 수량 감소: ${item.quantity}`);
+                console.log(`${item.displayName || item.name} 수량 감소: ${item.quantity}`);
+                
+                // 완료된 커피인 경우 localStorage도 업데이트
+                if (item.isCompletedCoffee) {
+                    this.updateCompletedCoffeeQuantity(item, item.quantity);
+                } else {
+                    // 비커피 아이템인 경우만 saveNonCoffeeItems 호출
+                    this.saveNonCoffeeItems();
+                }
                 return false; // 아이템이 제거되지 않음
             } else {
                 // 수량이 1일 때는 아이템 제거
@@ -781,6 +924,7 @@ class CartManager {
                 
             } catch (error) {
                 console.error('완료된 커피 제거 중 오류:', error);
+                localStorage.removeItem('completedCoffees');
             }
         }
     }
@@ -813,8 +957,77 @@ class CartManager {
 
     // 옵션 선택을 위한 커피 저장
     saveForOptions(item) {
-        // 현재 장바구니 상태 저장
-        this.saveNonCoffeeItems();
+        console.log(`${item.name} 옵션 선택을 위해 저장`);
+        
+        // 🔥 중요: 커피 선택 시 장바구니에 실제로 추가하지 않음
+        // 옵션 선택 완료 후에만 실제 장바구니에 추가됨
+        
+        // 현재 장바구니에서 동일한 커피(완료되지 않은)가 있는지 확인
+        const existingCoffee = this.items.find(cartItem => 
+            cartItem.id === item.id && !cartItem.isCompletedCoffee
+        );
+        
+        // 🔥 디버깅: 현재 장바구니 상태 로그
+        console.log('=== saveForOptions 디버깅 ===');
+        console.log('현재 장바구니 아이템들:', this.items.map(i => `${i.name} x${i.quantity} (완료:${!!i.isCompletedCoffee})`));
+        console.log('선택된 커피 ID:', item.id, '이름:', item.name);
+        if (existingCoffee) {
+            console.log('기존 동일 커피 발견:', existingCoffee.name, 'x', existingCoffee.quantity);
+        }
+        
+        // 기존 미완료 커피들 정보 보존 (옵션 선택 취소 시 복원용)
+        const existingIncompleteCoffees = this.items.filter(cartItem => 
+            this.isCoffeeItem(cartItem.id) && !cartItem.isCompletedCoffee
+        );
+        
+        // 🔥 디버깅: 임시 저장될 커피들 로그
+        console.log('tempIncompleteCoffees에 저장될 커피들:', existingIncompleteCoffees.map(c => `${c.name} x${c.quantity}`));
+        
+        // 기존 미완료 커피들이 있다면 임시 저장
+        if (existingIncompleteCoffees.length > 0) {
+            localStorage.setItem('tempIncompleteCoffees', JSON.stringify({
+                items: existingIncompleteCoffees,
+                timestamp: Date.now()
+            }));
+            console.log('기존 미완료 커피들 임시 저장:', existingIncompleteCoffees.map(c => `${c.name} x${c.quantity}`));
+        }
+        
+        let quantityToSave = 1;
+        if (existingCoffee) {
+            // 기존 미완료 커피가 있으면 그 수량 + 1로 계산
+            quantityToSave = existingCoffee.quantity + 1;
+            console.log(`기존 미완료 커피 발견: ${item.name} x${existingCoffee.quantity} -> 옵션 선택을 위해 ${quantityToSave}개로 설정`);
+        }
+        
+        // 모든 미완료 커피들을 장바구니에서 제거 (옵션 선택 완료 후 복원됨)
+        this.items = this.items.filter(cartItem => 
+            !(this.isCoffeeItem(cartItem.id) && !cartItem.isCompletedCoffee)
+        );
+        console.log(`모든 미완료 커피 임시 제거 완료`);
+        
+        // 🔥 추가: 기존 nonCoffeeItems에서도 미완료 커피 데이터 정리
+        // (Plus 버튼으로 증가시킨 커피 수량 데이터가 남아있을 수 있음)
+        const existingNonCoffeeItems = localStorage.getItem('nonCoffeeItems');
+        if (existingNonCoffeeItems) {
+            try {
+                const existingData = JSON.parse(existingNonCoffeeItems);
+                const cleanedData = existingData.filter(item => 
+                    !this.isCoffeeItem(item.id) // 커피가 아닌 아이템들만 유지
+                );
+                
+                if (cleanedData.length !== existingData.length) {
+                    // 미완료 커피 데이터가 제거되었으면 업데이트
+                    if (cleanedData.length > 0) {
+                        localStorage.setItem('nonCoffeeItems', JSON.stringify(cleanedData));
+                    } else {
+                        localStorage.removeItem('nonCoffeeItems');
+                    }
+                    console.log('기존 nonCoffeeItems에서 미완료 커피 데이터 정리 완료');
+                }
+            } catch (e) {
+                console.error('nonCoffeeItems 정리 중 오류:', e);
+            }
+        }
         
         // 선택된 커피를 옵션 페이지로 전달 (선택 시간 기록)
         const selectedCoffee = [{
@@ -822,12 +1035,16 @@ class CartManager {
             name: item.name,
             price: item.price,
             image: item.image,
-            quantity: 1,
+            quantity: quantityToSave, // 계산된 수량 사용
             selectedTimestamp: Date.now() // 커피 선택 시간 기록
         }];
         
         localStorage.setItem('selectedMenuItems', JSON.stringify(selectedCoffee));
-        console.log('커피 아이템 옵션 선택을 위해 저장:', item.name);
+        console.log(`커피 아이템 옵션 선택을 위해 저장: ${item.name} x${quantityToSave}`);
+        console.log('================================');
+        
+        // 현재 장바구니 상태 저장 (미완료 커피 제거된 상태, 비커피 아이템들만)
+        this.saveNonCoffeeItems();
     }
 
     // 완료된 커피들 로드
@@ -841,27 +1058,74 @@ class CartManager {
                 
                 console.log('완료된 커피들 로드 시작:', completedItems.length, '개');
                 
+                // 🔥 중요: 완료된 커피를 로드하기 전에 기존 미완료 커피들을 먼저 복원
+                const tempIncompleteCoffeesData = localStorage.getItem('tempIncompleteCoffees');
+                if (tempIncompleteCoffeesData) {
+                    try {
+                        const tempData = JSON.parse(tempIncompleteCoffeesData);
+                        const tempCoffees = tempData.items || [];
+                        
+                        console.log('=== 옵션 완료 후 tempIncompleteCoffees 복원 ===');
+                        console.log('복원할 미완료 커피들:', tempCoffees.map(c => `${c.name} x${c.quantity}`));
+                        console.log('옵션 선택 완료 후 기존 미완료 커피들 복원 시작:', tempCoffees.length, '개');
+                        
+                        tempCoffees.forEach(coffee => {
+                            // 기존 미완료 커피들을 장바구니에 다시 추가
+                            this.items.push({
+                                ...coffee,
+                                addedTimestamp: coffee.addedTimestamp || Date.now()
+                            });
+                            console.log(`기존 미완료 커피 복원: ${coffee.name} x${coffee.quantity}`);
+                        });
+                        
+                        console.log('복원 후 현재 장바구니:', this.items.map(i => `${i.name} x${i.quantity} (완료:${!!i.isCompletedCoffee})`));
+                        
+                        // 임시 데이터 정리
+                        localStorage.removeItem('tempIncompleteCoffees');
+                        console.log('기존 미완료 커피들 복원 완료');
+                        console.log('==========================================');
+                    } catch (e) {
+                        console.error('기존 미완료 커피 복원 중 오류:', e);
+                        localStorage.removeItem('tempIncompleteCoffees'); // 오류 발생 시 정리
+                    }
+                }
+                
+                // 완료된 커피들을 장바구니에 추가
                 completedItems.forEach(coffee => {
                     const coffeeKey = `${coffee.id}_${JSON.stringify(coffee.options || {})}`;
                     
                     // 중복 확인 - 동일한 커피 + 옵션 조합이 이미 있는지 확인
-                    const isDuplicate = this.items.some(item => {
+                    let existingCompletedItem = null;
+                    const existingIndex = this.items.findIndex(item => {
                         // 고유 ID가 있으면 우선 사용
                         if (coffee.uniqueId && item.uniqueId) {
-                            return coffee.uniqueId === item.uniqueId;
+                            if (coffee.uniqueId === item.uniqueId) {
+                                existingCompletedItem = item;
+                                return true;
+                            }
                         }
                         
                         // 고유 ID가 없으면 기존 방식으로 비교
                         if (item.id === coffee.id && item.isCompletedCoffee) {
                             const itemOptionsStr = JSON.stringify(item.options || {});
                             const coffeeOptionsStr = JSON.stringify(coffee.options || {});
-                            return itemOptionsStr === coffeeOptionsStr;
+                            if (itemOptionsStr === coffeeOptionsStr) {
+                                existingCompletedItem = item;
+                                return true;
+                            }
                         }
                         return false;
                     });
                     
-                    if (!isDuplicate) {
-                        // 옵션 정보를 포함한 display name 생성
+                    if (existingCompletedItem) {
+                        // 기존 완료된 커피가 있으면 수량 합치기
+                        const previousQuantity = existingCompletedItem.quantity;
+                        const newQuantity = coffee.quantity || 1;
+                        existingCompletedItem.quantity = previousQuantity + newQuantity;
+                        
+                        console.log(`✓ 기존 완료된 커피와 수량 합치기: ${existingCompletedItem.displayName || existingCompletedItem.name} x${previousQuantity} + x${newQuantity} = x${existingCompletedItem.quantity}`);
+                    } else {
+                        // 새로운 완료된 커피 추가
                         const displayName = this.createCoffeeDisplayName(coffee);
                         
                         this.items.push({
@@ -880,9 +1144,7 @@ class CartManager {
                             addedTimestamp: new Date(coffee.selectedTimestamp || coffee.completedAt || coffee.addedTimestamp || Date.now()).getTime()
                         });
                         
-                        console.log(`✓ 완료된 커피 추가: ${displayName}`);
-                    } else {
-                        console.log(`✗ 중복된 완료된 커피 무시: ${coffee.name} (${JSON.stringify(coffee.options)})`);
+                        console.log(`✓ 완료된 커피 추가: ${displayName} x${coffee.quantity || 1}`);
                     }
                 });
                 
@@ -924,39 +1186,50 @@ class CartManager {
         return displayName;
     }
 
-    // 비커피 아이템들 로드
+    // 비커피 아이템들과 미완료 커피 아이템들 로드
     loadNonCoffeeItems() {
         const nonCoffeeItemsData = localStorage.getItem('nonCoffeeItems');
         
         if (nonCoffeeItemsData) {
             try {
-                const nonCoffeeItems = JSON.parse(nonCoffeeItemsData);
-                console.log('비커피 아이템들 로드:', nonCoffeeItems);
+                const savedItems = JSON.parse(nonCoffeeItemsData);
+                console.log('=== loadNonCoffeeItems 시작 ===');
+                console.log('nonCoffeeItems에서 로드할 아이템들:', savedItems.map(item => `${item.name} x${item.quantity}`));
                 
-                nonCoffeeItems.forEach(item => {
-                    // 중복 확인 - 완료된 커피가 아닌 동일 ID 아이템만 체크
+                savedItems.forEach(item => {
+                    // 🔥 중요: 커피 아이템은 완전히 무시 (tempIncompleteCoffees에서만 복원)
+                    if (this.isCoffeeItem(item.id)) {
+                        console.log(`⚠️ 커피 아이템 무시: ${item.name} x${item.quantity} (tempIncompleteCoffees에서 처리됨)`);
+                        return; // 커피는 건너뛰기
+                    }
+                    
+                    // 비커피 아이템만 처리
                     const existingItemIndex = this.items.findIndex(cartItem => 
                         cartItem.id === item.id && !cartItem.isCompletedCoffee
                     );
                     
-                    // 커피 아이템이면서 완료된 커피가 아닌 경우는 제외 (이론적으로 발생하지 않아야 함)
-                    const isCoffeeButNotCompleted = this.isCoffeeItem(item.id) && !item.isCompletedCoffee;
-                    
-                    if (existingItemIndex === -1 && !isCoffeeButNotCompleted) {
-                        // 타임스탬프가 없으면 현재 시간 설정
+                    if (existingItemIndex !== -1) {
+                        // 기존 비커피 아이템 수량 업데이트
+                        const existingItem = this.items[existingItemIndex];
+                        existingItem.quantity = item.quantity;
+                        existingItem.addedTimestamp = item.addedTimestamp || existingItem.addedTimestamp || Date.now();
+                        console.log(`비커피 아이템 수량 업데이트: ${item.name} x${item.quantity}`);
+                    } else {
+                        // 새로운 비커피 아이템 추가
                         const itemWithTimestamp = {
                             ...item,
                             addedTimestamp: item.addedTimestamp || Date.now()
                         };
                         this.items.push(itemWithTimestamp);
-                        console.log(`비커피 아이템 로드: ${item.name}`);
-                    } else if (isCoffeeButNotCompleted) {
-                        console.warn(`경고: 완료되지 않은 커피가 nonCoffeeItems에 있음 - 무시: ${item.name}`);
+                        console.log(`비커피 아이템 로드: ${item.name} x${item.quantity}`);
                     }
                 });
                 
+                console.log('loadNonCoffeeItems 완료, 현재 장바구니:', this.items.map(i => `${i.name} x${i.quantity} (완료:${!!i.isCompletedCoffee})`));
+                console.log('==============================');
+                
             } catch (error) {
-                console.error('비커피 아이템 데이터 파싱 오류:', error);
+                console.error('저장된 아이템 데이터 파싱 오류:', error);
                 localStorage.removeItem('nonCoffeeItems');
             }
         }
@@ -964,16 +1237,26 @@ class CartManager {
 
     // 비커피 아이템들 저장 (완료된 커피 제외)
     saveNonCoffeeItems() {
+        // 🔥 중요: 커피 아이템은 tempIncompleteCoffees에서만 관리하므로 
+        // nonCoffeeItems에는 비커피 아이템들만 저장
         const nonCoffeeItems = this.items.filter(item => 
             !this.isCoffeeItem(item.id) && !item.isCompletedCoffee
         );
         
+        // 🔥 수정: 미완료 커피는 더 이상 nonCoffeeItems에 저장하지 않음
+        // 커피는 tempIncompleteCoffees에서만 관리됨
+        
+        console.log('=== saveNonCoffeeItems ===');
+        console.log('저장할 비커피 아이템들:', nonCoffeeItems.map(item => `${item.name} x${item.quantity}`));
+        
         if (nonCoffeeItems.length > 0) {
             localStorage.setItem('nonCoffeeItems', JSON.stringify(nonCoffeeItems));
-            console.log('비커피 아이템들 저장됨:', nonCoffeeItems.length);
+            console.log('비커피 아이템들 저장 완료:', nonCoffeeItems.map(item => `${item.name} x${item.quantity}`));
         } else {
             localStorage.removeItem('nonCoffeeItems');
+            console.log('저장할 비커피 아이템이 없어 nonCoffeeItems 제거');
         }
+        console.log('========================');
     }
 
     // 미완료 커피가 있는지 확인
@@ -981,6 +1264,55 @@ class CartManager {
         return this.items.some(item => 
             this.isCoffeeItem(item.id) && !item.isCompletedCoffee
         );
+    }
+
+    // 완료된 커피의 수량을 localStorage에서 업데이트
+    updateCompletedCoffeeQuantity(updatedItem, newQuantity) {
+        const completedCoffeesData = localStorage.getItem('completedCoffees');
+        
+        if (completedCoffeesData) {
+            try {
+                const data = JSON.parse(completedCoffeesData);
+                const completedItems = data.items || [];
+                
+                // 해당 커피를 찾아서 수량 업데이트
+                let updated = false;
+                completedItems.forEach(coffee => {
+                    // 고유 ID가 있으면 우선 사용
+                    if (updatedItem.uniqueId && coffee.uniqueId) {
+                        if (coffee.uniqueId === updatedItem.uniqueId) {
+                            coffee.quantity = newQuantity;
+                            updated = true;
+                            console.log(`✓ localStorage에서 완료된 커피 수량 업데이트 (uniqueId): ${updatedItem.displayName || updatedItem.name} -> x${newQuantity}`);
+                        }
+                    }
+                    // 고유 ID가 없으면 기존 방식으로 비교
+                    else if (coffee.id === updatedItem.id) {
+                        const coffeeOptionsStr = JSON.stringify(coffee.options || {});
+                        const itemOptionsStr = JSON.stringify(updatedItem.options || {});
+                        
+                        if (coffeeOptionsStr === itemOptionsStr) {
+                            coffee.quantity = newQuantity;
+                            updated = true;
+                            console.log(`✓ localStorage에서 완료된 커피 수량 업데이트: ${updatedItem.displayName || updatedItem.name} -> x${newQuantity}`);
+                        }
+                    }
+                });
+                
+                if (updated) {
+                    // 업데이트된 데이터 저장
+                    localStorage.setItem('completedCoffees', JSON.stringify({
+                        items: completedItems,
+                        lastUpdated: new Date().toISOString()
+                    }));
+                } else {
+                    console.warn('localStorage에서 해당 완료된 커피를 찾을 수 없음:', updatedItem.displayName || updatedItem.name);
+                }
+                
+            } catch (error) {
+                console.error('완료된 커피 수량 업데이트 중 오류:', error);
+            }
+        }
     }
 
     // 최종 주문 정보 저장
@@ -1032,4 +1364,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 전역 객체로 등록 (디버깅용)
     window.nuriMenu = nuriMenu;
+    
+    // 🔥 디버깅 함수 추가
+    window.debugStorage = function() {
+        console.log('=== 로컬 스토리지 디버깅 ===');
+        console.log('tempIncompleteCoffees:', localStorage.getItem('tempIncompleteCoffees'));
+        console.log('completedCoffees:', localStorage.getItem('completedCoffees'));
+        console.log('nonCoffeeItems:', localStorage.getItem('nonCoffeeItems'));
+        console.log('selectedMenuItems:', localStorage.getItem('selectedMenuItems'));
+        console.log('현재 장바구니:', nuriMenu.cartManager.items.map(i => `${i.name} x${i.quantity} (완료:${!!i.isCompletedCoffee})`));
+        console.log('=============================');
+    };
+    
+    console.log('💡 브라우저 콘솔에서 debugStorage() 함수를 사용하여 로컬 스토리지 상태를 확인할 수 있습니다.');
 }); 

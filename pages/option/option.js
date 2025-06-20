@@ -641,12 +641,13 @@ class OptionSelectionSystem {
                 basePrice: basePrice, // 기본 가격
                 finalPrice: finalPrice, // 옵션 포함 최종 가격
                 priceIncrease: priceIncrease, // 옵션으로 인한 가격 증가
+                quantity: coffee.quantity || 1, // 수량 정보 명시적 보존 (중요!)
                 completedAt: new Date().toISOString(),
                 selectedTimestamp: coffee.selectedTimestamp || Date.now(), // 원래 선택 시간 보존
                 uniqueId: `${coffee.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` // 고유 ID 생성
             });
             
-            console.log(`${coffee.name}: 기본 ${basePrice}원 → 최종 ${finalPrice}원 (+${priceIncrease}원)`);
+            console.log(`${coffee.name}: 기본 ${basePrice}원 → 최종 ${finalPrice}원 (+${priceIncrease}원) x${coffee.quantity || 1}개`);
         });
         
         // 모든 완료된 커피들 저장
